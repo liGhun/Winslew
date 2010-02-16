@@ -138,7 +138,7 @@
                             <DoubleAnimation
                                             Storyboard.TargetName="progressBar_updating" 
                                             Storyboard.TargetProperty="Value"
-                                            From="0" To="100" Duration="0:0:3" 
+                                            From="0" To="100" Duration="0:0:5" 
                                             RepeatBehavior="Forever" />
                         </Storyboard>
                     </BeginStoryboard>
