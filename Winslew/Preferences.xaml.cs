@@ -84,6 +84,7 @@ namespace Winslew
             Properties.Settings.Default.Username = textBox_RILusername.Text;
             Properties.Settings.Default.LoginHasBeenTestedSuccessfully = loginHasBeenTestedSuccessfully;
             Properties.Settings.Default.Save();
+            AppController.Current.credentialsSavedSuccessfully();
             this.Close();
         }
 

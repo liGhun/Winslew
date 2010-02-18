@@ -14,8 +14,8 @@
     <Setting Name="ShowReadItems" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="Setting" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+    <Setting Name="CurrentView" Type="System.String" Scope="User">
+      <Value Profile="(Default)">less</Value>
     </Setting>
   </Settings>
 </SettingsFile>

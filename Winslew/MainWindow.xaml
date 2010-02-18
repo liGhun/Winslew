@@ -104,8 +104,7 @@
 
 
         <Frame Name="frame_content" 
-            Margin="0,182,0,0"
-               Visibility="Collapsed"
+            Margin="0,182,0,20"
                >
             <Frame.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.04">
@@ -127,23 +126,11 @@
                         </LinearGradientBrush.GradientStops>
                     </LinearGradientBrush>
             </Border.Background>
-            <Label Height="30" Name="label_TitleOfItem" Foreground="Black" FontSize="16" FontWeight="Bold"></Label>
+            <Label Height="30" Name="label_TitleOfItem" Foreground="Black" FontSize="16" FontWeight="Bold" Width="576" HorizontalAlignment="Left"></Label>
         </Border>
-        <Label Height="44" Margin="12,193,12,0" Name="label_updateCache" VerticalAlignment="Top" FontSize="24">Updating cache...</Label>
-        <ProgressBar Height="27" Margin="13,243,17,0" Name="progressBar_updating" VerticalAlignment="Top">
-            <ProgressBar.Triggers>
-                <EventTrigger RoutedEvent="ProgressBar.Loaded">
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <DoubleAnimation
-                                            Storyboard.TargetName="progressBar_updating" 
-                                            Storyboard.TargetProperty="Value"
-                                            From="0" To="100" Duration="0:0:5" 
-                                            RepeatBehavior="Forever" />
-                        </Storyboard>
-                    </BeginStoryboard>
-                </EventTrigger>
-            </ProgressBar.Triggers>
-        </ProgressBar>
+        <StatusBar Height="23" Margin="1,0,0,-1" Name="statusBar1" VerticalAlignment="Bottom" />
+        <Button Height="23" HorizontalAlignment="Right" Margin="0,153,12,0" Name="button_less" VerticalAlignment="Top" Width="35" Click="button_less_Click" ToolTip="View cached content with less cached data">Less</Button>
+        <Button Height="23" HorizontalAlignment="Right" Margin="0,153,53,0" Name="button_more" VerticalAlignment="Top" Width="44" Click="button_more_Click" ToolTip="View cached version of article with more fetched data">More</Button>
+        <Button Height="23" HorizontalAlignment="Right" Margin="0,153,103,0" Name="button_full" VerticalAlignment="Top" Width="47" Click="button_full_Click" ToolTip="View online version of this item">Online</Button>
     </Grid>
 </Window>

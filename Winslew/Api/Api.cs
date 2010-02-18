@@ -266,6 +266,10 @@ namespace Winslew.Api
         private  IEnumerable<Item> DeserializeItemsJson(string data)
         {
             List<Item> ListOfNewItems = new List<Item>();
+            if (data == null)
+            {
+                return ListOfNewItems;
+            }
             var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
             serializer.MaxJsonLength = data.Length;
             var obj = serializer.DeserializeObject(data) as Dictionary<string, object>;

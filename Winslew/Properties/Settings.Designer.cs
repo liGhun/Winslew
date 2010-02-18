@@ -73,13 +73,13 @@ namespace Winslew.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Setting {
+        [global::System.Configuration.DefaultSettingValueAttribute("less")]
+        public string CurrentView {
             get {
-                return ((string)(this["Setting"]));
+                return ((string)(this["CurrentView"]));
             }
             set {
-                this["Setting"] = value;
+                this["CurrentView"] = value;
             }
         }
     }
