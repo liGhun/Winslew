@@ -7,7 +7,10 @@ using System.Collections.ObjectModel;
 using System.Windows.Controls;
 using System.Threading;
 using System.Windows.Threading;
-
+using System.Xml;
+using System.Xml.Serialization;
+using System.IO;
+using System.Net.Sockets;
 
 namespace Winslew
 {
@@ -19,6 +22,7 @@ namespace Winslew
         private IntPtr SnarlMessageWindowHandle = IntPtr.Zero;
         private string pathToIcon = "";
         public Api.Api apiAccess = new Api.Api();
+        public DateTime expirationDate = new DateTime(2010, 04, 01);
 
         private bool isInitialFetch = true;
         public ObservableCollection<Item> itemsCollection
@@ -36,6 +40,43 @@ namespace Winslew
         public AppController()
         {
             Current = this;
+
+            // License test for testing version
+         
+            
+
+            /*
+            if (DateTime.Now > expirationDate)
+            {
+                LicenseExpired myLicenseWindow = new LicenseExpired();
+                myLicenseWindow.Show();
+                return;
+            }
+            */
+
+            try
+            {
+                string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                if(!System.IO.Directory.Exists(appDataPath + "\\Winslew\\"))
+                {
+                    System.IO.Directory.CreateDirectory(appDataPath + "\\Winslew\\");
+                }
+                string alreadyMigratedSettingsTriggerFile = appDataPath + "\\Winslew\\PreferencesMigrated-" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() + ".upd";
+                if (!System.IO.File.Exists(alreadyMigratedSettingsTriggerFile))
+                {
+                    Properties.Settings.Default.Upgrade();
+                    System.IO.File.Create(alreadyMigratedSettingsTriggerFile);
+                }
+                Properties.Settings.Default.Save();
+            }
+            catch 
+            {
+                
+            }
+
+            LicenseChecker.checkLicense(Properties.Settings.Default.Username, Properties.Settings.Default.LicenseCode);
+
+
 
             if (Properties.Settings.Default.LoginHasBeenTestedSuccessfully && Properties.Settings.Default.Username != "" && Properties.Settings.Default.Password != "")
             {
@@ -62,48 +103,81 @@ namespace Winslew
             }
         }
 
+        public void updateCache(List<Item> listOfItems, bool updateWithNewerVersion) {
+            UpdatingCache myUpdateCacheWindow = new UpdatingCache();
+
+            myUpdateCacheWindow.label2.Content = "Winslew " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            myUpdateCacheWindow.Show();
+            myUpdateCacheWindow.progressBar1.Maximum = listOfItems.Count();
+            double i = 1;
+
+            UpdateProgressBarDelegate updatePbDelegate =
+                new UpdateProgressBarDelegate(myUpdateCacheWindow.progressBar1.SetValue);
+
+            foreach (Item item in listOfItems)
+            {
+                myUpdateCacheWindow.label1.Content = "Updating cache " + i.ToString() + " of " + listOfItems.Count();
+                Dispatcher.CurrentDispatcher.Invoke(updatePbDelegate,
+                System.Windows.Threading.DispatcherPriority.Background,
+                new object[] { ProgressBar.ValueProperty, i });
+                addToCache(item, updateWithNewerVersion);
+                i++;
+            }
+            myUpdateCacheWindow.Close();
+        }
+
         public void credentialsSavedSuccessfully()
         {
             if (mainWindow == null)
             {
                 mainWindow = new MainWindow();
-                UpdatingCache myUpdateCacheWindow = new UpdatingCache();
+                
 
-                myUpdateCacheWindow.label2.Content = "Winslew " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
-                myUpdateCacheWindow.Show();
-
-                SetData();
-                isInitialFetch = false;
-
-                List<Item> tempList = new List<Item>();
-                if (itemsCollection != null)
+                if (apiAccess.checkIfOnline())
                 {
-                    foreach (Item item in itemsCollection)
+
+                    SetData(false);
+                    isInitialFetch = false;
+
+                    List<Item> tempList = new List<Item>();
+                    if (itemsCollection != null)
                     {
-                        tempList.Add(item);
+                        foreach (Item item in itemsCollection)
+                        {
+                            tempList.Add(item);
+                        }
+                    }
+
+                    // updateCache(tempList, false);
+
+                }
+                else
+                {
+                    string storePath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Winslew\\ContentCache.xml";
+                    if (File.Exists(storePath))
+                    {
+                        List<Item> tempList = new List<Item>();
+
+                        XmlSerializer xmlSerializer = new
+                        XmlSerializer(typeof(List<Item>), new
+                        XmlRootAttribute("ItemsCollection"));
+                        FileStream fileStram = new FileStream(storePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+                        XmlReader reader = new XmlTextReader(fileStram);
+
+                        tempList = (List<Item>)xmlSerializer.Deserialize(reader);
+                        reader.Close();
+                        fileStram.Close();
+
+                        itemsCollection = new ObservableCollection<Item>();
+                        foreach (Item storedItem in tempList)
+                        {
+                            itemsCollection.Add(storedItem);
+                        }
                     }
                 }
-
-                myUpdateCacheWindow.progressBar1.Maximum = tempList.Count();
-                double i = 1;
-
-
-                UpdateProgressBarDelegate updatePbDelegate =
-                    new UpdateProgressBarDelegate(myUpdateCacheWindow.progressBar1.SetValue);
-
-                foreach (Item item in tempList)
-                {
-                    myUpdateCacheWindow.label1.Content = "Updating cache " + i.ToString() + " of " + tempList.Count();
-                    Dispatcher.CurrentDispatcher.Invoke(updatePbDelegate,
-                    System.Windows.Threading.DispatcherPriority.Background,
-                    new object[] { ProgressBar.ValueProperty, i });
-                    addToCache(item);
-                    i++;
-                }
-
                 mainWindow.refreshItems();
                 mainWindow.updateViewOfFrame();
-                myUpdateCacheWindow.Close();
+                
                 mainWindow.Show();
             }
 
@@ -116,13 +190,27 @@ namespace Winslew
 
         ~AppController()
         {
-            
+            if (itemsCollection != null)
+            {
+                string storePath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Winslew\\ContentCache.xml";
+                List<Item> tempList = new List<Item>();
+                foreach (Item item in itemsCollection)
+                {
+                    tempList.Add(item);
+                }
+                XmlSerializer xmlSerializer = new
+                XmlSerializer(typeof(List<Item>), new
+                XmlRootAttribute("ItemsCollection"));
+                TextWriter writer = new StreamWriter(storePath);
+                xmlSerializer.Serialize(writer, tempList);
+                writer.Close();
+            }
         }
 
-        public void addToCache(Item item)
+        public void addToCache(Item item, bool updateWithNewerVersion)
         {
             Item newItem = item;
-            item.contentCache = cacheStore.addToCache(item, false);
+            item.contentCache = cacheStore.addToCache(item, updateWithNewerVersion);
             updateItem(item, newItem);
         }
 
@@ -136,13 +224,24 @@ namespace Winslew
             SnarlConnector.ShowMessageEx(className, title, text, 10, pathToIcon, SnarlMessageWindowHandle, WindowsMessage.WM_USER + 47, "");
         }
 
-
-        public void SetData()
+        public void refreshMainWindow()
         {
-            IEnumerable<Item> data = apiAccess.getList(0, false, true);
-            if (isInitialFetch)
+            mainWindow.refreshItems();
+        }
+
+        public void SetData(bool freshRefresh)
+        {
+            IEnumerable<Item> data = apiAccess.getList(freshRefresh, false, true);
+            if (isInitialFetch || freshRefresh)
             {
                 itemsCollection = new ObservableCollection<Item>(data);
+                List<Item> tempList = new List<Item>();
+                foreach (Item newItem in itemsCollection)
+                {
+                    tempList.Add(newItem);
+                    
+                }
+                AppController.Current.updateCache(tempList, false);
             }
             else
             {
@@ -153,11 +252,16 @@ namespace Winslew
                     if (alreadyExistingItemWithId == null)
                     {
                         itemsCollection.Add(newItem);
+                        List<Item> tempList = new List<Item>();
+                        tempList.Add(newItem);
+                        AppController.Current.updateCache(tempList, true);
                     }
                     else if (alreadyExistingItemWithId.Count() == 0)
                     {
                         itemsCollection.Add(newItem);
-                        AppController.Current.addToCache(newItem);
+                        List<Item> tempList = new List<Item>();
+                        tempList.Add(newItem);
+                        AppController.Current.updateCache(tempList, true);
                         AppController.Current.sendSnarlNotification("New item", "New item added", newItem.title);
                     }
                     else
@@ -183,7 +287,7 @@ namespace Winslew
         {
             apiAccess.addToList(url, title);
             
-            SetData();
+            SetData(false);
             
             mainWindow.refreshItems();
             return true;

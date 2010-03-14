@@ -18,6 +18,9 @@ namespace Winslew
     /// </summary>
     public partial class Preferences : Window
     {
+        bool isInit = true;
+        bool unlicensed = false;
+
         bool loginHasBeenTestedSuccessfully = false;
         private Api.Api apiAccess = new Api.Api();
 
@@ -27,7 +30,9 @@ namespace Winslew
 
             passwordBox_RILpassword.Password = Crypto.ToInsecureString(Crypto.DecryptString(Properties.Settings.Default.Password));
             textBox_RILusername.Text = Properties.Settings.Default.Username;
-            
+            isInit = false;
+            textBox_licenseCode.Text = Properties.Settings.Default.LicenseCode;
+
             if (Properties.Settings.Default.LoginHasBeenTestedSuccessfully)
             {
                 toggleSaveButton(true);
@@ -36,6 +41,8 @@ namespace Winslew
                 button_RILTest.Content = "Login valid";
                 loginHasBeenTestedSuccessfully = true;
             }
+            
+        
         }
 
         private void passwordBox_RILpassword_PasswordChanged(object sender, RoutedEventArgs e)
@@ -83,6 +90,7 @@ namespace Winslew
             Properties.Settings.Default.Password = Crypto.EncryptString(Crypto.ToSecureString(passwordBox_RILpassword.Password));
             Properties.Settings.Default.Username = textBox_RILusername.Text;
             Properties.Settings.Default.LoginHasBeenTestedSuccessfully = loginHasBeenTestedSuccessfully;
+            Properties.Settings.Default.LicenseCode = textBox_licenseCode.Text;
             Properties.Settings.Default.Save();
             AppController.Current.credentialsSavedSuccessfully();
             this.Close();
@@ -107,6 +115,44 @@ namespace Winslew
             button_RILTest.IsEnabled = true;
             button_RILTest.Content = "Login with existing account";
             button_createAccount.IsEnabled = true;
+            Properties.Settings.Default.Username = textBox_RILusername.Text;
+            textBox_licenseCode_TextChanged(null, null);
+        }
+
+        private void textBox_licenseCode_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (isInit)
+            {
+                return;
+            }
+            Properties.Settings.Default.LicenseCode = textBox_licenseCode.Text;
+            if(LicenseChecker.checkLicense(Properties.Settings.Default.Username, textBox_licenseCode.Text)) {
+                label_licValid.Content = "License valid";
+                label_licValid.Foreground = new SolidColorBrush(Colors.Green);
+                button_getLicense.IsEnabled = false;
+                button_getLicense.Content = "Thank you";
+                Properties.Settings.Default.Save();
+                if (unlicensed)
+                {
+                    AppController.Current.SetData(true);
+                    AppController.Current.refreshMainWindow();
+                }
+                unlicensed = false;
+            }
+            else
+            {
+                label_licValid.Content = "Not licensed";
+                label_licValid.Foreground = new SolidColorBrush(Colors.Red);
+                button_getLicense.IsEnabled = true;
+                button_getLicense.Content = "Buy license";
+                unlicensed = true;
+            }
+            Properties.Settings.Default.Save();
+        }
+
+        private void button_getLicense_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://www.li-ghun.de/Winslew/Download/");
         }
     }
 }

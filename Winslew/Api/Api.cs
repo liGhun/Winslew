@@ -6,13 +6,14 @@ using System.Security;
 using System.IO;
 using System.Net;
 using System.Reflection;
+using System.Drawing;
 
 namespace Winslew.Api
 {
     public class Api
     {
          private string apiKey = "362pfT45AcqNFe9553gZW53G52dkO8fY";
-
+         private bool isOnline;
          private long lastRetrievalTime = 0;
 
          public void addToList(string newUrl, string newTitle)
@@ -208,6 +209,26 @@ namespace Winslew.Api
             }
         }
 
+        public bool checkIfOnline()
+        {
+            if (isOnline)
+            {
+                return true;
+            }
+            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create("http://www.li-ghun.de/");
+            request.Timeout = 2000;
+            try
+            {
+                request.GetResponse();
+                isOnline = true;
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public Response getCacheText(string urlToBeCached, string type)
         {
             string modeToBeUsed = "more";
@@ -232,8 +253,12 @@ namespace Winslew.Api
             return serializer.Serialize(container);
         }
 
-         public IEnumerable<Item> getList(long since, bool includeRead, bool includeUnread)
+         public IEnumerable<Item> getList(bool freshRefresh, bool includeRead, bool includeUnread)
         {
+            if (freshRefresh)
+            {
+                lastRetrievalTime = 0;
+            }
             if (Properties.Settings.Default.Username != "" && Properties.Settings.Default.Password != "")
             {
                 Response result = HttpCommunications.SendPostRequest(@"https://readitlaterlist.com/v2/get", new
@@ -375,6 +400,5 @@ namespace Winslew.Api
         {
             return Crypto.ToInsecureString(Crypto.DecryptString(Properties.Settings.Default.Password));
         }
-
     }
 }

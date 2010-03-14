@@ -1,8 +1,20 @@
 ﻿<Window x:Class="Winslew.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Title="Winslew" Height="853" Width="804"  Foreground="Black" Icon="/Winslew;component/Images/Winslew.ico" Background="LightGray">
-
+    Title="Winslew" Height="853" Width="804"
+        Foreground="Black" 
+        Icon="/Winslew;component/Images/Winslew.ico" 
+        Background="LightGray"
+        SizeChanged="Window_SizeChanged"
+        LocationChanged="Window_LocationChanged"
+        >
+<Window.Resources>
+        <DataTemplate x:Key="Image">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="{Binding Path=contentCache.FavIconPath}" Width="16" Height="16" />
+            </StackPanel>
+        </DataTemplate>
+    </Window.Resources>
     <Grid>
         <ToolBar Height="30" Name="toolBar1" VerticalAlignment="Top" HorizontalAlignment="Left">
             <ToolBar.Background>
@@ -14,7 +26,7 @@
                 </LinearGradientBrush>
             </ToolBar.Background>
             <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_refresh" VerticalAlignment="Top" Width="24" Click="button_refresh_Click">
-                <Image Source="/Winslew;component/Images/refresh.png" ToolTip="Refresh"></Image>
+                <Image Source="/Winslew;component/Images/refresh.png" ToolTip="Refresh" ImageFailed="Image_ImageFailed"></Image>
             </Button>
 
             <Separator />
@@ -55,12 +67,12 @@
             <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_preferences" VerticalAlignment="Top" Width="24" Click="button_preferences_Click">
                 <Image Name="ImagePreferenes" Source="/Winslew;component/Images/preferences.png" ToolTip="Preferences"></Image>
             </Button>
-            <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_help" VerticalAlignment="Top" Width="24" Click="button_help_Click">
+            <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_help" VerticalAlignment="Top" Width="24" Click="button_help_Click" >
                 <Image Name="ImageHelp" Source="/Winslew;component/Images/help.png" ToolTip="Help / About"></Image>
             </Button>
 
         </ToolBar>
-        <ListView Margin="0,29,0,0" Name="listView_Items" Height="113" VerticalAlignment="Top" SelectionChanged="listView_Items_SelectionChanged" Foreground="Black">
+        <ListView Margin="0,29,0,0" Name="listView_Items" Height="147" VerticalAlignment="Top" SelectionChanged="listView_Items_SelectionChanged" Foreground="Black">
             <ListView.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.4">
                         <LinearGradientBrush.GradientStops>
@@ -76,26 +88,36 @@
                 </Style>
                 
             </ListView.Resources>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <Setter Property="ToolTip" Value="{Binding Path=url}" />
+                </Style>
+            </ListView.ItemContainerStyle>
             <ListView.View>
                 <GridView AllowsColumnReorder="true">
+                    <GridViewColumn x:Name="FavIcon" Width="30" CellTemplate="{StaticResource Image}" />
 
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=title}" Header="Title" Width="430"  />
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=title}" Header="Title" Width="360"  />
+
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=tags}" 
+                      Header="Tags" Width="120"/>
 
                     <GridViewColumn DisplayMemberBinding="{Binding Path=timeAddedHumanReadable}" 
-                      Width="120">
-                        <GridViewColumnHeader>Added
-                          <!--  <GridViewColumnHeader.ContextMenu>
+                      Width="120" Header="Added" />
+                        <!-- <GridViewColumnHeader>Added
+                            <GridViewColumnHeader.ContextMenu>
                                <ContextMenu  MenuItem.Click="LastNameCM_Click"  
                                         Name="LastNameCM">
                                     <MenuItem Header="Ascending" />
                                     <MenuItem Header="Descending" />
                                 </ContextMenu>
-                            </GridViewColumnHeader.ContextMenu> -->
+                            </GridViewColumnHeader.ContextMenu>
                         </GridViewColumnHeader>
-                    </GridViewColumn>
+                    </GridViewColumn> -->
+                    
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=timeUpdatedHumanReadable}" 
+                      Width="120" Header="Updated" />
 
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=tags}" 
-                      Header="Tags" Width="120"/>
                 </GridView>
 
             </ListView.View>
@@ -104,7 +126,7 @@
 
 
         <Frame Name="frame_content" 
-            Margin="0,182,0,20"
+            Margin="0,213,0,20"
                >
             <Frame.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.04">
@@ -117,7 +139,7 @@
         </Frame>
 
 
-        <Border Height="28" Margin="0,148,0,0" Name="border1" VerticalAlignment="Top">
+        <Border Height="28" Margin="0,179,0,0" Name="border1" VerticalAlignment="Top">
             <Border.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.2">
                         <LinearGradientBrush.GradientStops>
@@ -129,8 +151,11 @@
             <Label Height="30" Name="label_TitleOfItem" Foreground="Black" FontSize="16" FontWeight="Bold" Width="576" HorizontalAlignment="Left"></Label>
         </Border>
         <StatusBar Height="23" Margin="1,0,0,-1" Name="statusBar1" VerticalAlignment="Bottom" />
-        <Button Height="23" HorizontalAlignment="Right" Margin="0,153,12,0" Name="button_less" VerticalAlignment="Top" Width="35" Click="button_less_Click" ToolTip="View cached content with less cached data">Less</Button>
-        <Button Height="23" HorizontalAlignment="Right" Margin="0,153,53,0" Name="button_more" VerticalAlignment="Top" Width="44" Click="button_more_Click" ToolTip="View cached version of article with more fetched data">More</Button>
-        <Button Height="23" HorizontalAlignment="Right" Margin="0,153,103,0" Name="button_full" VerticalAlignment="Top" Width="47" Click="button_full_Click" ToolTip="View online version of this item">Online</Button>
+        <Button Height="23" HorizontalAlignment="Right" Margin="0,184,30,0" Name="button_less" VerticalAlignment="Top" Width="35" Click="button_less_Click" ToolTip="View cached content with less cached data">Less</Button>
+        <Button Height="23" HorizontalAlignment="Right" Margin="0,184,71,0" Name="button_more" VerticalAlignment="Top" Width="44" Click="button_more_Click" ToolTip="View cached version of article with more fetched data">More</Button>
+        <Button Height="23" HorizontalAlignment="Right" Margin="0,184,121,0" Name="button_full" VerticalAlignment="Top" Width="47" Click="button_full_Click" ToolTip="View online version of this item">Online</Button>
+        <Button Height="23" HorizontalAlignment="Right" Margin="0,184,1,0" Name="button_updateCache" VerticalAlignment="Top" Width="23" Click="button_updateCache_Click">
+            <Image Source="/Winslew;component/Images/refresh.png" ToolTip="Update cache for this webpage"></Image>
+        </Button>
     </Grid>
 </Window>

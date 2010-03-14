@@ -33,7 +33,7 @@ namespace Winslew
                 request.Method = "POST";
                 request.AllowAutoRedirect = allowAutoRedirect;
                 request.Accept = "*/*";
-                request.UserAgent = "Desktop Google Reader (http://desktopgooglereader.codeplex.com/)";
+                request.UserAgent = "Winslew (http://www.li-ghun.de/)";
                 request.ContentType = "application/x-www-form-urlencoded";
 
                 byte[] encodedData = new UTF8Encoding().GetBytes(formData);

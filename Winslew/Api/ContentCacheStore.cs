@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Drawing;
+using System.Net;
 
 namespace Winslew.Api
 {
     public class ContentCacheStore
     {
-        
+
         public List<CachedItemContent> Cache { get; set; }
         private string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Winslew";
         public string pathToNAPage = "";
@@ -24,17 +26,19 @@ namespace Winslew.Api
             }
             if (!File.Exists(appDataPath + "\\Cache\\NotAvailable.html"))
             {
-                string updatingText = "<html><head><title>Not available...</title>";
-                updatingText += "</head><body>\n";
-                updatingText += "<h1>Sorry, this view is not available for this item...</h1>";
-                updatingText += "</body></html>";
+                string notAvailableText = "<html><head><title>Not available...</title>";
+                notAvailableText += "</head><body>\n";
+                notAvailableText += "<strong>Sorry, this view is not available for this item...</strong>";
+                notAvailableText += "<p>Please choose another view for this item</p>";
+                notAvailableText += "</body></html>";
                 StreamWriter fhUpd = File.CreateText(appDataPath + "\\Cache\\NotAvailable.html");
-                fhUpd.Write(updatingText);           
+                fhUpd.Write(notAvailableText);
                 fhUpd.Close();
             }
 
             CachedItemContent storedCacheItem = new CachedItemContent();
-            foreach(string dir in Directory.GetDirectories(appDataPath + "\\Cache")) {
+            foreach (string dir in Directory.GetDirectories(appDataPath + "\\Cache"))
+            {
                 if (Directory.GetFiles(dir).Count() > 0)
                 {
                     string id = "";
@@ -42,21 +46,36 @@ namespace Winslew.Api
                     storedCacheItem = new CachedItemContent();
                     storedCacheItem.Id = id;
 
-                    if(File.Exists(appDataPath + "\\Cache\\" + id.ToString() + "\\" + id.ToString() + "-less.html")) {
+                    if (File.Exists(appDataPath + "\\Cache\\" + id.ToString() + "\\" + id.ToString() + "-less.html"))
+                    {
                         storedCacheItem.LessVersion = appDataPath + "\\Cache\\" + id.ToString() + "\\" + id.ToString() + "-less.html";
+                        storedCacheItem.Updated = File.GetLastWriteTime(appDataPath + "\\Cache\\" + id.ToString() + "\\" + id.ToString() + "-less.html");
                     }
                     else
                     {
                         storedCacheItem.LessVersion = pathToNAPage;
                     }
 
-                    if(File.Exists(appDataPath + "\\Cache\\" + id.ToString() + "\\" + id.ToString() + "-more.html")) {
+                    if (File.Exists(appDataPath + "\\Cache\\" + id.ToString() + "\\" + id.ToString() + "-more.html"))
+                    {
                         storedCacheItem.MoreVersion = appDataPath + "\\Cache\\" + id.ToString() + "\\" + id.ToString() + "-more.html";
+                        storedCacheItem.Updated = File.GetLastWriteTime(appDataPath + "\\Cache\\" + id.ToString() + "\\" + id.ToString() + "-more.html");
                     }
                     else
                     {
                         storedCacheItem.MoreVersion = pathToNAPage;
                     }
+
+                    if (File.Exists(appDataPath + "\\Cache\\" + id.ToString() + "\\favicon.ico"))
+                    {
+                        storedCacheItem.FavIconPath = appDataPath + "\\Cache\\" + id.ToString() + "\\favicon.ico";
+                    }
+
+                    if (storedCacheItem.Updated != null)
+                    {
+                        storedCacheItem.UpdatedHumanReadable = string.Format("{0} {1}", storedCacheItem.Updated.ToShortDateString(), storedCacheItem.Updated.ToShortTimeString());
+                    }
+
                     Cache.Add(storedCacheItem);
                 }
             }
@@ -66,7 +85,6 @@ namespace Winslew.Api
         public CachedItemContent addToCache(Item itemToBeCached, bool overrideExisting)
         {
             CachedItemContent returnValue = new CachedItemContent();
-            
 
             if (Cache != null)
             {
@@ -80,11 +98,10 @@ namespace Winslew.Api
                 }
             }
 
-
-
             returnValue.Id = itemToBeCached.id;
             string cacheDir = appDataPath + "\\Cache\\" + returnValue.Id.ToString();
-            if(!Directory.Exists(cacheDir)) {
+            if (!Directory.Exists(cacheDir))
+            {
                 Directory.CreateDirectory(cacheDir);
             }
 
@@ -100,7 +117,7 @@ namespace Winslew.Api
 
                 returnValue.LessVersion = cacheDir + "\\" + returnValue.Id.ToString() + "-less.html";
                 StreamWriter fh = File.CreateText(returnValue.LessVersion);
-                fh.Write(fullText);           
+                fh.Write(fullText);
                 fh.Close();
             }
             else
@@ -127,7 +144,51 @@ namespace Winslew.Api
                 returnValue.MoreVersion = pathToNAPage;
             }
 
+            Image favIcon = GetFavicon(itemToBeCached.url);
+            if (favIcon != null)
+            {
+                try
+                {
+                    favIcon.Save(cacheDir + "\\favicon.ico");
+                    returnValue.FavIconPath = cacheDir + "\\favicon.ico";
+                }
+                catch
+                {
+                }
+            }
+
+            returnValue.Updated = DateTime.Now;
+            returnValue.UpdatedHumanReadable = string.Format("{0} {1}", returnValue.Updated.ToShortDateString(), returnValue.Updated.ToShortTimeString());
+
             return returnValue;
+        }
+
+
+        private Image GetFavicon(string Inurl)
+        {
+            Uri url = new Uri(Inurl);
+            string urlHost = url.Host;
+            Image BookmarkIcon = null;
+            if (url.HostNameType == UriHostNameType.Dns)
+            {
+                string iconUrl = "http://" + urlHost + "/favicon.ico";
+                try
+                {
+                    HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(iconUrl);
+                    System.Net.HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                    System.IO.Stream stream = response.GetResponseStream();
+                    BookmarkIcon = Image.FromStream(stream);
+                }
+                catch
+                {
+
+                }
+                return BookmarkIcon;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

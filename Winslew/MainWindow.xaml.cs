@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Collections.ObjectModel;
+using System.Net.Sockets;
 
 namespace Winslew
 {
@@ -26,6 +27,11 @@ namespace Winslew
         public MainWindow()
         {
             InitializeComponent();
+
+            this.Top = Properties.Settings.Default.MainWindowTop;
+            this.Left = Properties.Settings.Default.MainWindowLeft;
+            this.Width = Properties.Settings.Default.MainWindowWidth;
+            this.Height = Properties.Settings.Default.MainWindowHeight;
 
             if (Properties.Settings.Default.ShowReadItems)
             {
@@ -58,16 +64,38 @@ namespace Winslew
         ~MainWindow() {
             Properties.Settings.Default.Save();
             AppController.Current.revokeSnarl();
-            
         }
             
 
         public void refreshItems() {
-            listView_Items.ItemsSource = AppController.Current.itemsCollection.Where((Item bq) => bq.read == Properties.Settings.Default.ShowReadItems);
+            listView_Items.ItemsSource = AppController.Current.itemsCollection.Where((Item bq) => bq.read == Properties.Settings.Default.ShowReadItems);  
+            if (!Properties.Settings.Default.IsValidLicense)
+            {
+                if (listView_Items.Items.Count > 10)
+                {                    
+                    if (!Properties.Settings.Default.BuyLicensePopupShown)
+                    {
+                        Properties.Settings.Default.BuyLicensePopupShown = true;
+                        BuyLicense myBuyWindow = new BuyLicense();
+                        myBuyWindow.Show();
+                    }
+                    
+                }
+                listView_Items.ItemsSource = AppController.Current.itemsCollection.Where((Item bq) => bq.read == Properties.Settings.Default.ShowReadItems).Take(10);
+            }
+          
             this.Title = listView_Items.Items.Count.ToString() + " items - Winslew";
+      
             if (AppController.Current.itemsCollection.Count > 0 && listView_Items.SelectedItem == null)
             {
-                listView_Items.SelectedItem = listView_Items.Items[0];
+                try
+                {
+                    listView_Items.SelectedItem = listView_Items.Items[listView_Items.Items.Count - 1];
+                }
+                catch
+                {
+
+                }
             }
         }
 
@@ -91,6 +119,19 @@ namespace Winslew
                 {
                     toggleReadIcon(false);
                 }
+                if (currentItem.contentCache != null)
+                {
+                    if (currentItem.contentCache.Updated != null)
+                    {
+                        button_less.ToolTip = currentItem.contentCache.UpdatedHumanReadable;
+                        button_more.ToolTip = currentItem.contentCache.UpdatedHumanReadable;
+                    }
+                }
+            }
+            else
+            {
+                button_less.ToolTip = "";
+                button_more.ToolTip = "";
             }
         }
 
@@ -116,7 +157,7 @@ namespace Winslew
 
         private void button_refresh_Click(object sender, RoutedEventArgs e)
         {
-            AppController.Current.SetData();
+            AppController.Current.SetData(false);
         }
 
         private void button_editTags_Click(object sender, RoutedEventArgs e)
@@ -156,7 +197,16 @@ namespace Winslew
 
         private void button_help_Click(object sender, RoutedEventArgs e)
         {
-
+            About myHelpWIndow = new About();
+            if (Properties.Settings.Default.IsValidLicense)
+            {
+                myHelpWIndow.label_license.Content = "This copy is licensed to " + Properties.Settings.Default.Username;
+            }
+            else
+            {
+                myHelpWIndow.label_license.Content = "This is copy is unlicensed and in trial mode";
+            }
+            myHelpWIndow.Show();
         }
 
         private void button_toggleView_Click(object sender, RoutedEventArgs e)
@@ -213,8 +263,14 @@ namespace Winslew
         {
             Properties.Settings.Default.CurrentView = "full";
             button_full.IsEnabled = false;
+            button_full.Background = Brushes.Black;
+            button_full.Foreground = Brushes.White;
             button_more.IsEnabled = true;
+            button_more.Background = Brushes.White;
+            button_more.Foreground = Brushes.Black;
             button_less.IsEnabled = true;
+            button_less.Background = Brushes.White;
+            button_less.Foreground = Brushes.Black;
             updateViewOfFrame();
         }
 
@@ -222,8 +278,14 @@ namespace Winslew
         {
             Properties.Settings.Default.CurrentView = "more";
             button_full.IsEnabled = true;
+            button_full.Background = Brushes.White;
+            button_full.Foreground = Brushes.Black;
             button_more.IsEnabled = false;
+            button_more.Background = Brushes.Black;
+            button_more.Foreground = Brushes.White;
             button_less.IsEnabled = true;
+            button_less.Background = Brushes.White;
+            button_less.Foreground = Brushes.Black;
             updateViewOfFrame();
         }
 
@@ -231,8 +293,14 @@ namespace Winslew
         {
             Properties.Settings.Default.CurrentView = "less";
             button_full.IsEnabled = true;
+            button_full.Background = Brushes.White;
+            button_full.Foreground = Brushes.Black;
             button_more.IsEnabled = true;
+            button_more.Background = Brushes.White;
+            button_more.Foreground = Brushes.Black;
             button_less.IsEnabled = false;
+            button_less.Background = Brushes.Black;
+            button_less.Foreground = Brushes.White;
             updateViewOfFrame();
         }
 
@@ -243,20 +311,59 @@ namespace Winslew
                 var currentItem = listView_Items.SelectedItem as Item;
                 if (currentItem.contentCache != null || Properties.Settings.Default.CurrentView == "full")
                 {
-                    if (Properties.Settings.Default.CurrentView == "full")
+
+                    if (Properties.Settings.Default.CurrentView == "full" && apiAccess.checkIfOnline())
                     {
                         frame_content.Source = new Uri(currentItem.url);
                     }
-                    else if (Properties.Settings.Default.CurrentView == "more")
+                    else if (Properties.Settings.Default.CurrentView == "more" && System.IO.File.Exists(currentItem.contentCache.MoreVersion))
                     {
                         frame_content.Source = new Uri(currentItem.contentCache.MoreVersion);
                     }
-                    else
+                    else if (System.IO.File.Exists(currentItem.contentCache.LessVersion))
                     {
                         frame_content.Source = new Uri(currentItem.contentCache.LessVersion);
                     }
+                    else
+                    {
+                        frame_content.Source = new Uri(AppController.Current.cacheStore.pathToNAPage);
+                    }
                 }
             }
+        }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            Properties.Settings.Default.MainWindowWidth = this.Width;
+            Properties.Settings.Default.MainWindowHeight = this.Height;
+        }
+
+        private void Window_LocationChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.MainWindowTop = this.Top;
+            Properties.Settings.Default.MainWindowLeft = this.Left;
+        }
+
+        private void button_updateCache_Click(object sender, RoutedEventArgs e)
+        {
+            if (listView_Items.SelectedItem != null)
+            {
+                List<Item> temoList = new List<Item>();
+                var currentItem = listView_Items.SelectedItem as Item;
+                temoList.Add(currentItem);
+                AppController.Current.updateCache(temoList, true);
+            }
+            frame_content.Refresh();
+        }
+
+        private void button_help_Click_1(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Image_ImageFailed(object sender, ExceptionRoutedEventArgs e)
+        {
+
         }
 
 
