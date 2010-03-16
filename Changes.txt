@@ -1,0 +1,16 @@
+1.0 (1.0.4.0)
+License checking added (limitation to 10 items at once if unlicensed)
+Limitation until March, 31st removed
+Listview now also shows last updated time
+Listview tooltip shows url of item
+More and less button now show last cache update for this item
+Favicon displayed (and cached) if available
+Fixed bug in installer which saved install path in wrong variable
+
+1.0b3 (1.0.3.2)
+Expiration of beta version set to March, 31st 2010
+Main window position and size now remembered and restored on new start
+When adding a new page the "updating cache window" is now shown to show what is happening
+The cache of an item can now be updated manually
+Added About window
+Update of settings if new version has been installed
