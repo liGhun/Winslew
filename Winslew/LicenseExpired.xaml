@@ -1,0 +1,18 @@
+﻿<Window x:Class="Winslew.LicenseExpired"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Your testing license has expired" Height="149" Width="300" Icon="/Winslew;component/Images/Winslew.ico" WindowStyle="None" WindowStartupLocation="CenterScreen">
+    <Window.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.4">
+            <LinearGradientBrush.GradientStops>
+                <GradientStop Offset="0" Color="White" />
+                <GradientStop Offset="1" Color="Red" />
+            </LinearGradientBrush.GradientStops>
+        </LinearGradientBrush>
+    </Window.Background>
+
+    <Grid>
+        <TextBlock Height="54" Margin="12,12,12,0" Name="textBlock1" VerticalAlignment="Top" Text="Your testing license has expired. Please visit our website and get a newer testing version or buy a full license of Winslew" TextAlignment="Center" TextWrapping="Wrap" />
+        <Button Height="23" Margin="52,72,0,0" Name="button1" VerticalAlignment="Top" HorizontalAlignment="Left" Width="173" Click="button1_Click">Visit http://www.li-ghun.de/</Button>
+    </Grid>
+</Window>
