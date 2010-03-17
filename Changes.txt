@@ -6,6 +6,8 @@ Tooltip on list view extended
 Width of columns now memorized if changed by user
 List can now be sorted
 Documentation link corrected
+Delete button now always shown (not only un read view)
+Version number display now trimmed (e.g. 1.1 instead of 1.1.0.0)
 
 1.0 (1.0.4.0)
 License checking added (limitation to 10 items at once if unlicensed)
