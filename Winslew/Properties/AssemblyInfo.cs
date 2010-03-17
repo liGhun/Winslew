@@ -7,12 +7,12 @@ using System.Windows;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Winslew")]
+[assembly: AssemblyTitle("Winslew - Read It Later client")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("lI' Ghun")]
-[assembly: AssemblyProduct("Winslew Read It Later Client")]
-[assembly: AssemblyCopyright("Copyright © lI' Ghun (Sven Walther) 2010")]
+[assembly: AssemblyCompany("lI' Ghun (Sven Walther)")]
+[assembly: AssemblyProduct("Winslew")]
+[assembly: AssemblyCopyright("Copyright © lI' Ghun (Sven Walther 2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -51,5 +51,5 @@ using System.Windows;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.4.0")]
-[assembly: AssemblyFileVersion("1.0.4.0")]
+[assembly: AssemblyVersion("1.1.0.0")]
+[assembly: AssemblyFileVersion("1.1.0.0")]

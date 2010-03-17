@@ -26,7 +26,7 @@
                 </LinearGradientBrush>
             </ToolBar.Background>
             <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_refresh" VerticalAlignment="Top" Width="24" Click="button_refresh_Click">
-                <Image Source="/Winslew;component/Images/refresh.png" ToolTip="Refresh" ImageFailed="Image_ImageFailed"></Image>
+                <Image Source="/Winslew;component/Images/refresh.png" ToolTip="Refresh"></Image>
             </Button>
 
             <Separator />
@@ -54,6 +54,21 @@
             </Button>
 
         </ToolBar>
+        <ToolBar Height="30" Name="toolBar_filter" VerticalAlignment="Top" HorizontalAlignment="Right" Width="204" Margin="0,0,71,0">
+            <ToolBar.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.2">
+                    <LinearGradientBrush.GradientStops>
+                        <GradientStop Offset="0" Color="White" />
+                        <GradientStop Offset="1" Color="LightGray" />
+                    </LinearGradientBrush.GradientStops>
+                </LinearGradientBrush>
+            </ToolBar.Background>
+            <Image Name="ImageFilter" Source="/Winslew;component/Images/filter.png" ToolTip="Filter" Width="18" Height="18" HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
+            <TextBox Height="23" HorizontalAlignment="Right" Name="textBox_filterTitle" VerticalAlignment="Center" Width="70" ToolTip="Filter title" TextChanged="textBox_filterTitle_TextChanged" Background="Transparent" BorderBrush="Black" />
+            <Separator />
+            <TextBox Height="23" HorizontalAlignment="Right" Name="textBox_filterTags" VerticalAlignment="Center" Width="70" ToolTip="Filter tags" TextChanged="textBox_filterTags_TextChanged" BorderBrush="Black" Background="Transparent" />
+        </ToolBar>
+
         <ToolBar Height="30" Name="toolBar2" VerticalAlignment="Top" HorizontalAlignment="Right">
             <ToolBar.Background>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.2">

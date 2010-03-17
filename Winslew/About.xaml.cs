@@ -22,7 +22,7 @@ namespace Winslew
         public About()
         {
             InitializeComponent();
-            this.label_Winslew_version.Content = "Winslew " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            this.label_Winslew_version.Content = "Winslew " + Formatter.prettyVersion.getNiceVersionString(System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
         }
 
         private void button_visitHomepage_Click(object sender, RoutedEventArgs e)

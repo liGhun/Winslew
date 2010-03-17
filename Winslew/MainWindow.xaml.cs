@@ -68,7 +68,12 @@ namespace Winslew
             
 
         public void refreshItems() {
-            listView_Items.ItemsSource = AppController.Current.itemsCollection.Where((Item bq) => bq.read == Properties.Settings.Default.ShowReadItems);  
+            
+             listView_Items.ItemsSource = AppController.Current.itemsCollection.Where((Item bq) => 
+                 bq.read == Properties.Settings.Default.ShowReadItems && 
+                 bq.title.ToLower().Contains(textBox_filterTitle.Text.ToLower()) &&
+                 bq.tags.ToLower().Contains(textBox_filterTags.Text.ToLower())
+                 );  
             if (!Properties.Settings.Default.IsValidLicense)
             {
                 if (listView_Items.Items.Count > 10)
@@ -81,7 +86,11 @@ namespace Winslew
                     }
                     
                 }
-                listView_Items.ItemsSource = AppController.Current.itemsCollection.Where((Item bq) => bq.read == Properties.Settings.Default.ShowReadItems).Take(10);
+                listView_Items.ItemsSource = AppController.Current.itemsCollection.Where((Item bq) => 
+                    bq.read == Properties.Settings.Default.ShowReadItems &&
+                    bq.title.ToLower().Contains(textBox_filterTitle.Text.ToLower()) &&
+                    bq.tags.ToLower().Contains(textBox_filterTags.Text.ToLower())
+                    ).Take(10);
             }
           
             this.Title = listView_Items.Items.Count.ToString() + " items - Winslew";
@@ -356,14 +365,16 @@ namespace Winslew
             frame_content.Refresh();
         }
 
-        private void button_help_Click_1(object sender, RoutedEventArgs e)
-        {
 
+
+        private void textBox_filterTitle_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            refreshItems();
         }
 
-        private void Image_ImageFailed(object sender, ExceptionRoutedEventArgs e)
+        private void textBox_filterTags_TextChanged(object sender, TextChangedEventArgs e)
         {
-
+            refreshItems();
         }
 
 

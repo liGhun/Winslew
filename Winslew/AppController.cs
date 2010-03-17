@@ -41,19 +41,6 @@ namespace Winslew
         {
             Current = this;
 
-            // License test for testing version
-         
-            
-
-            /*
-            if (DateTime.Now > expirationDate)
-            {
-                LicenseExpired myLicenseWindow = new LicenseExpired();
-                myLicenseWindow.Show();
-                return;
-            }
-            */
-
             try
             {
                 string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -101,12 +88,14 @@ namespace Winslew
                 SnarlConnector.RegisterAlert("Winslew", "Item tags changed");
                 SnarlConnector.RegisterAlert("Winslew", "Item deleted");
             }
+
+            UpdateAvailable myUpdateCheck = new UpdateAvailable();
         }
 
         public void updateCache(List<Item> listOfItems, bool updateWithNewerVersion) {
             UpdatingCache myUpdateCacheWindow = new UpdatingCache();
 
-            myUpdateCacheWindow.label2.Content = "Winslew " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            myUpdateCacheWindow.label2.Content = "Winslew " + Formatter.prettyVersion.getNiceVersionString(System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
             myUpdateCacheWindow.Show();
             myUpdateCacheWindow.progressBar1.Maximum = listOfItems.Count();
             double i = 1;
@@ -117,6 +106,8 @@ namespace Winslew
             foreach (Item item in listOfItems)
             {
                 myUpdateCacheWindow.label1.Content = "Updating cache " + i.ToString() + " of " + listOfItems.Count();
+                myUpdateCacheWindow.label_itemTitle.Content = item.title;
+                myUpdateCacheWindow.UpdateLayout();
                 Dispatcher.CurrentDispatcher.Invoke(updatePbDelegate,
                 System.Windows.Threading.DispatcherPriority.Background,
                 new object[] { ProgressBar.ValueProperty, i });
