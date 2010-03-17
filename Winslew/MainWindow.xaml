@@ -49,12 +49,12 @@
             <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_addNew" VerticalAlignment="Top" Width="24" Click="button_addNew_Click">
                 <Image Name="ImageAddNew" Source="/Winslew;component/Images/add.png" ToolTip="Add new item"></Image>
             </Button>
-            <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Visibility="Hidden" Name="button_delete" VerticalAlignment="Top" Width="24" Click="button_delete_Click">
-                <Image Name="ImageDelete" Source="/Winslew;component/Images/trashcan.png" ToolTip="Delete item" Visibility="Hidden"></Image>
+            <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0"  Name="button_delete" VerticalAlignment="Top" Width="24" Click="button_delete_Click">
+                <Image Name="ImageDelete" Source="/Winslew;component/Images/trashcan.png" ToolTip="Delete item" ></Image>
             </Button>
 
         </ToolBar>
-        <ToolBar Height="30" Name="toolBar_filter" VerticalAlignment="Top" HorizontalAlignment="Right" Width="204" Margin="0,0,71,0">
+        <ToolBar Height="30" Name="toolBar_filter" VerticalAlignment="Top" HorizontalAlignment="Right" Width="204" Margin="0,0,66,0">
             <ToolBar.Background>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.2">
                     <LinearGradientBrush.GradientStops>
@@ -110,28 +110,48 @@
             </ListView.ItemContainerStyle>
             <ListView.View>
                 <GridView AllowsColumnReorder="true">
-                    <GridViewColumn x:Name="FavIcon" Width="30" CellTemplate="{StaticResource Image}" />
+                    <GridViewColumn 
+                        x:Name="FavIcon" 
+                        Width="30" 
+                        CellTemplate="{StaticResource Image}"
+                        />
 
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=title}" Header="Title" Width="360"  />
-
+                    <GridViewColumn 
+                        DisplayMemberBinding="{Binding Path=title}" 
+                        Width="360" x:Name="ListViewColumnTitle">
+                        <GridViewColumnHeader 
+                            Tag="title" 
+                            Content="Title" 
+                            Click="GridViewColumnHeader_Click"
+                            SizeChanged="GridViewColumnHeader_SizeChanged"/>
+                    </GridViewColumn>
                     <GridViewColumn DisplayMemberBinding="{Binding Path=tags}" 
-                      Header="Tags" Width="120"/>
+                      Width="120" x:Name="ListViewColumnTags">
+                        <GridViewColumnHeader 
+                            Tag="tags" 
+                            Content="Tags" 
+                            Click="GridViewColumnHeader_Click"
+                            SizeChanged="GridViewColumnHeader_SizeChanged"/>
+                    </GridViewColumn>
 
                     <GridViewColumn DisplayMemberBinding="{Binding Path=timeAddedHumanReadable}" 
-                      Width="120" Header="Added" />
-                        <!-- <GridViewColumnHeader>Added
-                            <GridViewColumnHeader.ContextMenu>
-                               <ContextMenu  MenuItem.Click="LastNameCM_Click"  
-                                        Name="LastNameCM">
-                                    <MenuItem Header="Ascending" />
-                                    <MenuItem Header="Descending" />
-                                </ContextMenu>
-                            </GridViewColumnHeader.ContextMenu>
-                        </GridViewColumnHeader>
-                    </GridViewColumn> -->
+                      Width="120" x:Name="ListViewColumnAdded">
+                        <GridViewColumnHeader 
+                            Tag="timeAdded" 
+                            Content="Added" 
+                            Click="GridViewColumnHeader_Click"
+                            SizeChanged="GridViewColumnHeader_SizeChanged"/>
+                    </GridViewColumn>
+                        
                     
                     <GridViewColumn DisplayMemberBinding="{Binding Path=timeUpdatedHumanReadable}" 
-                      Width="120" Header="Updated" />
+                      Width="120" x:Name="ListViewColumnUpdated">
+                        <GridViewColumnHeader 
+                            Tag="timeUpdated" 
+                            Content="Updated" 
+                            Click="GridViewColumnHeader_Click"
+                            SizeChanged="GridViewColumnHeader_SizeChanged"/>
+                    </GridViewColumn>
 
                 </GridView>
 

@@ -178,5 +178,53 @@ namespace Winslew.Properties {
                 this["ignoredNewVersion"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("360")]
+        public double ListViewWidthTitle {
+            get {
+                return ((double)(this["ListViewWidthTitle"]));
+            }
+            set {
+                this["ListViewWidthTitle"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("120")]
+        public double ListViewWidthTags {
+            get {
+                return ((double)(this["ListViewWidthTags"]));
+            }
+            set {
+                this["ListViewWidthTags"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("120")]
+        public double ListViewWidthAdded {
+            get {
+                return ((double)(this["ListViewWidthAdded"]));
+            }
+            set {
+                this["ListViewWidthAdded"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("120")]
+        public double ListViewWidthUpdated {
+            get {
+                return ((double)(this["ListViewWidthUpdated"]));
+            }
+            set {
+                this["ListViewWidthUpdated"] = value;
+            }
+        }
     }
 }

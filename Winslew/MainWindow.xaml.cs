@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Collections.ObjectModel;
 using System.Net.Sockets;
+using System.ComponentModel;
 
 namespace Winslew
 {
@@ -23,6 +24,8 @@ namespace Winslew
     {        
 
         public Api.Api apiAccess = new Api.Api();
+        private GridViewColumnHeader _CurSortCol = null;
+        private SortAdorner _CurAdorner = null;
        
         public MainWindow()
         {
@@ -33,17 +36,18 @@ namespace Winslew
             this.Width = Properties.Settings.Default.MainWindowWidth;
             this.Height = Properties.Settings.Default.MainWindowHeight;
 
+            ListViewColumnTitle.Width = Properties.Settings.Default.ListViewWidthTitle;
+            ListViewColumnTags.Width = Properties.Settings.Default.ListViewWidthTags;
+            ListViewColumnAdded.Width = Properties.Settings.Default.ListViewWidthAdded;
+            ListViewColumnUpdated.Width = Properties.Settings.Default.ListViewWidthUpdated;
+
             if (Properties.Settings.Default.ShowReadItems)
             {
                 CurrentView.Content = "Read view";
-                ImageDelete.Visibility = Visibility.Visible;
-                button_delete.Visibility = Visibility.Visible;
             }
             else
             {
                 CurrentView.Content = "Unread view";
-                ImageDelete.Visibility = Visibility.Hidden;
-                button_delete.Visibility = Visibility.Hidden;
             }
 
             if (Properties.Settings.Default.CurrentView == "full")
@@ -62,6 +66,7 @@ namespace Winslew
         }
 
         ~MainWindow() {
+
             Properties.Settings.Default.Save();
             AppController.Current.revokeSnarl();
         }
@@ -377,6 +382,67 @@ namespace Winslew
             refreshItems();
         }
 
+        private void GridViewColumnHeader_Click(object sender, RoutedEventArgs e)
+        {
+            GridViewColumnHeader column = sender as GridViewColumnHeader;
+            String field = column.Tag as String;
 
+            if (_CurSortCol != null)
+            {
+                AdornerLayer.GetAdornerLayer(_CurSortCol).Remove(_CurAdorner);
+                listView_Items.Items.SortDescriptions.Clear();
+            }
+
+            ListSortDirection newDir = ListSortDirection.Ascending;
+            if (_CurSortCol == column && _CurAdorner.Direction == newDir)
+                newDir = ListSortDirection.Descending;
+
+            _CurSortCol = column;
+            _CurAdorner = new SortAdorner(_CurSortCol, newDir);
+            AdornerLayer.GetAdornerLayer(_CurSortCol).Add(_CurAdorner);
+            listView_Items.Items.SortDescriptions.Add(new SortDescription(field, newDir));
+        }
+
+        public class SortAdorner : Adorner
+        {
+            private readonly static Geometry _AscGeometry =
+                Geometry.Parse("M 0,0 L 10,0 L 5,5 Z");
+
+            private readonly static Geometry _DescGeometry =
+                Geometry.Parse("M 0,5 L 10,5 L 5,0 Z");
+
+            public ListSortDirection Direction { get; private set; }
+
+            public SortAdorner(UIElement element, ListSortDirection dir)
+                : base(element)
+            { Direction = dir; }
+
+            protected override void OnRender(DrawingContext drawingContext)
+            {
+                base.OnRender(drawingContext);
+
+                if (AdornedElement.RenderSize.Width < 20)
+                    return;
+
+                drawingContext.PushTransform(
+                    new TranslateTransform(
+                      AdornedElement.RenderSize.Width - 15,
+                      (AdornedElement.RenderSize.Height - 5) / 2));
+
+                drawingContext.DrawGeometry(Brushes.Black, null,
+                    Direction == ListSortDirection.Ascending ?
+                      _AscGeometry : _DescGeometry);
+
+                drawingContext.Pop();
+            }
+        }
+
+        private void GridViewColumnHeader_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            Properties.Settings.Default.ListViewWidthTitle = ListViewColumnTitle.Width;
+            Properties.Settings.Default.ListViewWidthTags = ListViewColumnTags.Width;
+            Properties.Settings.Default.ListViewWidthAdded = ListViewColumnAdded.Width;
+            Properties.Settings.Default.ListViewWidthUpdated = ListViewColumnUpdated.Width;
+        }
     }
 }

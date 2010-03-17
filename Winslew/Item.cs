@@ -21,11 +21,11 @@ namespace Winslew
         {
             get
             {
-                string text = "Title       : " + this.title + "\r\n";
-                text += "Url          : " + this.url + "\r\n";
-                text += "Tags         : " + this.tags + "\r\n";
-                text += "Added        : " + this.timeUpdatedHumanReadable + "\r\n";
-                text += "Updated      : " + this.timeAddedHumanReadable + "\r\n";
+                string text = "Title: " + this.title + "\r\n";
+                text += "Url: " + this.url + "\r\n";
+                text += "Tags: " + this.tags + "\r\n";
+                text += "Added: " + this.timeUpdatedHumanReadable + "\r\n";
+                text += "Updated: " + this.timeAddedHumanReadable + "\r\n";
                 if (this.contentCache != null)
                 {
                     text += "Cache updated: " + contentCache.UpdatedHumanReadable;
