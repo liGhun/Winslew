@@ -132,7 +132,7 @@ namespace Winslew
                 button_getLicense.IsEnabled = false;
                 button_getLicense.Content = "Thank you";
                 Properties.Settings.Default.Save();
-                if (unlicensed)
+                if (unlicensed && Properties.Settings.Default.LoginHasBeenTestedSuccessfully)
                 {
                     AppController.Current.SetData(true);
                     AppController.Current.refreshMainWindow();
