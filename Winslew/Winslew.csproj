@@ -185,11 +185,21 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="Setup\checkDotNet3.nsh" />
-    <None Include="Setup\Documentation.URL" />
-    <None Include="Setup\logoSetupBig.xcf" />
-    <None Include="Setup\logoSetupSmall.xcf" />
-    <None Include="Setup\setup.nsi" />
+    <Content Include="Setup\checkDotNet3.nsh">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Setup\Documentation.URL">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Setup\logoSetupBig.xcf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Setup\logoSetupSmall.xcf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Setup\setup.nsi">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Snarl\SnarlConnector.csproj.user" />
     <None Include="Winslew.pfx" />
   </ItemGroup>
@@ -204,18 +214,32 @@
     <Resource Include="Images\trashcan.png" />
     <Resource Include="Images\unread.png" />
     <Resource Include="Images\Winslew.ico" />
-    <Resource Include="Images\Winslew.png" />
+    <Content Include="Images\Winslew.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\update.png" />
     <Resource Include="Images\filter.png" />
     <Resource Include="Winslew.ico" />
-    <Resource Include="Setup\Documentation.ico" />
-    <Resource Include="Setup\LICENSE.txt" />
-    <Resource Include="Setup\logoSetupBig.bmp" />
-    <Resource Include="Setup\logoSetupSmall.bmp" />
-    <Resource Include="Setup\uninstall.ico" />
-    <Resource Include="Images\WinslewSetup.ico" />
+    <Content Include="Setup\Documentation.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Setup\LICENSE.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Setup\logoSetupBig.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Setup\logoSetupSmall.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Setup\uninstall.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\WinslewSetup.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Snarl\SnarlConnector.csproj" />
   </ItemGroup>
   <ItemGroup>

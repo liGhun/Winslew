@@ -2,6 +2,8 @@
 Added filtering for title
 Added filtering for tags
 Added auto update notifier
+Tooltip on list view extended
+Documentation link corrected
 
 1.0 (1.0.4.0)
 License checking added (limitation to 10 items at once if unlicensed)

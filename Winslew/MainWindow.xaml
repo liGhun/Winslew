@@ -105,7 +105,7 @@
             </ListView.Resources>
             <ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
-                    <Setter Property="ToolTip" Value="{Binding Path=url}" />
+                    <Setter Property="ToolTip" Value="{Binding Path=DescripiveText}" />
                 </Style>
             </ListView.ItemContainerStyle>
             <ListView.View>

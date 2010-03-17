@@ -17,5 +17,26 @@ namespace Winslew
         public string tags { get; set; }
         public bool read { get; set; }
         public Api.CachedItemContent contentCache { get; set; }
+        public string DescripiveText
+        {
+            get
+            {
+                string text = "Title       : " + this.title + "\r\n";
+                text += "Url          : " + this.url + "\r\n";
+                text += "Tags         : " + this.tags + "\r\n";
+                text += "Added        : " + this.timeUpdatedHumanReadable + "\r\n";
+                text += "Updated      : " + this.timeAddedHumanReadable + "\r\n";
+                if (this.contentCache != null)
+                {
+                    text += "Cache updated: " + contentCache.UpdatedHumanReadable;
+                }
+                else
+                {
+                    text += "Cache updated: ---";
+                }
+
+                return text;
+            }
+        }
     }
 }
