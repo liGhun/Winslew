@@ -188,6 +188,7 @@
     <Resource Include="Images\browser.png" />
     <Resource Include="Images\copyClipboard.png" />
     <Resource Include="Images\pasteClipboard.png" />
+    <Resource Include="Images\snarl.png" />
     <Content Include="Setup\checkDotNet3.nsh">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

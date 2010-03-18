@@ -424,5 +424,47 @@ namespace Winslew
                 Clipboard.SetText(currentItem.url);
             }
         }
+
+        #region ContextMenu ListView
+
+        private void ContextCopyUrl_Click(object sender, RoutedEventArgs e)
+        {
+            button_copyUrlToClipboard_Click(null, null);
+        }
+
+        private void ContextOpenInBrower_Click(object sender, RoutedEventArgs e)
+        {
+            button_openInBrowser_Click(null, null);
+        }
+
+        private void ContextToggleReadState_Click(object sender, RoutedEventArgs e)
+        {
+            button_markRead_Click(null, null);
+        }
+
+        private void ContextUpdateCache_Click(object sender, RoutedEventArgs e)
+        {
+            button_updateCache_Click(null, null);
+        }
+
+        private void ContextDelete_Click(object sender, RoutedEventArgs e)
+        {
+            button_delete_Click(null, null);
+        }
+
+        private void ContextEditTags_Click(object sender, RoutedEventArgs e)
+        {
+            button_editTags_Click(null, null);
+        }
+
+        #endregion
+
+        private void button_openSnarl_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://www.fullphat.net");
+        }
+
+
+
     }
 }

@@ -65,6 +65,8 @@ namespace NativeWindowApplication
                     SnarlConnector.RegisterAlert("Winslew", "Cache has been updated");
                     SnarlConnector.RegisterAlert("Winslew", "User API limit critical");
                     SnarlConnector.RegisterAlert("Winslew", "Application API limit critical");
+
+                    AppController.Current.hideSnarlHint();
                 }
             }
             else if (m.Msg == (int)Snarl.WindowsMessage.WM_USER + 45)

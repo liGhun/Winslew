@@ -93,6 +93,8 @@ namespace Winslew
                 SnarlConnector.RegisterAlert("Winslew", "Cache has been updated");
                 SnarlConnector.RegisterAlert("Winslew", "User API limit critical");
                 SnarlConnector.RegisterAlert("Winslew", "Application API limit critical");
+
+                hideSnarlHint();
             }
 
             UpdateAvailable myUpdateCheck = new UpdateAvailable();
@@ -355,6 +357,12 @@ namespace Winslew
                     ApiResetApp = now.AddSeconds(appReset);
                 }
             }
+        }
+
+        public void hideSnarlHint()
+        {
+           mainWindow.button_openSnarlIcon.Visibility = System.Windows.Visibility.Collapsed;
+           mainWindow.button_openSnarlText.Visibility = System.Windows.Visibility.Collapsed;
         }
     }
 }

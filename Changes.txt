@@ -1,12 +1,15 @@
 1.2 (1.2.0.0)
 Cache view selector (online, more, less) is now a dropdown box to get more space on title bar and have room for more options on future versions
-Open in external browser added
-Copy current item url to clipboard added
+Open in external browser added (UserVoice 568063)
+Copy current item url to clipboard added (UserVoice 568063)
+Added context menu to items to toggle read state, open in browser and so on (UserVoice 568143)12:43 PM 3/18/2010
 When opening the "Add item" window and the clipboard has an URL stored this url is pasted into the url-textbox automatically
-Statusbar shown information about current API usage of user and Winslew
-If API limits gets critical a Snarl notification is shown
+Statusbar shown information about current API usage of user and Winslew (UserVoice 515029)
+If API limits gets critical a Snarl notification is shown (UserVoice 515029)
 Snarl notification on cache updated added
-Delete now really stays on screen all the time...
+Snarl not running hint added to statusbar (UserVoice 568681)
+Update cache window is now semitransparent
+Delete button now really stays on screen all the time...
 
 1.1 (1.1.0.0)
 Added filtering for title

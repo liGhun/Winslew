@@ -101,13 +101,47 @@
                     <Setter Property="Background" Value="LightGray" />
                     <Setter Property="Foreground" Value="Black" />
                 </Style>
-                
             </ListView.Resources>
             <ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
                     <Setter Property="ToolTip" Value="{Binding Path=DescripiveText}" />
                 </Style>
             </ListView.ItemContainerStyle>
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Name="ContextToggleReadState" Click="ContextToggleReadState_Click"  Header="Toggle read state">
+                        <MenuItem.Icon>
+                            <Image Source="/Winslew;component/Images/markedRead.png" Width="14" Height="14" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Name="ContextEditTags" Click="ContextEditTags_Click"  Header="Edit tags">
+                        <MenuItem.Icon>
+                            <Image Source="/Winslew;component/Images/edit.png" Width="14" Height="14" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Name="ContextOpenInBrower" Click="ContextOpenInBrower_Click" Header="Open item in external browser">
+                        <MenuItem.Icon>
+                            <Image Source="/Winslew;component/Images/browser.png" Width="14" Height="14" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Name="ContextCopyUrl" Click="ContextCopyUrl_Click" Header="Copy url to clipboard">
+                        <MenuItem.Icon>
+                            <Image Source="/Winslew;component/Images/copyClipboard.png" Width="14" Height="14" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <MenuItem Name="ContextUpdateCache" Click="ContextUpdateCache_Click"  Header="Update cache for this item">
+                        <MenuItem.Icon>
+                            <Image Source="/Winslew;component/Images/update.png" Width="14" Height="14" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Name="ContextDelete" Click="ContextDelete_Click"  Header="Delete this item">
+                        <MenuItem.Icon>
+                            <Image Source="/Winslew;component/Images/trashcan.png" Width="14" Height="14" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </ListView.ContextMenu>
             <ListView.View>
                 <GridView AllowsColumnReorder="true">
                     <GridViewColumn 
@@ -204,7 +238,7 @@
             <Image Source="/Winslew;component/Images/refresh.png" ToolTip="Update cache for this webpage"></Image>
         </Button>
 
-        <StatusBar Height="23" Margin="1,0,0,-1" Name="statusBar_mainWindow" VerticalAlignment="Bottom" Padding="0,0,0,0">
+        <StatusBar Height="23" Margin="1,0,0,-1" Name="statusBar_mainWindow" VerticalAlignment="Bottom" Padding="0,0,0,0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Right" FlowDirection="LeftToRight">
             <StatusBar.Background>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.4">
                     <LinearGradientBrush.GradientStops>
@@ -214,6 +248,16 @@
                 </LinearGradientBrush>
             </StatusBar.Background>
             <Label Content="Api usage: User: - of - left, next reset in - seconds - Winslew: - of - left, next reset in - seconds" Padding="0,0,0,0" FontSize="10" Margin="0,0,0,0" Name="label_apiLimits" />
+            <Button  Margin="20,0,0,0" Name="button_openSnarlIcon" Click="button_openSnarl_Click" 
+                     ToolTip="Snarl notification system not running.&#xa;Snarl is used to display popup notifications with Winslew. Winslew runs without Snarl but no popups will be shown.&#xa;Click to download Snarl from its website" 
+                     Padding="0" BorderBrush="{x:Null}" Background="{x:Null}" HorizontalAlignment="Right">
+                <Image Name="SnarlIcon" Source="/Winslew;component/Images/snarl.png"/>
+            </Button>
+            <Button Name="button_openSnarlText"
+                     ToolTip="Snarl notification system not running.&#xa;Snarl is used to display popup notifications with Winslew. Winslew runs without Snarl but no popups will be shown.&#xa;Click to download Snarl from its website"
+                    Click="button_openSnarl_Click" Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" HorizontalAlignment="Right">
+            <Label  Content="Snarl not running" Padding="0,0,0,0" FontSize="10" Margin="0,0,0,0" Name="label_snarlNotRunning" HorizontalAlignment="Right" FontWeight="Normal" HorizontalContentAlignment="Right" />
+            </Button>
         </StatusBar>
     </Grid>
 </Window>
