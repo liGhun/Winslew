@@ -31,6 +31,9 @@ namespace Winslew
             set;
         }
 
+        private DateTime ApiResetUser = DateTime.Now;
+        private DateTime ApiResetApp = DateTime.Now;
+
         private delegate void UpdateProgressBarDelegate(
         System.Windows.DependencyProperty dp, Object value);
         
@@ -87,6 +90,9 @@ namespace Winslew
                 SnarlConnector.RegisterAlert("Winslew", "Item marked as unread");
                 SnarlConnector.RegisterAlert("Winslew", "Item tags changed");
                 SnarlConnector.RegisterAlert("Winslew", "Item deleted");
+                SnarlConnector.RegisterAlert("Winslew", "Cache has been updated");
+                SnarlConnector.RegisterAlert("Winslew", "User API limit critical");
+                SnarlConnector.RegisterAlert("Winslew", "Application API limit critical");
             }
 
             UpdateAvailable myUpdateCheck = new UpdateAvailable();
@@ -254,6 +260,7 @@ namespace Winslew
                         tempList.Add(newItem);
                         AppController.Current.updateCache(tempList, true);
                         AppController.Current.sendSnarlNotification("New item", "New item added", newItem.title);
+                        AppController.Current.sendSnarlNotification("Cache has been updated", "Cache has been updated", newItem.title);
                     }
                     else
                     {
@@ -318,6 +325,36 @@ namespace Winslew
                 }
             }
             return returnValue;
+        }
+
+        public void updateApiStatusBar(int userAvailable, int userLimit, int userReset, int appAvailable, int appLimit, int appReset) {
+            if (mainWindow != null)
+            {
+                if (mainWindow.label_apiLimits != null && appLimit != 0 && userLimit != 0)
+                {
+                    DateTime now = DateTime.Now;
+                    mainWindow.label_apiLimits.Content = string.Format("Api usage: User: {0} of {1} left, next reset at {2} - Winslew: {3} of {4} left, next reset at {5}",
+                        userAvailable.ToString(),
+                        userLimit.ToString(),
+                        now.AddSeconds(userReset).ToLongTimeString(),
+                        appAvailable.ToString(),
+                        appLimit.ToString(),
+                        now.AddSeconds(appReset).ToLongTimeString());
+
+                    int userApiUsage = (userAvailable * 100 / userLimit);
+                    if(now.AddSeconds(userReset) <= ApiResetUser && userApiUsage < Properties.Settings.Default.ApiUserWarnPercentage) {
+                        SnarlConnector.ShowMessageEx("User API limit critical", "Your API limits are about to be reached", "Your number of requests to the RiL API is about to exceed soon - you have " + userAvailable.ToString() + " requests left of " + userLimit.ToString() + ".\n\nNext reset will be at " + now.AddSeconds(userReset).ToLongTimeString(), 10, pathToIcon, SnarlMessageWindowHandle, WindowsMessage.WM_USER + 32, "");
+                    }
+                    ApiResetUser = now.AddSeconds(userReset);
+
+                    int appApiUsage = (appAvailable * 100 / appLimit);
+                    if (now.AddSeconds(appReset) <= ApiResetApp && appApiUsage < Properties.Settings.Default.ApiAppWarnPercentage)
+                    {
+                        SnarlConnector.ShowMessageEx("Application API limit critical", "Winslew API limits are about to be reached", "The number of requests from Winslew to the RiL API is about to exceed soon - you have " + appAvailable.ToString() + " requests left of " + appLimit.ToString() + ".\n\nNext reset will be at " + now.AddSeconds(appReset).ToLongTimeString() + "\n\nIf this happens on a regular base please contact the developer of Winslew", 10, pathToIcon, SnarlMessageWindowHandle, WindowsMessage.WM_USER + 33, "");
+                    }
+                    ApiResetApp = now.AddSeconds(appReset);
+                }
+            }
         }
     }
 }

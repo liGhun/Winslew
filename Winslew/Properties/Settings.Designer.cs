@@ -226,5 +226,29 @@ namespace Winslew.Properties {
                 this["ListViewWidthUpdated"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("20")]
+        public int ApiUserWarnPercentage {
+            get {
+                return ((int)(this["ApiUserWarnPercentage"]));
+            }
+            set {
+                this["ApiUserWarnPercentage"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int ApiAppWarnPercentage {
+            get {
+                return ((int)(this["ApiAppWarnPercentage"]));
+            }
+            set {
+                this["ApiAppWarnPercentage"] = value;
+            }
+        }
     }
 }

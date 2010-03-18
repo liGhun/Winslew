@@ -50,19 +50,14 @@ namespace Winslew
                 CurrentView.Content = "Unread view";
             }
 
-            if (Properties.Settings.Default.CurrentView == "full")
+            if (Properties.Settings.Default.CurrentView != "")
             {
-                button_full_Click(null, null);
-            }
-            else if (Properties.Settings.Default.CurrentView == "more")
-            {
-                button_more_Click(null, null);
+                comboBox_browserView.Text = Properties.Settings.Default.CurrentView;
             }
             else
             {
-                button_less_Click(null, null);
+                comboBox_browserView.Text = "More";
             }
-
         }
 
         ~MainWindow() {
@@ -137,15 +132,13 @@ namespace Winslew
                 {
                     if (currentItem.contentCache.Updated != null)
                     {
-                        button_less.ToolTip = currentItem.contentCache.UpdatedHumanReadable;
-                        button_more.ToolTip = currentItem.contentCache.UpdatedHumanReadable;
+                        comboBox_browserView.ToolTip = "Select to be displayed cache version\r\nCache updated: " + currentItem.contentCache.UpdatedHumanReadable;
                     }
                 }
             }
             else
             {
-                button_less.ToolTip = "";
-                button_more.ToolTip = "";
+                comboBox_browserView.ToolTip = "Select to be displayed cache version";
             }
         }
 
@@ -229,14 +222,10 @@ namespace Winslew
             if (Properties.Settings.Default.ShowReadItems)
             {
                 CurrentView.Content = "Read view";
-                ImageDelete.Visibility = Visibility.Visible;
-                button_delete.Visibility = Visibility.Visible;
             }
             else
             {
                 CurrentView.Content = "Unread view";
-                ImageDelete.Visibility = Visibility.Hidden;
-                button_delete.Visibility = Visibility.Hidden;
             }
             refreshItems();
         }
@@ -273,64 +262,19 @@ namespace Winslew
 
         #endregion
 
-        private void button_full_Click(object sender, RoutedEventArgs e)
-        {
-            Properties.Settings.Default.CurrentView = "full";
-            button_full.IsEnabled = false;
-            button_full.Background = Brushes.Black;
-            button_full.Foreground = Brushes.White;
-            button_more.IsEnabled = true;
-            button_more.Background = Brushes.White;
-            button_more.Foreground = Brushes.Black;
-            button_less.IsEnabled = true;
-            button_less.Background = Brushes.White;
-            button_less.Foreground = Brushes.Black;
-            updateViewOfFrame();
-        }
-
-        private void button_more_Click(object sender, RoutedEventArgs e)
-        {
-            Properties.Settings.Default.CurrentView = "more";
-            button_full.IsEnabled = true;
-            button_full.Background = Brushes.White;
-            button_full.Foreground = Brushes.Black;
-            button_more.IsEnabled = false;
-            button_more.Background = Brushes.Black;
-            button_more.Foreground = Brushes.White;
-            button_less.IsEnabled = true;
-            button_less.Background = Brushes.White;
-            button_less.Foreground = Brushes.Black;
-            updateViewOfFrame();
-        }
-
-        private void button_less_Click(object sender, RoutedEventArgs e)
-        {
-            Properties.Settings.Default.CurrentView = "less";
-            button_full.IsEnabled = true;
-            button_full.Background = Brushes.White;
-            button_full.Foreground = Brushes.Black;
-            button_more.IsEnabled = true;
-            button_more.Background = Brushes.White;
-            button_more.Foreground = Brushes.Black;
-            button_less.IsEnabled = false;
-            button_less.Background = Brushes.Black;
-            button_less.Foreground = Brushes.White;
-            updateViewOfFrame();
-        }
-
         public void updateViewOfFrame()
         {
-            if (listView_Items.SelectedItem != null)
+            if (listView_Items.SelectedItem != null && frame_content != null)
             {
                 var currentItem = listView_Items.SelectedItem as Item;
-                if (currentItem.contentCache != null || Properties.Settings.Default.CurrentView == "full")
+                if (currentItem.contentCache != null || Properties.Settings.Default.CurrentView.ToLower().EndsWith("online"))
                 {
 
-                    if (Properties.Settings.Default.CurrentView == "full" && apiAccess.checkIfOnline())
+                    if (Properties.Settings.Default.CurrentView.ToLower().EndsWith("online") && apiAccess.checkIfOnline())
                     {
                         frame_content.Source = new Uri(currentItem.url);
                     }
-                    else if (Properties.Settings.Default.CurrentView == "more" && System.IO.File.Exists(currentItem.contentCache.MoreVersion))
+                    else if (Properties.Settings.Default.CurrentView.ToLower().EndsWith("more") && System.IO.File.Exists(currentItem.contentCache.MoreVersion))
                     {
                         frame_content.Source = new Uri(currentItem.contentCache.MoreVersion);
                     }
@@ -366,6 +310,14 @@ namespace Winslew
                 var currentItem = listView_Items.SelectedItem as Item;
                 temoList.Add(currentItem);
                 AppController.Current.updateCache(temoList, true);
+                AppController.Current.sendSnarlNotification("Cache has been updated", "Cache has been updated", currentItem.title);
+                if (currentItem.contentCache != null)
+                {
+                    if (currentItem.contentCache.Updated != null)
+                    {
+                        comboBox_browserView.ToolTip = "Select to be displayed cache version\r\nCache updated: " + currentItem.contentCache.UpdatedHumanReadable;
+                    }
+                }
             }
             frame_content.Refresh();
         }
@@ -443,6 +395,34 @@ namespace Winslew
             Properties.Settings.Default.ListViewWidthTags = ListViewColumnTags.Width;
             Properties.Settings.Default.ListViewWidthAdded = ListViewColumnAdded.Width;
             Properties.Settings.Default.ListViewWidthUpdated = ListViewColumnUpdated.Width;
+        }
+
+        private void comboBox_browserView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBoxItem cbi = comboBox_browserView.SelectedItem as ComboBoxItem;
+            if (cbi != null)
+            {
+                    Properties.Settings.Default.CurrentView = cbi.Content.ToString();
+                    updateViewOfFrame();
+            }
+        }
+
+        private void button_openInBrowser_Click(object sender, RoutedEventArgs e)
+        {
+            if (listView_Items.SelectedItem != null)
+            {
+                var currentItem = listView_Items.SelectedItem as Item;
+                System.Diagnostics.Process.Start(currentItem.url);
+            }
+        }
+
+        private void button_copyUrlToClipboard_Click(object sender, RoutedEventArgs e)
+        {
+            if (listView_Items.SelectedItem != null)
+            {
+                var currentItem = listView_Items.SelectedItem as Item;
+                Clipboard.SetText(currentItem.url);
+            }
         }
     }
 }

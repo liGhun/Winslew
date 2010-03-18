@@ -62,6 +62,9 @@ namespace NativeWindowApplication
                     SnarlConnector.RegisterAlert("Winslew", "Item marked as unread");
                     SnarlConnector.RegisterAlert("Winslew", "Item tags changed");
                     SnarlConnector.RegisterAlert("Winslew", "Item deleted");
+                    SnarlConnector.RegisterAlert("Winslew", "Cache has been updated");
+                    SnarlConnector.RegisterAlert("Winslew", "User API limit critical");
+                    SnarlConnector.RegisterAlert("Winslew", "Application API limit critical");
                 }
             }
             else if (m.Msg == (int)Snarl.WindowsMessage.WM_USER + 45)

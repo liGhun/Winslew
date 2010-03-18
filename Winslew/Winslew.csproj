@@ -185,6 +185,9 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <Resource Include="Images\browser.png" />
+    <Resource Include="Images\copyClipboard.png" />
+    <Resource Include="Images\pasteClipboard.png" />
     <Content Include="Setup\checkDotNet3.nsh">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

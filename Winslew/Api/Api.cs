@@ -400,5 +400,9 @@ namespace Winslew.Api
         {
             return Crypto.ToInsecureString(Crypto.DecryptString(Properties.Settings.Default.Password));
         }
+
+        private void updateGuiApiLimits(Response respone) {
+            AppController.Current.updateApiStatusBar(respone.LimitUserRemanining, respone.LimitUserLimit, respone.LimitUserReset, respone.LimitKeyRemaining, respone.LimitKeyLimit, respone.LimitKeyReset);
+        }
     }
 }

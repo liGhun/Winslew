@@ -21,6 +21,10 @@ namespace Winslew
         public AddNew()
         {
             InitializeComponent();
+            if (Clipboard.GetText().ToLower().StartsWith("http"))
+            {
+                textBox_url.Text = Clipboard.GetText();
+            }
             textBox_url.Focus();
         }
 

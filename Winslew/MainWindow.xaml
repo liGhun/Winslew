@@ -185,12 +185,35 @@
             </Border.Background>
             <Label Height="30" Name="label_TitleOfItem" Foreground="Black" FontSize="16" FontWeight="Bold" Width="576" HorizontalAlignment="Left"></Label>
         </Border>
-        <StatusBar Height="23" Margin="1,0,0,-1" Name="statusBar1" VerticalAlignment="Bottom" />
-        <Button Height="23" HorizontalAlignment="Right" Margin="0,184,30,0" Name="button_less" VerticalAlignment="Top" Width="35" Click="button_less_Click" ToolTip="View cached content with less cached data">Less</Button>
-        <Button Height="23" HorizontalAlignment="Right" Margin="0,184,71,0" Name="button_more" VerticalAlignment="Top" Width="44" Click="button_more_Click" ToolTip="View cached version of article with more fetched data">More</Button>
-        <Button Height="23" HorizontalAlignment="Right" Margin="0,184,121,0" Name="button_full" VerticalAlignment="Top" Width="47" Click="button_full_Click" ToolTip="View online version of this item">Online</Button>
+        
+
+        <Button Height="23" HorizontalAlignment="Right" Margin="0,184,117,0" Name="button_openInBrowser" VerticalAlignment="Top" Width="23" Click="button_openInBrowser_Click">
+            <Image Source="/Winslew;component/Images/browser.png" ToolTip="Open page in external browser"></Image>
+        </Button>
+
+        <Button Height="23" HorizontalAlignment="Right" Margin="0,184,145,0" Name="button_copyUrlToClipboard" VerticalAlignment="Top" Width="23" Click="button_copyUrlToClipboard_Click">
+            <Image Source="/Winslew;component/Images/copyClipboard.png" ToolTip="Copy current selected item url to clipboard"></Image>
+        </Button>
+
+        <ComboBox Height="23" HorizontalAlignment="Right" Margin="0,184,30,0" SelectionChanged="comboBox_browserView_SelectionChanged" Name="comboBox_browserView" VerticalAlignment="Top" Width="80" ToolTip="Cache to be displayed">
+            <ComboBoxItem Content="Online" Tag="online" />
+            <ComboBoxItem Content="More" Tag="more" />
+            <ComboBoxItem Content="Less" Tag="less" />
+        </ComboBox>
         <Button Height="23" HorizontalAlignment="Right" Margin="0,184,1,0" Name="button_updateCache" VerticalAlignment="Top" Width="23" Click="button_updateCache_Click">
             <Image Source="/Winslew;component/Images/refresh.png" ToolTip="Update cache for this webpage"></Image>
         </Button>
+
+        <StatusBar Height="23" Margin="1,0,0,-1" Name="statusBar_mainWindow" VerticalAlignment="Bottom" Padding="0,0,0,0">
+            <StatusBar.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.4">
+                    <LinearGradientBrush.GradientStops>
+                        <GradientStop Offset="0" Color="White" />
+                        <GradientStop Offset="1" Color="LightGray" />
+                    </LinearGradientBrush.GradientStops>
+                </LinearGradientBrush>
+            </StatusBar.Background>
+            <Label Content="Api usage: User: - of - left, next reset in - seconds - Winslew: - of - left, next reset in - seconds" Padding="0,0,0,0" FontSize="10" Margin="0,0,0,0" Name="label_apiLimits" />
+        </StatusBar>
     </Grid>
 </Window>

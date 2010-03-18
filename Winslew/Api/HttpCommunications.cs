@@ -44,7 +44,9 @@ namespace Winslew
                     newStream.Write(encodedData, 0, encodedData.Length);
                 }
 
-                return GetResponse(request);
+                Api.Response returnValue = GetResponse(request);
+                returnValue.UpdateStatistics();
+                return returnValue;
             }
             catch (System.Exception e)
             {
