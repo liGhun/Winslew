@@ -126,13 +126,13 @@ namespace Winslew.Api
             }
 
             Response cachedMoreContent = AppController.Current.getCacheText(itemToBeCached.url, "more");
-            if (cachedMoreContent.Content != "" && cachedLessContent.Content != null)
+            if (cachedMoreContent.Content != "" && cachedMoreContent.Content != null)
             {
                 returnValue.MoreVersion = cacheDir + "\\" + returnValue.Id.ToString() + "-more.html";
 
-                fullText = "<html><head><title>" + cachedLessContent.TextTitle + "</title>";
+                fullText = "<html><head><title>" + cachedMoreContent.TextTitle + "</title>";
                 fullText += "<meta http-equiv=\"Content-Type\" content=\"" + cachedMoreContent.TextContentType + "\"></head><body>\n";
-                fullText += cachedLessContent.Content;
+                fullText += cachedMoreContent.Content;
                 fullText += "\n</body></html>";
 
                 StreamWriter fhMore = File.CreateText(returnValue.MoreVersion);

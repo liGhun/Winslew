@@ -333,7 +333,7 @@ namespace Winslew.Api
                             }
                             if (content.ContainsKey("title"))
                             {
-                                itemTitle = content["title"].ToString();
+                                itemTitle = content["title"].ToString().Trim();
                             }
                             if (content.ContainsKey("item_id"))
                             {

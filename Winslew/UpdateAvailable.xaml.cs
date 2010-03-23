@@ -68,6 +68,7 @@ namespace Winslew
         private void button_getUpdate_Click(object sender, RoutedEventArgs e)
         {
             System.Diagnostics.Process.Start("http://www.li-ghun.de/Winslew/Download/");
+            App.Current.Shutdown();
         }
 
         private void button_ignore_Click(object sender, RoutedEventArgs e)

@@ -361,8 +361,11 @@ namespace Winslew
 
         public void hideSnarlHint()
         {
-           mainWindow.button_openSnarlIcon.Visibility = System.Windows.Visibility.Collapsed;
-           mainWindow.button_openSnarlText.Visibility = System.Windows.Visibility.Collapsed;
+            if (mainWindow != null)
+            {
+                mainWindow.button_openSnarlIcon.Visibility = System.Windows.Visibility.Collapsed;
+                mainWindow.button_openSnarlText.Visibility = System.Windows.Visibility.Collapsed;
+            }
         }
     }
 }

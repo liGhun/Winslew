@@ -1,8 +1,15 @@
+1.2.1
+Fixed a bug in more/less content handling (leading to they where the same sometimes...)
+ => Please refresh cache of "old" articles if you want to have both correct versions
+Fixed a bug in startup code which crashed Winslew if you didn't enter RiL credentials and had Snarl running at the same time
+Update info window much bigger now to show longer sentences
+If you click the get update now button Winslew is closed to avoid problems on Winslew running during setup
+
 1.2 (1.2.0.0)
 Cache view selector (online, more, less) is now a dropdown box to get more space on title bar and have room for more options on future versions
 Open in external browser added (UserVoice 568063)
 Copy current item url to clipboard added (UserVoice 568063)
-Added context menu to items to toggle read state, open in browser and so on (UserVoice 568143)12:43 PM 3/18/2010
+Added context menu to items to toggle read state, open in browser and so on (UserVoice 568143)
 When opening the "Add item" window and the clipboard has an URL stored this url is pasted into the url-textbox automatically
 Statusbar shown information about current API usage of user and Winslew (UserVoice 515029)
 If API limits gets critical a Snarl notification is shown (UserVoice 515029)

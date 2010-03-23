@@ -27,19 +27,31 @@ namespace Winslew
         public Preferences()
         {
             InitializeComponent();
-
-            passwordBox_RILpassword.Password = Crypto.ToInsecureString(Crypto.DecryptString(Properties.Settings.Default.Password));
-            textBox_RILusername.Text = Properties.Settings.Default.Username;
-            isInit = false;
-            textBox_licenseCode.Text = Properties.Settings.Default.LicenseCode;
-
-            if (Properties.Settings.Default.LoginHasBeenTestedSuccessfully)
+            try
             {
-                toggleSaveButton(true);
-                button_createAccount.IsEnabled = false;
-                button_RILTest.IsEnabled = false;
-                button_RILTest.Content = "Login valid";
-                loginHasBeenTestedSuccessfully = true;
+                passwordBox_RILpassword.Password = Crypto.ToInsecureString(Crypto.DecryptString(Properties.Settings.Default.Password));
+                textBox_RILusername.Text = Properties.Settings.Default.Username;
+                isInit = false;
+                textBox_licenseCode.Text = Properties.Settings.Default.LicenseCode;
+            }
+            catch
+            {
+            }
+
+            try
+            {
+                if (Properties.Settings.Default.LoginHasBeenTestedSuccessfully)
+                {
+                    toggleSaveButton(true);
+                    button_createAccount.IsEnabled = false;
+                    button_RILTest.IsEnabled = false;
+                    button_RILTest.Content = "Login valid";
+                    loginHasBeenTestedSuccessfully = true;
+                }
+            }
+            catch
+            {
+
             }
             
         
