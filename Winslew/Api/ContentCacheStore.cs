@@ -66,6 +66,17 @@ namespace Winslew.Api
                         storedCacheItem.MoreVersion = pathToNAPage;
                     }
 
+                    if (File.Exists(appDataPath + "\\Cache\\" + id.ToString() + "\\full\\index.html"))
+                    {
+                        storedCacheItem.FullVersion = appDataPath + "\\Cache\\" + id.ToString() + "\\full\\index.html";
+                        //storedCacheItem.Updated = File.GetLastWriteTime(appDataPath + "\\Cache\\" + id.ToString() + "\\full\\index.html");
+                    }
+                    else
+                    {
+                        storedCacheItem.FullVersion = pathToNAPage;
+                    }
+
+
                     if (File.Exists(appDataPath + "\\Cache\\" + id.ToString() + "\\favicon.ico"))
                     {
                         storedCacheItem.FavIconPath = appDataPath + "\\Cache\\" + id.ToString() + "\\favicon.ico";
@@ -103,6 +114,16 @@ namespace Winslew.Api
             if (!Directory.Exists(cacheDir))
             {
                 Directory.CreateDirectory(cacheDir);
+            }
+
+
+            FetchWebpage myFetcher = new FetchWebpage();
+            if(myFetcher.FullFetch(itemToBeCached.url, cacheDir + "\\full\\")) {
+                returnValue.FullVersion = cacheDir + "\\full\\index.html";
+            }
+            else
+            {
+                returnValue.FullVersion = pathToNAPage;
             }
 
             string fullText = "";

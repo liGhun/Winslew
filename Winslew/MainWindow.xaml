@@ -129,7 +129,11 @@
                             <Image Source="/Winslew;component/Images/copyClipboard.png" Width="14" Height="14" />
                         </MenuItem.Icon>
                     </MenuItem>
-
+                    <MenuItem Name="ContextPrint" Click="ContextPrint_Click"  Header="Print currently selected webpage">
+                        <MenuItem.Icon>
+                            <Image Source="/Winslew;component/Images/print.png" Width="14" Height="14" />
+                        </MenuItem.Icon>
+                    </MenuItem>
                     <MenuItem Name="ContextUpdateCache" Click="ContextUpdateCache_Click"  Header="Update cache for this item">
                         <MenuItem.Icon>
                             <Image Source="/Winslew;component/Images/update.png" Width="14" Height="14" />
@@ -194,18 +198,11 @@
 
 
 
-        <Frame Name="frame_content" 
+        <WebBrowser Name="frame_content" 
             Margin="0,213,0,20"
                >
-            <Frame.Background>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.04">
-                        <LinearGradientBrush.GradientStops>
-                            <GradientStop Offset="0" Color="White" />
-                            <GradientStop Offset="1" Color="LightGray" />
-                        </LinearGradientBrush.GradientStops>
-                    </LinearGradientBrush>
-            </Frame.Background>
-        </Frame>
+            
+        </WebBrowser>
 
 
         <Border Height="28" Margin="0,179,0,0" Name="border1" VerticalAlignment="Top">
@@ -229,8 +226,13 @@
             <Image Source="/Winslew;component/Images/copyClipboard.png" ToolTip="Copy current selected item url to clipboard"></Image>
         </Button>
 
+        <Button Height="23" HorizontalAlignment="Right" Margin="0,184,173,0" Name="button_printPage" VerticalAlignment="Top" Width="23" Click="button_printPage_Click">
+            <Image Source="/Winslew;component/Images/print.png" ToolTip="Print the currently displayed webpage"></Image>
+        </Button>
+
         <ComboBox Height="23" HorizontalAlignment="Right" Margin="0,184,30,0" SelectionChanged="comboBox_browserView_SelectionChanged" Name="comboBox_browserView" VerticalAlignment="Top" Width="80" ToolTip="Cache to be displayed">
             <ComboBoxItem Content="Online" Tag="online" />
+            <ComboBoxItem Content="Full" Tag="full" />
             <ComboBoxItem Content="More" Tag="more" />
             <ComboBoxItem Content="Less" Tag="less" />
         </ComboBox>

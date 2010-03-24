@@ -58,6 +58,8 @@ namespace Winslew
             {
                 comboBox_browserView.Text = "More";
             }
+
+            frame_content.LoadCompleted += BrowserOnLoadCompleted;
         }
 
         ~MainWindow() {
@@ -65,47 +67,58 @@ namespace Winslew
             Properties.Settings.Default.Save();
             AppController.Current.revokeSnarl();
         }
-            
+
+        private void BrowserOnLoadCompleted(object sender, NavigationEventArgs navigationEventArgs)
+        {
+            Snarl.SnarlConnector.ShowMessage("Site lodaded", "fine", 10, "", IntPtr.Zero, 0);    
+        }
 
         public void refreshItems() {
-            
-             listView_Items.ItemsSource = AppController.Current.itemsCollection.Where((Item bq) => 
-                 bq.read == Properties.Settings.Default.ShowReadItems && 
-                 bq.title.ToLower().Contains(textBox_filterTitle.Text.ToLower()) &&
-                 bq.tags.ToLower().Contains(textBox_filterTags.Text.ToLower())
-                 );  
-            if (!Properties.Settings.Default.IsValidLicense)
-            {
-                if (listView_Items.Items.Count > 10)
-                {                    
-                    if (!Properties.Settings.Default.BuyLicensePopupShown)
+            if (listView_Items != null)
+                if (AppController.Current.itemsCollection != null)
+                {
                     {
-                        Properties.Settings.Default.BuyLicensePopupShown = true;
-                        BuyLicense myBuyWindow = new BuyLicense();
-                        myBuyWindow.Show();
-                    }
-                    
-                }
-                listView_Items.ItemsSource = AppController.Current.itemsCollection.Where((Item bq) => 
-                    bq.read == Properties.Settings.Default.ShowReadItems &&
-                    bq.title.ToLower().Contains(textBox_filterTitle.Text.ToLower()) &&
-                    bq.tags.ToLower().Contains(textBox_filterTags.Text.ToLower())
-                    ).Take(10);
-            }
-          
-            this.Title = listView_Items.Items.Count.ToString() + " items - Winslew";
-      
-            if (AppController.Current.itemsCollection.Count > 0 && listView_Items.SelectedItem == null)
-            {
-                try
-                {
-                    listView_Items.SelectedItem = listView_Items.Items[listView_Items.Items.Count - 1];
-                }
-                catch
-                {
+                        listView_Items.ItemsSource = AppController.Current.itemsCollection.Where((Item bq) =>
+                            bq.read == Properties.Settings.Default.ShowReadItems &&
+                            bq.title.ToLower().Contains(textBox_filterTitle.Text.ToLower()) &&
+                            bq.tags.ToLower().Contains(textBox_filterTags.Text.ToLower())
+                            );
+                        if (!Properties.Settings.Default.IsValidLicense)
+                        {
+                            if (listView_Items.Items.Count > 10)
+                            {
+                                if (!Properties.Settings.Default.BuyLicensePopupShown)
+                                {
+                                    Properties.Settings.Default.BuyLicensePopupShown = true;
+                                    BuyLicense myBuyWindow = new BuyLicense();
+                                    myBuyWindow.Show();
+                                }
 
+                            }
+                            listView_Items.ItemsSource = AppController.Current.itemsCollection.Where((Item bq) =>
+                                bq.read == Properties.Settings.Default.ShowReadItems &&
+                                bq.title.ToLower().Contains(textBox_filterTitle.Text.ToLower()) &&
+                                bq.tags.ToLower().Contains(textBox_filterTags.Text.ToLower())
+                                ).Take(10);
+                        }
+
+                        this.Title = listView_Items.Items.Count.ToString() + " items - Winslew";
+
+                        
+
+                        if (AppController.Current.itemsCollection.Count > 0 && listView_Items.SelectedItem == null)
+                        {
+                            try
+                            {
+                                listView_Items.SelectedItem = listView_Items.Items[listView_Items.Items.Count - 1];
+                            }
+                            catch
+                            {
+
+                            }
+                        }
+                    }
                 }
-            }
         }
 
         public void updateSelectedItem()
@@ -269,10 +282,14 @@ namespace Winslew
                 var currentItem = listView_Items.SelectedItem as Item;
                 if (currentItem.contentCache != null || Properties.Settings.Default.CurrentView.ToLower().EndsWith("online"))
                 {
-
+                    
                     if (Properties.Settings.Default.CurrentView.ToLower().EndsWith("online") && apiAccess.checkIfOnline())
                     {
                         frame_content.Source = new Uri(currentItem.url);
+                    }
+                    else if (Properties.Settings.Default.CurrentView.ToLower().EndsWith("full") && System.IO.File.Exists(currentItem.contentCache.FullVersion))
+                    {
+                        frame_content.Source = new Uri(currentItem.contentCache.FullVersion);
                     }
                     else if (Properties.Settings.Default.CurrentView.ToLower().EndsWith("more") && System.IO.File.Exists(currentItem.contentCache.MoreVersion))
                     {
@@ -457,12 +474,35 @@ namespace Winslew
             button_editTags_Click(null, null);
         }
 
+        private void ContextPrint_Click(object sender, RoutedEventArgs e)
+        {
+            button_printPage_Click(null, null);
+        }
+
         #endregion
 
         private void button_openSnarl_Click(object sender, RoutedEventArgs e)
         {
             System.Diagnostics.Process.Start("http://www.fullphat.net");
         }
+
+        private void button_printPage_Click(object sender, RoutedEventArgs e)
+        {
+            if (listView_Items.SelectedItem != null)
+            {
+                var currentItem = listView_Items.SelectedItem as Item;
+                mshtml.IHTMLDocument2 doc = frame_content.Document as mshtml.IHTMLDocument2;
+                doc.execCommand("Print", true, null);
+               /* PrintDialog myPrintDialog = new PrintDialog();
+                if (myPrintDialog.ShowDialog() == true)
+                {
+                    frame_content.
+                    myPrintDialog.PrintVisual(frame_content, currentItem.title);
+                } */
+            }
+        }
+
+
 
 
 

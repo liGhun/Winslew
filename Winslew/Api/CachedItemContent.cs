@@ -9,6 +9,7 @@ namespace Winslew.Api
     {
         public string Id { get; set; }
         public string ExternalUrl { get; set; }
+        public string FullVersion { get; set; }
         public string MoreVersion { get; set; }
         public string LessVersion { get; set; }
         public DateTime Updated { get; set; }
