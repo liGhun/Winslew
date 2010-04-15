@@ -215,19 +215,28 @@ namespace Winslew.Api
             {
                 return true;
             }
-            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create("http://www.li-ghun.de/");
-            request.Timeout = 2000;
-            try
+            else
             {
-                request.GetResponse();
-                isOnline = true;
-                return true;
-            }
-            catch
-            {
-                return false;
+                return(isMachineReachable("li-ghun.de"));
             }
         }
+
+        private bool isMachineReachable(string hostName)
+        {
+            System.Net.IPHostEntry host = System.Net.Dns.GetHostEntry(hostName);
+            string wqlTemplate = "SELECT StatusCode FROM Win32_PingStatus WHERE Address = '{0}'";
+            System.Management.ManagementObjectSearcher query = new System.Management.ManagementObjectSearcher();
+            query.Query = new System.Management.ObjectQuery(String.Format(wqlTemplate,host.AddressList[0]));
+            query.Scope = new System.Management.ManagementScope("//localhost/root/cimv2");
+            System.Management.ManagementObjectCollection pings = query.Get();
+            foreach (System.Management.ManagementObject ping in pings)
+            {
+                if(Convert.ToInt32(ping.GetPropertyValue("StatusCode" )) == 0)
+                    return true;
+            }
+            return false;
+        }
+
 
         public Response getCacheText(string urlToBeCached, string type)
         {

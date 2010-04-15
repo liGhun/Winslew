@@ -15,7 +15,7 @@ namespace Winslew.Api
 
         public bool FullFetch(string url, string pathToSaveIn)
         {
-            return false;
+            
             try
             {
                 OpenUrl = url;

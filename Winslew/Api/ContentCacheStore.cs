@@ -14,7 +14,7 @@ namespace Winslew.Api
         public List<CachedItemContent> Cache { get; set; }
         private string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Winslew";
         public string pathToNAPage = "";
-
+        
 
         public ContentCacheStore()
         {
@@ -69,7 +69,7 @@ namespace Winslew.Api
                     if (File.Exists(appDataPath + "\\Cache\\" + id.ToString() + "\\full\\index.html"))
                     {
                         storedCacheItem.FullVersion = appDataPath + "\\Cache\\" + id.ToString() + "\\full\\index.html";
-                        //storedCacheItem.Updated = File.GetLastWriteTime(appDataPath + "\\Cache\\" + id.ToString() + "\\full\\index.html");
+                        storedCacheItem.FullUpdated = File.GetLastWriteTime(appDataPath + "\\Cache\\" + id.ToString() + "\\full\\index.html");
                     }
                     else
                     {
@@ -77,15 +77,12 @@ namespace Winslew.Api
                     }
 
 
+
                     if (File.Exists(appDataPath + "\\Cache\\" + id.ToString() + "\\favicon.ico"))
                     {
                         storedCacheItem.FavIconPath = appDataPath + "\\Cache\\" + id.ToString() + "\\favicon.ico";
                     }
 
-                    if (storedCacheItem.Updated != null)
-                    {
-                        storedCacheItem.UpdatedHumanReadable = string.Format("{0} {1}", storedCacheItem.Updated.ToShortDateString(), storedCacheItem.Updated.ToShortTimeString());
-                    }
 
                     Cache.Add(storedCacheItem);
                 }
@@ -179,7 +176,6 @@ namespace Winslew.Api
             }
 
             returnValue.Updated = DateTime.Now;
-            returnValue.UpdatedHumanReadable = string.Format("{0} {1}", returnValue.Updated.ToShortDateString(), returnValue.Updated.ToShortTimeString());
 
             return returnValue;
         }

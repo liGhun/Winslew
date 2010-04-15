@@ -59,7 +59,10 @@ namespace Winslew
                 comboBox_browserView.Text = "More";
             }
 
-            frame_content.LoadCompleted += BrowserOnLoadCompleted;
+           // frame_content.DataContextChanged += BrowserStartLoad;
+           // frame_content.LoadCompleted += BrowserOnLoadCompleted;
+
+            border1_MouseLeave(null, null);
         }
 
         ~MainWindow() {
@@ -71,6 +74,14 @@ namespace Winslew
         private void BrowserOnLoadCompleted(object sender, NavigationEventArgs navigationEventArgs)
         {
             Snarl.SnarlConnector.ShowMessage("Site lodaded", "fine", 10, "", IntPtr.Zero, 0);    
+        }
+
+        private void BrowserStartLoad(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (frame_content.DataContext != null)
+            {
+                Snarl.SnarlConnector.ShowMessage("Site loding", "just a second please", 10, "", IntPtr.Zero, 0);
+            }
         }
 
         public void refreshItems() {
@@ -500,6 +511,24 @@ namespace Winslew
                     myPrintDialog.PrintVisual(frame_content, currentItem.title);
                 } */
             }
+        }
+
+        private void border1_MouseLeave(object sender, MouseEventArgs e)
+        {
+            return;
+            button_openInBrowser.Visibility = Visibility.Hidden;
+            button_printPage.Visibility = Visibility.Hidden;
+            button_updateCache.Visibility = Visibility.Hidden;
+            button_copyUrlToClipboard.Visibility = Visibility.Hidden;
+        }
+
+        private void border1_MouseEnter(object sender, MouseEventArgs e)
+        {
+            return;
+            button_openInBrowser.Visibility = Visibility.Visible;
+            button_printPage.Visibility = Visibility.Visible;
+            button_updateCache.Visibility = Visibility.Visible;
+            button_copyUrlToClipboard.Visibility = Visibility.Visible;
         }
 
 

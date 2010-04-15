@@ -104,6 +104,7 @@ namespace Winslew
             UpdatingCache myUpdateCacheWindow = new UpdatingCache();
 
             myUpdateCacheWindow.label2.Content = "Winslew " + Formatter.prettyVersion.getNiceVersionString(System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
+            myUpdateCacheWindow.label1.Content = "Loading stored cache...";
             myUpdateCacheWindow.Show();
             myUpdateCacheWindow.progressBar1.Maximum = listOfItems.Count();
             double i = 1;
@@ -147,7 +148,7 @@ namespace Winslew
                         }
                     }
 
-                    // updateCache(tempList, false);
+                    updateCache(tempList, false);
 
                 }
                 else

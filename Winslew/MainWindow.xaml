@@ -205,7 +205,7 @@
         </WebBrowser>
 
 
-        <Border Height="28" Margin="0,179,0,0" Name="border1" VerticalAlignment="Top">
+        <Border Height="28" Margin="0,179,0,0" Name="border1" VerticalAlignment="Top" MouseLeave="border1_MouseLeave" MouseEnter="border1_MouseEnter">
             <Border.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.2">
                         <LinearGradientBrush.GradientStops>
@@ -214,7 +214,8 @@
                         </LinearGradientBrush.GradientStops>
                     </LinearGradientBrush>
             </Border.Background>
-            <Label Height="30" Name="label_TitleOfItem" Foreground="Black" FontSize="16" FontWeight="Bold" Width="576" HorizontalAlignment="Left"></Label>
+            <Label Height="30" Name="label_TitleOfItem" Foreground="Black" FontSize="16" FontWeight="Bold" 
+                   Width="782" HorizontalAlignment="Left"></Label>
         </Border>
         
 
@@ -230,13 +231,13 @@
             <Image Source="/Winslew;component/Images/print.png" ToolTip="Print the currently displayed webpage"></Image>
         </Button>
 
-        <ComboBox Height="23" HorizontalAlignment="Right" Margin="0,184,30,0" SelectionChanged="comboBox_browserView_SelectionChanged" Name="comboBox_browserView" VerticalAlignment="Top" Width="80" ToolTip="Cache to be displayed">
+        <ComboBox Height="23" HorizontalAlignment="Right" Margin="0,184,4,0" SelectionChanged="comboBox_browserView_SelectionChanged" Name="comboBox_browserView" VerticalAlignment="Top" Width="80" ToolTip="Cache to be displayed">
             <ComboBoxItem Content="Online" Tag="online" />
             <ComboBoxItem Content="Full" Tag="full" />
             <ComboBoxItem Content="More" Tag="more" />
             <ComboBoxItem Content="Less" Tag="less" />
         </ComboBox>
-        <Button Height="23" HorizontalAlignment="Right" Margin="0,184,1,0" Name="button_updateCache" VerticalAlignment="Top" Width="23" Click="button_updateCache_Click">
+        <Button Height="23" HorizontalAlignment="Right" Margin="0,184,89,0" Name="button_updateCache" VerticalAlignment="Top" Width="23" Click="button_updateCache_Click">
             <Image Source="/Winslew;component/Images/refresh.png" ToolTip="Update cache for this webpage"></Image>
         </Button>
 
