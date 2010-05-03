@@ -251,6 +251,9 @@
                 </LinearGradientBrush>
             </StatusBar.Background>
             <Label Content="Api usage: User: - of - left, next reset in - seconds - Winslew: - of - left, next reset in - seconds" Padding="0,0,0,0" FontSize="10" Margin="0,0,0,0" Name="label_apiLimits" />
+            <ProgressBar Name="ProgressBarCurrentAction" Width="80" Margin="0" Padding="0" Height="10" />
+            <Label Content="Updating 2 of 34" Padding="0" FontSize="10" Margin="0" Name="LabelCurrentAction"/>
+            
             <Button  Margin="20,0,0,0" Name="button_openSnarlIcon" Click="button_openSnarl_Click" 
                      ToolTip="Snarl notification system not running.&#xa;Snarl is used to display popup notifications with Winslew. Winslew runs without Snarl but no popups will be shown.&#xa;Click to download Snarl from its website" 
                      Padding="0" BorderBrush="{x:Null}" Background="{x:Null}" HorizontalAlignment="Right">

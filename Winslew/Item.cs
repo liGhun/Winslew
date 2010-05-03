@@ -38,5 +38,10 @@ namespace Winslew
                 return text;
             }
         }
+
+        public Item()
+        {
+            contentCache = new Api.CachedItemContent();
+        }
     }
 }

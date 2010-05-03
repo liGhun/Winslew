@@ -37,6 +37,9 @@ namespace Winslew.Api
             }
 
             CachedItemContent storedCacheItem = new CachedItemContent();
+
+
+            // Initial load of already stored caches into general cache store
             foreach (string dir in Directory.GetDirectories(appDataPath + "\\Cache"))
             {
                 if (Directory.GetFiles(dir).Count() > 0)
@@ -44,26 +47,26 @@ namespace Winslew.Api
                     string id = "";
                     id = dir.Substring(dir.LastIndexOf("\\") + 1);
                     storedCacheItem = new CachedItemContent();
-                    storedCacheItem.Id = id;
+                    storedCacheItem.Id = id;                    
 
                     if (File.Exists(appDataPath + "\\Cache\\" + id.ToString() + "\\" + id.ToString() + "-less.html"))
                     {
                         storedCacheItem.LessVersion = appDataPath + "\\Cache\\" + id.ToString() + "\\" + id.ToString() + "-less.html";
-                        storedCacheItem.Updated = File.GetLastWriteTime(appDataPath + "\\Cache\\" + id.ToString() + "\\" + id.ToString() + "-less.html");
+                        storedCacheItem.LessUpdated = File.GetLastWriteTime(appDataPath + "\\Cache\\" + id.ToString() + "\\" + id.ToString() + "-less.html");
                     }
                     else
                     {
-                        storedCacheItem.LessVersion = pathToNAPage;
+                        storedCacheItem.LessVersion = null;
                     }
 
                     if (File.Exists(appDataPath + "\\Cache\\" + id.ToString() + "\\" + id.ToString() + "-more.html"))
                     {
                         storedCacheItem.MoreVersion = appDataPath + "\\Cache\\" + id.ToString() + "\\" + id.ToString() + "-more.html";
-                        storedCacheItem.Updated = File.GetLastWriteTime(appDataPath + "\\Cache\\" + id.ToString() + "\\" + id.ToString() + "-more.html");
+                        storedCacheItem.MoreUpdated = File.GetLastWriteTime(appDataPath + "\\Cache\\" + id.ToString() + "\\" + id.ToString() + "-more.html");
                     }
                     else
                     {
-                        storedCacheItem.MoreVersion = pathToNAPage;
+                        storedCacheItem.MoreVersion = null;
                     }
 
                     if (File.Exists(appDataPath + "\\Cache\\" + id.ToString() + "\\full\\index.html"))
@@ -82,12 +85,25 @@ namespace Winslew.Api
                     {
                         storedCacheItem.FavIconPath = appDataPath + "\\Cache\\" + id.ToString() + "\\favicon.ico";
                     }
-
-
                     Cache.Add(storedCacheItem);
                 }
             }
 
+        }
+
+        public CachedItemContent LoadStoredCache(Item item) {
+            CachedItemContent returnValue = new CachedItemContent();
+
+            if (Cache != null)
+            {
+                IEnumerable<CachedItemContent> alreadyInCache = Cache.Where((CachedItemContent temp) => temp.Id == item.id);
+                if (alreadyInCache.Count() > 0)
+                {
+                    return alreadyInCache.FirstOrDefault();
+                }
+            }
+            CachedItemContent emptyOne = new CachedItemContent();
+            return emptyOne;
         }
 
         public CachedItemContent addToCache(Item itemToBeCached, bool overrideExisting)
