@@ -39,7 +39,9 @@
             </Button>
 
             <Separator />
-
+            <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_changeTitle" VerticalAlignment="Top" Width="24" Click="button_changeTitle_Click">
+                <Image Name="ImageChangeTitle" Source="/Winslew;component/Images/changeTitle.png" ToolTip="Change title"></Image>
+            </Button>
             <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_editTags" VerticalAlignment="Top" Width="24" Click="button_editTags_Click">
                 <Image Name="ImageEditTags" Source="/Winslew;component/Images/edit.png" ToolTip="Edit tags"></Image>
             </Button>
@@ -112,6 +114,11 @@
                     <MenuItem Name="ContextToggleReadState" Click="ContextToggleReadState_Click"  Header="Toggle read state">
                         <MenuItem.Icon>
                             <Image Source="/Winslew;component/Images/markedRead.png" Width="14" Height="14" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Name="ContextChangeTitle" Click="ContextChangeTitle_Click"  Header="Change title">
+                        <MenuItem.Icon>
+                            <Image Source="/Winslew;component/Images/changeTitle.png" Width="14" Height="14" />
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem Name="ContextEditTags" Click="ContextEditTags_Click"  Header="Edit tags">
@@ -205,7 +212,7 @@
         </WebBrowser>
 
 
-        <Border Height="28" Margin="0,179,0,0" Name="border1" VerticalAlignment="Top" MouseLeave="border1_MouseLeave" MouseEnter="border1_MouseEnter">
+        <Border Height="28" Margin="0,179,0,0" Name="border1" VerticalAlignment="Top">
             <Border.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.2">
                         <LinearGradientBrush.GradientStops>

@@ -9,14 +9,14 @@ namespace Winslew.Api
     {
         public string Id { get; set; }
         public string ExternalUrl { get; set; }
- 
+
         public string FullVersion { get; set; }
         public DateTime FullUpdated { get; set; }
         public string FullUpdatedHumanReadable
         {
             get
             {
-                if (FullUpdated != null)
+                if (FullVersion != null)
                 {
                     return string.Format("{0} {1}", FullUpdated.ToShortDateString(), FullUpdated.ToShortTimeString());
                 }
@@ -28,8 +28,9 @@ namespace Winslew.Api
         }
 
 
-        public string MoreVersion {
-            get 
+        public string MoreVersion
+        {
+            get
             {
                 return _moreVersion;
             }
@@ -43,7 +44,7 @@ namespace Winslew.Api
         {
             get
             {
-                if (MoreUpdated != null)
+                if (MoreVersion != null)
                 {
                     return string.Format("{0} {1}", MoreUpdated.ToShortDateString(), MoreUpdated.ToShortTimeString());
                 }
@@ -60,7 +61,7 @@ namespace Winslew.Api
         {
             get
             {
-                if (LessUpdated != null)
+                if (LessVersion != null)
                 {
                     return string.Format("{0} {1}", LessUpdated.ToShortDateString(), LessUpdated.ToShortTimeString());
                 }
@@ -73,18 +74,22 @@ namespace Winslew.Api
 
 
         public DateTime Updated { get; set; }
-        public string UpdatedHumanReadable {
+        public string UpdatedHumanReadable
+        {
             get
             {
-                return string.Format("Full: {0}, More: {1}, Less: ", FullUpdatedHumanReadable, MoreUpdatedHumanReadable, LessUpdatedHumanReadable);
+                return string.Format("Full: {0}, More: {1}, Less: {2}", FullUpdatedHumanReadable, MoreUpdatedHumanReadable, LessUpdatedHumanReadable);
             }
         }
         public string FavIconPath { get; set; }
 
         private string _moreVersion = "";
-        public bool IsComplete {
-            get {
-                if(LessUpdated != null && MoreUpdated != null && FullUpdated != null) {
+        public bool IsComplete
+        {
+            get
+            {
+                if (LessVersion != null && MoreVersion != null && FullVersion != null)
+                {
                     return true;
                 }
                 else
@@ -94,5 +99,10 @@ namespace Winslew.Api
             }
         }
 
+        public CachedItemContent()
+        {
+            
+        }
 
+    }
 }

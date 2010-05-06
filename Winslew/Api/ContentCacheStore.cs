@@ -24,17 +24,16 @@ namespace Winslew.Api
             {
                 Directory.CreateDirectory(appDataPath + "\\Cache");
             }
-            if (!File.Exists(appDataPath + "\\Cache\\NotAvailable.html"))
-            {
-                string notAvailableText = "<html><head><title>Not available...</title>";
-                notAvailableText += "</head><body>\n";
-                notAvailableText += "<strong>Sorry, this view is not available for this item...</strong>";
-                notAvailableText += "<p>Please choose another view for this item</p>";
-                notAvailableText += "</body></html>";
-                StreamWriter fhUpd = File.CreateText(appDataPath + "\\Cache\\NotAvailable.html");
-                fhUpd.Write(notAvailableText);
-                fhUpd.Close();
-            }
+
+            string notAvailableText = "<html><head><title>View not available...</title>";
+            notAvailableText += "</head><body>\n";
+            notAvailableText += "<strong>Sorry, this view is currently not available for this item...</strong>";
+            notAvailableText += "<p>Please choose another view for this item</p>";
+            notAvailableText += "<p>Check if cache update is currently running or update the cache manually</p>";
+            notAvailableText += "</body></html>";
+            StreamWriter fhUpd = File.CreateText(appDataPath + "\\Cache\\NotAvailable.html");
+            fhUpd.Write(notAvailableText);
+            fhUpd.Close();
 
             CachedItemContent storedCacheItem = new CachedItemContent();
 
@@ -76,7 +75,7 @@ namespace Winslew.Api
                     }
                     else
                     {
-                        storedCacheItem.FullVersion = pathToNAPage;
+                        storedCacheItem.FullVersion = null;
                     }
 
 
@@ -106,7 +105,7 @@ namespace Winslew.Api
             return emptyOne;
         }
 
-        public CachedItemContent addToCache(Item itemToBeCached, bool overrideExisting)
+        public CachedItemContent addToCache(Item itemToBeCached, bool overrideExisting, bool readOnlyFromHdd, bool doNotFetchFullVersion)
         {
             CachedItemContent returnValue = new CachedItemContent();
 
@@ -117,9 +116,18 @@ namespace Winslew.Api
                 {
                     if (alreadyInCache.Count() > 0)
                     {
-                        return alreadyInCache.FirstOrDefault();
+                        returnValue = alreadyInCache.FirstOrDefault();
+                        if (returnValue.IsComplete)
+                        {
+                            return returnValue;
+                        }
                     }
                 }
+            }
+
+            if (readOnlyFromHdd)
+            {
+                return returnValue;
             }
 
             returnValue.Id = itemToBeCached.id;
@@ -129,53 +137,69 @@ namespace Winslew.Api
                 Directory.CreateDirectory(cacheDir);
             }
 
-
-            FetchWebpage myFetcher = new FetchWebpage();
-            if(myFetcher.FullFetch(itemToBeCached.url, cacheDir + "\\full\\")) {
-                returnValue.FullVersion = cacheDir + "\\full\\index.html";
-            }
-            else
+            if (!doNotFetchFullVersion)
             {
-                returnValue.FullVersion = pathToNAPage;
+                if (returnValue.FullVersion == null || overrideExisting)
+                {
+                    FetchWebpage myFetcher = new FetchWebpage();
+                    if (myFetcher.FullFetch(itemToBeCached.url, cacheDir + "\\full\\"))
+                    {
+                        returnValue.FullVersion = cacheDir + "\\full\\index.html";
+                        returnValue.FullUpdated = DateTime.Now;
+                    }
+                    else
+                    {
+                        returnValue.FullVersion = null;
+                    }
+                }
             }
 
             string fullText = "";
-
-            Response cachedLessContent = AppController.Current.getCacheText(itemToBeCached.url, "less");
-            if (cachedLessContent.Content != null && cachedLessContent.Content != "")
+            if (returnValue.LessVersion == null || overrideExisting)
             {
-                fullText = "<html><head><title>" + cachedLessContent.TextTitle + "</title>";
-                fullText += "<meta http-equiv=\"Content-Type\" content=\"" + cachedLessContent.TextContentType + "\"></head><body>\n";
-                fullText += cachedLessContent.Content;
-                fullText += "\n</body></html>";
+                Response cachedLessContent = AppController.Current.getCacheText(itemToBeCached.url, "less");
+                if (cachedLessContent.Content != null && cachedLessContent.Content != "")
+                {
+                    fullText = "<html><head><title>" + cachedLessContent.TextTitle + "</title>";
+                    fullText += "<meta http-equiv=\"Content-Type\" content=\"" + cachedLessContent.TextContentType + "\"></head><body>\n";
+                    fullText += cachedLessContent.Content;
+                    fullText += "\n</body></html>";
 
-                returnValue.LessVersion = cacheDir + "\\" + returnValue.Id.ToString() + "-less.html";
-                StreamWriter fh = File.CreateText(returnValue.LessVersion);
-                fh.Write(fullText);
-                fh.Close();
+                    returnValue.LessVersion = cacheDir + "\\" + returnValue.Id.ToString() + "-less.html";
+                    returnValue.LessUpdated = DateTime.Now;
+
+                    StreamWriter fh = File.CreateText(returnValue.LessVersion);
+                    fh.Write(fullText);
+                    fh.Close();
+                }
+                else
+                {
+                    returnValue.LessVersion = null;
+                }
             }
-            else
-            {
-                returnValue.LessVersion = pathToNAPage;
-            }
 
-            Response cachedMoreContent = AppController.Current.getCacheText(itemToBeCached.url, "more");
-            if (cachedMoreContent.Content != "" && cachedMoreContent.Content != null)
+            if (returnValue.MoreVersion == null || overrideExisting)
             {
-                returnValue.MoreVersion = cacheDir + "\\" + returnValue.Id.ToString() + "-more.html";
+                Response cachedMoreContent = AppController.Current.getCacheText(itemToBeCached.url, "more");
+                if (cachedMoreContent.Content != "" && cachedMoreContent.Content != null)
+                {
+                    fullText = "<html><head><title>" + cachedMoreContent.TextTitle + "</title>";
+                    fullText += "<meta http-equiv=\"Content-Type\" content=\"" + cachedMoreContent.TextContentType + "\"></head><body>\n";
+                    fullText += cachedMoreContent.Content;
+                    fullText += "\n</body></html>";
 
-                fullText = "<html><head><title>" + cachedMoreContent.TextTitle + "</title>";
-                fullText += "<meta http-equiv=\"Content-Type\" content=\"" + cachedMoreContent.TextContentType + "\"></head><body>\n";
-                fullText += cachedMoreContent.Content;
-                fullText += "\n</body></html>";
+                    returnValue.MoreVersion = cacheDir + "\\" + returnValue.Id.ToString() + "-more.html";
+                    returnValue.MoreUpdated = DateTime.Now;
 
-                StreamWriter fhMore = File.CreateText(returnValue.MoreVersion);
-                fhMore.Write(fullText);
-                fhMore.Close();
-            }
-            else
-            {
-                returnValue.MoreVersion = pathToNAPage;
+                    StreamWriter fhMore = File.CreateText(returnValue.MoreVersion);
+                    fhMore.Write(fullText);
+                    fhMore.Close();
+
+                }
+                else
+                {
+                    returnValue.MoreVersion = pathToNAPage;
+                }
             }
 
             Image favIcon = GetFavicon(itemToBeCached.url);

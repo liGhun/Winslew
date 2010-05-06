@@ -180,6 +180,33 @@ namespace Winslew.Api
             }
         }
 
+        public bool changeTitle(Dictionary<string, string> data)
+        {
+            if (Properties.Settings.Default.Username != "" && Properties.Settings.Default.Password != "")
+            {
+
+                string request = createJson(data);
+                Response result = HttpCommunications.SendPostRequest(@"https://readitlaterlist.com/v2/send", new
+                {
+                    username = Properties.Settings.Default.Username,
+                    password = getPassword(),
+                    apikey = apiKey,
+                    update_title = request
+
+                }, false);
+                // bool success = (!string.IsNullOrEmpty(result) && result.ToLowerInvariant() == "200 ok");
+                if (!result.Success)
+                {
+                    System.Windows.Forms.MessageBox.Show(result.Error, "Login to Read It Later failed");
+                }
+                return result.Success;
+            }
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("Missing username or password", "Setup your credentials in the Preferences first");
+                return false;
+            }
+        }
 
         public bool delete(Dictionary<string, string> data)
         {
@@ -217,7 +244,8 @@ namespace Winslew.Api
             }
             else
             {
-                return(isMachineReachable("li-ghun.de"));
+                isOnline = isMachineReachable("li-ghun.de");
+                return(isOnline);
             }
         }
 

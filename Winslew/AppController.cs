@@ -12,6 +12,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.IO;
 using System.Net.Sockets;
+using System.Diagnostics;
 
 namespace Winslew
 {
@@ -26,6 +27,7 @@ namespace Winslew
         public DateTime expirationDate = new DateTime(2010, 04, 01);
 
         private BackgroundWorker backgroundWorker1;
+        private List<Item> queueOfToBeUpdatedItems = new List<Item>();
 
         private bool isInitialFetch = true;
         public ObservableCollection<Item> itemsCollection
@@ -47,7 +49,13 @@ namespace Winslew
         System.Windows.DependencyProperty dp, Object value);
 
         public Api.ContentCacheStore cacheStore = new Api.ContentCacheStore();
-        
+
+        #region Startup and initialization
+
+        public static void Start()
+        {
+            Current = new AppController();
+        }
 
         public AppController()
         {
@@ -55,6 +63,11 @@ namespace Winslew
 
             try
             {
+
+
+
+                // Checking and (if needed) creating preferences directories and files
+
                 string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
                 if(!System.IO.Directory.Exists(appDataPath + "\\Winslew\\"))
                 {
@@ -76,14 +89,13 @@ namespace Winslew
                 backgroundWorker1.RunWorkerCompleted += new RunWorkerCompletedEventHandler(backgroundWorker1_RunWorkerCompleted);
                 backgroundWorker1.ProgressChanged += new ProgressChangedEventHandler(backgroundWorker1_ProgressChanged);
             }
-            catch 
+            catch (Exception exp)
             {
-                
+                Trace.WriteLine(exp.Message);
+                Trace.WriteLine(exp.StackTrace);
             }
 
             LicenseChecker.checkLicense(Properties.Settings.Default.Username, Properties.Settings.Default.LicenseCode);
-
-
 
             if (Properties.Settings.Default.LoginHasBeenTestedSuccessfully && Properties.Settings.Default.Username != "" && Properties.Settings.Default.Password != "")
             {
@@ -98,6 +110,19 @@ namespace Winslew
             this.pathToIcon = pathToIcon = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\images\\Winslew.png";
             snarlMsgWindow = new NativeWindowApplication.SnarlMsgWnd();
             SnarlMessageWindowHandle = snarlMsgWindow.Handle;
+           
+            UpdateAvailable myUpdateCheck = new UpdateAvailable();
+        }
+
+
+
+        public void credentialsSavedSuccessfully()
+        {
+            if (mainWindow == null)
+            {
+                mainWindow = new MainWindow();
+            }
+
             if (SnarlConnector.GetSnarlWindow() != IntPtr.Zero)
             {
                 SnarlConnector.RegisterConfig(SnarlMessageWindowHandle, "Winslew", Snarl.WindowsMessage.WM_USER + 55, pathToIcon);
@@ -114,53 +139,103 @@ namespace Winslew
                 hideSnarlHint();
             }
 
-            UpdateAvailable myUpdateCheck = new UpdateAvailable();
+
+            if (apiAccess.checkIfOnline())
+            {
+
+                SetData(false);
+                isInitialFetch = false;
+
+                List<Item> tempList = new List<Item>();
+                if (itemsCollection != null)
+                {
+                    foreach (Item item in itemsCollection)
+                    {
+                        tempList.Add(item);
+                    }
+                }
+
+                updateCache(tempList, false);
+
+            }
+            else
+            {
+                string storePath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Winslew\\ContentCache.xml";
+                if (File.Exists(storePath))
+                {
+                    List<Item> tempList = new List<Item>();
+
+                    XmlSerializer xmlSerializer = new
+                    XmlSerializer(typeof(List<Item>), new
+                    XmlRootAttribute("ItemsCollection"));
+                    FileStream fileStram = new FileStream(storePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+                    XmlReader reader = new XmlTextReader(fileStram);
+
+                    tempList = (List<Item>)xmlSerializer.Deserialize(reader);
+                    reader.Close();
+                    fileStram.Close();
+
+                    itemsCollection = new ObservableCollection<Item>();
+                    foreach (Item storedItem in tempList)
+                    {
+                        itemsCollection.Add(storedItem);
+                    }
+                }
+            }
+            mainWindow.refreshItems();
+            mainWindow.updateViewOfFrame();
+
+            mainWindow.Show();
+            StartCacheUpdate(null);
+
         }
 
+        private void loadCacheStoreFromHdd(List<Item> listOfItems)
+        {
+            updateCache(listOfItems, false);
+        }
+
+        #endregion
+
         public void updateCache(List<Item> listOfItems, bool updateWithNewerVersion) {
+            if (updateWithNewerVersion)
+            {
+                StartCacheUpdate(listOfItems);
+                return;
+            }
             UpdatingCache myUpdateCacheWindow = new UpdatingCache();
 
             myUpdateCacheWindow.label2.Content = "Winslew " + Formatter.prettyVersion.getNiceVersionString(System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
             myUpdateCacheWindow.label1.Content = "Loading stored cache...";
             myUpdateCacheWindow.Show();
             myUpdateCacheWindow.progressBar1.Maximum = listOfItems.Count();
+            
+            UpdateProgressBarDelegate updatePbDelegate =
+                 new UpdateProgressBarDelegate(myUpdateCacheWindow.progressBar1.SetValue);
+
             double i = 1;
+            foreach (Item item in listOfItems)
+            {
+                myUpdateCacheWindow.label1.Content = "Loading cache " + i.ToString() + " of " + listOfItems.Count();
+                myUpdateCacheWindow.label_itemTitle.Content = item.title;
+                myUpdateCacheWindow.UpdateLayout();
+                Dispatcher.CurrentDispatcher.Invoke(updatePbDelegate,
+                System.Windows.Threading.DispatcherPriority.Background,
+                new object[] { ProgressBar.ValueProperty, i });
+                if (!updateWithNewerVersion)
+                item.contentCache = cacheStore.LoadStoredCache(item);
+             
+                i++;
+            }
 
-          // UpdateProgressBarDelegate updatePbDelegate =
-          //      new UpdateProgressBarDelegate(myUpdateCacheWindow.progressBar1.SetValue);
-
-//            UpdateProgressBarDelegate updatePbDelegate =
-//                new UpdateProgressBarDelegate(mainWindow.ProgressBarCurrentAction.SetValue);
-
-            mainWindow.Show();
-            myUpdateCacheWindow.Close();
-
-
-
-            
-//            foreach (Item item in listOfItems)
-//            {
-//                mainWindow.LabelCurrentAction.Content = "Generating cache " + i.ToString() + " of " + listOfItems.Count();
-               // myUpdateCacheWindow.label_itemTitle.Content = item.title;
-//                myUpdateCacheWindow.UpdateLayout();
-//                Dispatcher.CurrentDispatcher.Invoke(updatePbDelegate,
-//                System.Windows.Threading.DispatcherPriority.Background,
-//                new object[] { ProgressBar.ValueProperty, i });
-//                item.contentCache = cacheStore.LoadStoredCache(item);
-//                i++;
-//            }
-
-           // StartCacheUpdateForAllUncachedItems(listOfItems);
-            
-
-            mainWindow.LabelCurrentAction.Visibility = System.Windows.Visibility.Collapsed;
-            mainWindow.ProgressBarCurrentAction.Visibility = System.Windows.Visibility.Collapsed;
             myUpdateCacheWindow.Close();
         }
 
-        private void StartCacheUpdateForAllUncachedItems(List<Item> ToBeUpdatedItems) {
+        private void StartCacheUpdate(List<Item> ToBeUpdatedItems) {
+            bool isInitialUpdate = false;
             if (ToBeUpdatedItems == null)
             {
+                isInitialUpdate = true;
                 IEnumerable<Item> NextIncompleteItems = itemsCollection.Where((Item bq) => bq.contentCache.IsComplete == false);
                 ToBeUpdatedItems = new List<Item>();
                 foreach (Item item in NextIncompleteItems)
@@ -169,158 +244,130 @@ namespace Winslew
                 }
             }
 
+            if (backgroundWorker1.IsBusy)
+            {
+                queueOfToBeUpdatedItems.AddRange(ToBeUpdatedItems);
+                SumOfIncompleteCaches += ToBeUpdatedItems.Count();
+                return;
+            }
+
             SumOfIncompleteCaches = ToBeUpdatedItems.Count();
 
             mainWindow.LabelCurrentAction.Content = "Updating 1 of " + SumOfIncompleteCaches.ToString();
             mainWindow.LabelCurrentAction.Visibility = System.Windows.Visibility.Visible;
             mainWindow.ProgressBarCurrentAction.Value = 0;
             mainWindow.ProgressBarCurrentAction.Visibility = System.Windows.Visibility.Visible;
-            backgroundWorker1.RunWorkerAsync(ToBeUpdatedItems);
+            if (isInitialUpdate)
+            {
+                backgroundWorker1.RunWorkerAsync(null);
+            }
+            else
+            {
+                backgroundWorker1.RunWorkerAsync(ToBeUpdatedItems);
+            }
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
-            // Get the BackgroundWorker that raised this event.
             BackgroundWorker worker = sender as BackgroundWorker;
+            List<Item> ToBeWorkedItems = new List<Item>();
+            bool initialFastFetch = true;
+            if (e.Argument == null)
+            {
+                IEnumerable<Item> NextIncompleteItems = itemsCollection.Where((Item bq) => bq.contentCache.IsComplete == false);
 
-            // Assign the result of the computation
-            // to the Result property of the DoWorkEventArgs
-            // object. This is will be available to the 
-            // RunWorkerCompleted eventhandler.
-
-            List<Item> ToBeWorkedItems = (List<Item>)e.Argument;
+                foreach (Item item in NextIncompleteItems)
+                {
+                    ToBeWorkedItems.Add(item);
+                }
+            }
+            else
+            {
+                ToBeWorkedItems = (List<Item>)e.Argument;
+                initialFastFetch = false;
+            }
             List<Item> Return = new List<Item>();
 
 
             int done = 0;
             foreach (Item currentItem in ToBeWorkedItems)
             {
-                System.Threading.Thread.Sleep(50);
-                Snarl.SnarlConnector.ShowMessage("Current", currentItem.title + " - " + done.ToString(), 3, "", IntPtr.Zero, Snarl.WindowsMessage.WM_USER + 86);
-                //currentItem.contentCache= cacheStore.addToCache(currentItem, false);
-
-                Api.FetchWebpage myFetcher = new Api.FetchWebpage();
-                string cacheDir = Environment.SpecialFolder.ApplicationData + "\\Winslew\\Cache\\" + currentItem.id.ToString() + "\\full\\";
-                if (myFetcher.FullFetch(currentItem.url, cacheDir))
-                {
-                    currentItem.contentCache.FullVersion = cacheDir + "index.html";
-                }
-                else
-                {
-                    //
-                }
-
+                System.Threading.Thread.Sleep(10);                
+                currentItem.contentCache = cacheStore.addToCache(currentItem, false, false, initialFastFetch);
+                AppController.Current.sendSnarlNotification("Cache has been updated", "Cache of more and less version has been updated", currentItem.title);
                 done++;
                 Return.Add(currentItem);
                 backgroundWorker1.ReportProgress(done, currentItem);
+            }
+
+            if (initialFastFetch)
+            {
+                Return = new List<Item>();
+
+                done = 0;
+                foreach (Item currentItem in ToBeWorkedItems)
+                {
+                    System.Threading.Thread.Sleep(10);
+                    currentItem.contentCache = cacheStore.addToCache(currentItem, false, false, !initialFastFetch);
+                    AppController.Current.sendSnarlNotification("Cache has been updated", "Cache of full version has been updated", currentItem.title);
+                    done++;
+                    Return.Add(currentItem);
+                    backgroundWorker1.ReportProgress(done, currentItem);
+                }
+
             }
 
             e.Result = Return;
         }
 
 
-        private void backgroundWorker1_RunWorkerCompleted(
-object sender, RunWorkerCompletedEventArgs e)
+        private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            // First, handle the case where an exception was thrown.
             if (e.Error != null)
             {
-               // MessageBox.Show(e.Error.Message);
             }
             else if (e.Cancelled)
             {
-                // Next, handle the case where the user canceled 
-                // the operation.
-                // Note that due to a race condition in 
-                // the DoWork event handler, the Cancelled
-                // flag may not have been set, even though
-                // CancelAsync was called.
-                //textBlock_title.Text = "Canceled";
+                
             }
             else
             {
-                // Finally, handle the case where the operation 
-                // succeeded.
-                mainWindow.LabelCurrentAction.Content = "All work done";
+                mainWindow.LabelCurrentAction.Visibility = System.Windows.Visibility.Collapsed;
+                mainWindow.ProgressBarCurrentAction.Visibility = System.Windows.Visibility.Collapsed;
             }
-
+            if (queueOfToBeUpdatedItems.Count != 0)
+            {
+                StartCacheUpdate(queueOfToBeUpdatedItems);
+                queueOfToBeUpdatedItems = new List<Item>();
+            }
         }
 
         // This event handler updates the progress bar.
-        private void backgroundWorker1_ProgressChanged(object sender,
-            ProgressChangedEventArgs e)
+        private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            //MessageBox.Show(e.ProgressPercentage.ToString());
-            //MessageBox.Show(NumberOfItemsInProgress.ToString());
-
             double newPercentage = e.ProgressPercentage * 100 / SumOfIncompleteCaches;
             mainWindow.ProgressBarCurrentAction.Value = newPercentage;
             Item UpdatedOne = (Item)e.UserState;
-            mainWindow.LabelCurrentAction.Content = e.ProgressPercentage.ToString() + " item of " + SumOfIncompleteCaches;
-            //MessageBox.Show(newPercentage.ToString());
+            mainWindow.LabelCurrentAction.Content = "Updating cache " + e.ProgressPercentage.ToString() + " of " + SumOfIncompleteCaches;
+            int index = itemsCollection.IndexOf(itemsCollection.Where((Item bq) => bq.id == UpdatedOne.id).FirstOrDefault());
+            if(index < 0) {
+                itemsCollection.Add(UpdatedOne);
+                mainWindow.refreshItems();  
+            }
+            else
+            {
+                itemsCollection[index] = UpdatedOne;
+                mainWindow.refreshItems();  
+                if (mainWindow.listView_Items.SelectedItem == UpdatedOne)
+                {
+                    mainWindow.frame_content.Refresh();
+                }
+            }
         }
 
 
         // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-
- 
-        public void credentialsSavedSuccessfully()
-        {
-            if (mainWindow == null)
-            {
-                mainWindow = new MainWindow();
-            }   
-
-                if (apiAccess.checkIfOnline())
-                {
-
-                    SetData(false);
-                    isInitialFetch = false;
-
-                    List<Item> tempList = new List<Item>();
-                    if (itemsCollection != null)
-                    {
-                        foreach (Item item in itemsCollection)
-                        {
-                            tempList.Add(item);
-                        }
-                    }
-
-                    updateCache(tempList, false);
-                    
-                }
-                else
-                {
-                    string storePath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Winslew\\ContentCache.xml";
-                    if (File.Exists(storePath))
-                    {
-                        List<Item> tempList = new List<Item>();
-
-                        XmlSerializer xmlSerializer = new
-                        XmlSerializer(typeof(List<Item>), new
-                        XmlRootAttribute("ItemsCollection"));
-                        FileStream fileStram = new FileStream(storePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-                        XmlReader reader = new XmlTextReader(fileStram);
-
-                        tempList = (List<Item>)xmlSerializer.Deserialize(reader);
-                        reader.Close();
-                        fileStram.Close();
-
-                        itemsCollection = new ObservableCollection<Item>();
-                        foreach (Item storedItem in tempList)
-                        {
-                            itemsCollection.Add(storedItem);
-                        }
-                    }
-                }
-                mainWindow.refreshItems();
-                mainWindow.updateViewOfFrame();
-                
-                mainWindow.Show();
-                StartCacheUpdateForAllUncachedItems(null);
-
-        }
 
         public void revokeSnarl()
         {
@@ -349,14 +396,10 @@ object sender, RunWorkerCompletedEventArgs e)
         public void addToCache(Item item, bool updateWithNewerVersion)
         {
             Item newItem = item;
-            item.contentCache = cacheStore.addToCache(item, updateWithNewerVersion);
-            updateItem(item, newItem);
+            item.contentCache = cacheStore.addToCache(item, updateWithNewerVersion, false,false);
         }
 
-        public static void Start()
-        {
-            Current = new AppController();
-        }
+
 
         public void sendSnarlNotification(string className, string title, string text)
         {
@@ -413,8 +456,8 @@ object sender, RunWorkerCompletedEventArgs e)
                         }
                         foreach (Item oldItem in tempList)
                         {
-                            itemsCollection.Remove(oldItem);
-                            itemsCollection.Add(newItem);
+                            updateItem(oldItem, newItem);
+                            mainWindow.updateViewOfFrame();
                         }
                     }
                 }
@@ -435,15 +478,32 @@ object sender, RunWorkerCompletedEventArgs e)
 
         public void updateItem(Item oldItem, Item newItem)
         {
-            AppController.Current.itemsCollection.Remove(oldItem);
-            AppController.Current.itemsCollection.Add(newItem);
+            int index = itemsCollection.IndexOf(oldItem);
+            if (index < 0)
+            {
+                itemsCollection.Add(newItem);
+            }
+            else
+            {
+                itemsCollection[index] = newItem;
+            }
             mainWindow.refreshItems();  
+            if (mainWindow.listView_Items.SelectedItem == newItem)
+            {
+                mainWindow.updateViewOfFrame();
+            }
+            
         }
 
         public void changeTags(Dictionary<string, string> data)
         {
             apiAccess.changeTags(data);
             sendSnarlNotification("Item tags changed", "Item tags have been changed", "");
+        }
+
+        public void changeTitle(Dictionary<string, string> data)
+        {
+            apiAccess.changeTitle(data);
         }
 
         public void addItem(Item newItem)
@@ -454,18 +514,8 @@ object sender, RunWorkerCompletedEventArgs e)
 
         public Api.Response getCacheText(string urlToBeCached, string type)
         {
-            string oldTitle = "";
             Api.Response returnValue = new Winslew.Api.Response();
-            if (mainWindow != null)
-            {
-                oldTitle = mainWindow.Title;
-                mainWindow.Title = "Caching items";
-                returnValue = apiAccess.getCacheText(urlToBeCached, type);
-                if (mainWindow != null)
-                {
-                    mainWindow.Title = oldTitle;
-                }
-            }
+            returnValue = apiAccess.getCacheText(urlToBeCached, type);
             return returnValue;
         }
 
@@ -475,13 +525,18 @@ object sender, RunWorkerCompletedEventArgs e)
                 if (mainWindow.label_apiLimits != null && appLimit != 0 && userLimit != 0)
                 {
                     DateTime now = DateTime.Now;
-                    mainWindow.label_apiLimits.Content = string.Format("Api usage: User: {0} of {1} left, next reset at {2} - Winslew: {3} of {4} left, next reset at {5}",
+                    //mainWindow.label_apiLimits.Content = string.Format("Api usage: User: {0} of {1} left, next reset at {2} - Winslew: {3} of {4} left, next reset at {5}",
+                    //userAvailable.ToString(),
+                    //    userLimit.ToString(),
+                    //    now.AddSeconds(userReset).ToLongTimeString(),
+                    //    appAvailable.ToString(),
+                    //    appLimit.ToString(),
+                    //    now.AddSeconds(appReset).ToLongTimeString());
+                    mainWindow.label_apiLimits.Content = string.Format("Api usage: {0} of {1} left, next reset at {2}",
                         userAvailable.ToString(),
                         userLimit.ToString(),
-                        now.AddSeconds(userReset).ToLongTimeString(),
-                        appAvailable.ToString(),
-                        appLimit.ToString(),
-                        now.AddSeconds(appReset).ToLongTimeString());
+                        now.AddSeconds(userReset).ToLongTimeString()
+                        );
 
                     int userApiUsage = (userAvailable * 100 / userLimit);
                     if(now.AddSeconds(userReset) <= ApiResetUser && userApiUsage < Properties.Settings.Default.ApiUserWarnPercentage) {

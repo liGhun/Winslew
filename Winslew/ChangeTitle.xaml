@@ -1,0 +1,19 @@
+﻿<Window x:Class="Winslew.ChangeTitle"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Change title" Height="148" Width="300" Icon="/Winslew;component/Images/changeTitle.png">
+    <Window.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.2">
+            <LinearGradientBrush.GradientStops>
+                <GradientStop Offset="0" Color="White" />
+                <GradientStop Offset="1" Color="LightGray" />
+            </LinearGradientBrush.GradientStops>
+        </LinearGradientBrush>
+    </Window.Background>
+    <Grid>
+        <TextBox Height="23" Margin="12,46,12,0" Name="textBox_itemTitle" VerticalAlignment="Top" />
+        <Button Margin="190,75,0,0" Name="button_save" HorizontalAlignment="Left" Width="76" Height="23" VerticalAlignment="Top" Click="button_save_Click">Save</Button>
+        <Button HorizontalAlignment="Left" Margin="12,75,0,0" Name="button_cancel" Width="75" Height="23" VerticalAlignment="Top" Click="button_cancel_Click">Cancel</Button>
+        <Label Height="28" Margin="12,12,12,0" Name="label1" VerticalAlignment="Top" HorizontalContentAlignment="Center">Enter your new title for the item</Label>
+    </Grid>
+</Window>

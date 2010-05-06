@@ -17,7 +17,7 @@
     <WarningLevel>4</WarningLevel>
     <StartupObject>Winslew.App</StartupObject>
     <ApplicationIcon>Winslew.ico</ApplicationIcon>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>Winslew.pfx</AssemblyOriginatorKeyFile>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -93,6 +93,9 @@
     <Compile Include="BuyLicense.xaml.cs">
       <DependentUpon>BuyLicense.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ChangeTitle.xaml.cs">
+      <DependentUpon>ChangeTitle.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Crypto.cs" />
     <Compile Include="EditTags.xaml.cs">
       <DependentUpon>EditTags.xaml</DependentUpon>
@@ -126,6 +129,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="BuyLicense.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ChangeTitle.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -192,6 +199,7 @@
     <Resource Include="Images\pasteClipboard.png" />
     <Resource Include="Images\snarl.png" />
     <Resource Include="Images\print.png" />
+    <Resource Include="Images\changeTitle.png" />
     <Content Include="Setup\checkDotNet3.nsh">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

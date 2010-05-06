@@ -62,7 +62,6 @@ namespace Winslew
            // frame_content.DataContextChanged += BrowserStartLoad;
            // frame_content.LoadCompleted += BrowserOnLoadCompleted;
 
-            border1_MouseLeave(null, null);
         }
 
         ~MainWindow() {
@@ -203,6 +202,17 @@ namespace Winslew
 
         }
 
+        private void button_changeTitle_Click(object sender, RoutedEventArgs e)
+        {
+            if (listView_Items.SelectedItem != null)
+            {
+                var currentItem = listView_Items.SelectedItem as Item;
+                ChangeTitle myEditWindow = new ChangeTitle(currentItem);
+                myEditWindow.Show();
+                myEditWindow.Focus();
+            }
+        }
+
         private void button_addNew_Click(object sender, RoutedEventArgs e)
         {
             AddNew myAddNewWindows = new AddNew();
@@ -293,7 +303,7 @@ namespace Winslew
                 var currentItem = listView_Items.SelectedItem as Item;
                 if (currentItem.contentCache != null || Properties.Settings.Default.CurrentView.ToLower().EndsWith("online"))
                 {
-                    
+
                     if (Properties.Settings.Default.CurrentView.ToLower().EndsWith("online") && apiAccess.checkIfOnline())
                     {
                         frame_content.Source = new Uri(currentItem.url);
@@ -306,7 +316,7 @@ namespace Winslew
                     {
                         frame_content.Source = new Uri(currentItem.contentCache.MoreVersion);
                     }
-                    else if (System.IO.File.Exists(currentItem.contentCache.LessVersion))
+                    else if (Properties.Settings.Default.CurrentView.ToLower().EndsWith("less") && System.IO.File.Exists(currentItem.contentCache.LessVersion))
                     {
                         frame_content.Source = new Uri(currentItem.contentCache.LessVersion);
                     }
@@ -314,6 +324,10 @@ namespace Winslew
                     {
                         frame_content.Source = new Uri(AppController.Current.cacheStore.pathToNAPage);
                     }
+                }
+                else
+                {
+                    frame_content.Source = new Uri(AppController.Current.cacheStore.pathToNAPage);
                 }
             }
         }
@@ -334,10 +348,10 @@ namespace Winslew
         {
             if (listView_Items.SelectedItem != null)
             {
-                List<Item> temoList = new List<Item>();
+                List<Item> tempList = new List<Item>();
                 var currentItem = listView_Items.SelectedItem as Item;
-                temoList.Add(currentItem);
-                AppController.Current.updateCache(temoList, true);
+                tempList.Add(currentItem);
+                AppController.Current.updateCache(tempList, true);
                 AppController.Current.sendSnarlNotification("Cache has been updated", "Cache has been updated", currentItem.title);
                 if (currentItem.contentCache != null)
                 {
@@ -485,6 +499,12 @@ namespace Winslew
             button_editTags_Click(null, null);
         }
 
+
+        private void ContextChangeTitle_Click(object sender, RoutedEventArgs e)
+        {
+            button_changeTitle_Click(null, null);
+        }
+
         private void ContextPrint_Click(object sender, RoutedEventArgs e)
         {
             button_printPage_Click(null, null);
@@ -512,25 +532,6 @@ namespace Winslew
                 } */
             }
         }
-
-        private void border1_MouseLeave(object sender, MouseEventArgs e)
-        {
-            return;
-            button_openInBrowser.Visibility = Visibility.Hidden;
-            button_printPage.Visibility = Visibility.Hidden;
-            button_updateCache.Visibility = Visibility.Hidden;
-            button_copyUrlToClipboard.Visibility = Visibility.Hidden;
-        }
-
-        private void border1_MouseEnter(object sender, MouseEventArgs e)
-        {
-            return;
-            button_openInBrowser.Visibility = Visibility.Visible;
-            button_printPage.Visibility = Visibility.Visible;
-            button_updateCache.Visibility = Visibility.Visible;
-            button_copyUrlToClipboard.Visibility = Visibility.Visible;
-        }
-
 
 
 

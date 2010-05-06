@@ -5,6 +5,7 @@ using System.Text;
 using System.Net;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 namespace Winslew.Api
 {
@@ -142,7 +143,7 @@ namespace Winslew.Api
                 }
                 catch (Exception exp)
                 {
-                    // Console.Writeline("Exeption: " + exp.Message);
+                    Trace.WriteLine("Exeption: " + exp.Message);
                 }
             }
             return htmlSource;
@@ -219,7 +220,8 @@ namespace Winslew.Api
                 }
                 catch (Exception exp)
                 {
-                    // Console.Writeline(exp.Message);
+                    
+                    Trace.WriteLine(exp.Message);
                 }
             }
 
@@ -289,7 +291,7 @@ namespace Winslew.Api
                 }
                 catch (Exception exp)
                 {
-                    // Console.Writeline("Exeption: " + exp.Message);
+                    Trace.WriteLine("Exeption: " + exp.Message);
                 }
             }
             return cssSource;
