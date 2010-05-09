@@ -251,16 +251,23 @@ namespace Winslew.Api
 
         private bool isMachineReachable(string hostName)
         {
-            System.Net.IPHostEntry host = System.Net.Dns.GetHostEntry(hostName);
-            string wqlTemplate = "SELECT StatusCode FROM Win32_PingStatus WHERE Address = '{0}'";
-            System.Management.ManagementObjectSearcher query = new System.Management.ManagementObjectSearcher();
-            query.Query = new System.Management.ObjectQuery(String.Format(wqlTemplate,host.AddressList[0]));
-            query.Scope = new System.Management.ManagementScope("//localhost/root/cimv2");
-            System.Management.ManagementObjectCollection pings = query.Get();
-            foreach (System.Management.ManagementObject ping in pings)
+            try
             {
-                if(Convert.ToInt32(ping.GetPropertyValue("StatusCode" )) == 0)
-                    return true;
+                System.Net.IPHostEntry host = System.Net.Dns.GetHostEntry(hostName);
+                string wqlTemplate = "SELECT StatusCode FROM Win32_PingStatus WHERE Address = '{0}'";
+                System.Management.ManagementObjectSearcher query = new System.Management.ManagementObjectSearcher();
+                query.Query = new System.Management.ObjectQuery(String.Format(wqlTemplate, host.AddressList[0]));
+                query.Scope = new System.Management.ManagementScope("//localhost/root/cimv2");
+                System.Management.ManagementObjectCollection pings = query.Get();
+                foreach (System.Management.ManagementObject ping in pings)
+                {
+                    if (Convert.ToInt32(ping.GetPropertyValue("StatusCode")) == 0)
+                        return true;
+                }
+            }
+            catch
+            {
+                return false;
             }
             return false;
         }

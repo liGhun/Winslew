@@ -37,6 +37,12 @@ namespace Winslew.Api
 
             CachedItemContent storedCacheItem = new CachedItemContent();
 
+            if(!File.Exists(appDataPath + "\\Cache\\actualStylesheet.css")) {
+                string defaultCss = "body {\n  background-color:white;\n  color:black;}\n\n#WinslewTitle {\n  display:none;\n}";
+                StreamWriter fhCss = File.CreateText(appDataPath + "\\Cache\\actualStylesheet.css");
+                fhCss.Write(defaultCss);
+                fhCss.Close();
+            }
 
             // Initial load of already stored caches into general cache store
             foreach (string dir in Directory.GetDirectories(appDataPath + "\\Cache"))
@@ -160,10 +166,13 @@ namespace Winslew.Api
                 Response cachedLessContent = AppController.Current.getCacheText(itemToBeCached.url, "less");
                 if (cachedLessContent.Content != null && cachedLessContent.Content != "")
                 {
-                    fullText = "<html><head><title>" + cachedLessContent.TextTitle + "</title>";
-                    fullText += "<meta http-equiv=\"Content-Type\" content=\"" + cachedLessContent.TextContentType + "\"></head><body>\n";
-                    fullText += cachedLessContent.Content;
-                    fullText += "\n</body></html>";
+                    fullText = "<html>\n<head>\n<title>" + cachedLessContent.TextTitle + "</title>\n";
+                    fullText += "<meta http-equiv=\"Content-Type\" content=\"" + cachedLessContent.TextContentType + "\">\n";
+                    fullText += "<link rel=\"stylesheet\" type=\"text/css\" href=\"../actualStylesheet.css\" />\n</head>\n";
+                    fullText += "<body>\n";
+                    fullText += "<div id=\"WinslewTitle\"><h1>" + cachedLessContent.TextTitle + "</h1></div>\n";
+                    fullText += "<div id=\"WinslewBody\">" + cachedLessContent.Content + "</div>";
+                    fullText += "\n</body>\n</html>";
 
                     returnValue.LessVersion = cacheDir + "\\" + returnValue.Id.ToString() + "-less.html";
                     returnValue.LessUpdated = DateTime.Now;
@@ -183,10 +192,13 @@ namespace Winslew.Api
                 Response cachedMoreContent = AppController.Current.getCacheText(itemToBeCached.url, "more");
                 if (cachedMoreContent.Content != "" && cachedMoreContent.Content != null)
                 {
-                    fullText = "<html><head><title>" + cachedMoreContent.TextTitle + "</title>";
-                    fullText += "<meta http-equiv=\"Content-Type\" content=\"" + cachedMoreContent.TextContentType + "\"></head><body>\n";
-                    fullText += cachedMoreContent.Content;
-                    fullText += "\n</body></html>";
+                    fullText = "<html>\n<head>\n<title>" + cachedMoreContent.TextTitle + "</title>\n";
+                    fullText += "<meta http-equiv=\"Content-Type\" content=\"" + cachedMoreContent.TextContentType + "\">\n";
+                    fullText += "<link rel=\"stylesheet\" type=\"text/css\" href=\"../actualStylesheet.css\" />\n</head>\n";
+                    fullText += "<body>\n";
+                    fullText += "<div id=\"WinslewTitle\"><h1>" + cachedMoreContent.TextTitle + "</h1></div>\n";
+                    fullText += "<div id=\"WinslewBody\">" + cachedMoreContent.Content + "</div>";
+                    fullText += "\n</body>\n</html>";
 
                     returnValue.MoreVersion = cacheDir + "\\" + returnValue.Id.ToString() + "-more.html";
                     returnValue.MoreUpdated = DateTime.Now;
@@ -198,7 +210,7 @@ namespace Winslew.Api
                 }
                 else
                 {
-                    returnValue.MoreVersion = pathToNAPage;
+                    returnValue.MoreVersion = null;
                 }
             }
 

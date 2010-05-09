@@ -136,6 +136,14 @@ namespace Winslew
             listView_Items_SelectionChanged(null, null);
         }
 
+        private void comboBox_chooseStyle_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (comboBox_chooseStyle.SelectedValue != null)
+            {
+                AppController.Current.selectAnotherStyle(comboBox_chooseStyle.SelectedValue.ToString());
+            }
+        }
+
         private void listView_Items_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (listView_Items.SelectedItem != null)
@@ -532,9 +540,5 @@ namespace Winslew
                 } */
             }
         }
-
-
-
-
     }
 }

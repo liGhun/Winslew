@@ -41,6 +41,11 @@ namespace Winslew
         private DateTime ApiResetUser = DateTime.Now;
         private DateTime ApiResetApp = DateTime.Now;
 
+        private string appDataPath = "";
+        private string appProgramPath = "";
+        Dictionary<string, string> AvailableStyles;
+       // FileSystemWatcher fsWatcherStyles;
+
         private delegate void UpdateProgressBarDelegate(
         System.Windows.DependencyProperty dp, Object value);
 
@@ -68,17 +73,18 @@ namespace Winslew
 
                 // Checking and (if needed) creating preferences directories and files
 
-                string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-                if(!System.IO.Directory.Exists(appDataPath + "\\Winslew\\"))
+                appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Winslew\\";
+                appProgramPath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
+                if(!System.IO.Directory.Exists(appDataPath))
                 {
-                    System.IO.Directory.CreateDirectory(appDataPath + "\\Winslew\\");
+                    System.IO.Directory.CreateDirectory(appDataPath);
                 }
-                string alreadyMigratedSettingsTriggerFile = appDataPath + "\\Winslew\\PreferencesMigrated-" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() + ".upd";
+                string alreadyMigratedSettingsTriggerFile = appDataPath + "\\PreferencesMigrated-" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() + ".upd";
                 if (!System.IO.File.Exists(alreadyMigratedSettingsTriggerFile))
                 {
                     Properties.Settings.Default.Upgrade();
                     System.IO.File.Create(alreadyMigratedSettingsTriggerFile);
-                }
+                }   
                 Properties.Settings.Default.Save();
 
                 backgroundWorker1 = new BackgroundWorker();
@@ -182,12 +188,98 @@ namespace Winslew
                     }
                 }
             }
+
+            // xxx Load combobox styles
+            LoadComboBoxStyles();
+
             mainWindow.refreshItems();
             mainWindow.updateViewOfFrame();
 
             mainWindow.Show();
+            mainWindow.Focus();
             StartCacheUpdate(null);
 
+        }
+
+        private void LoadComboBoxStyles()
+        {
+            AvailableStyles = new Dictionary<string, string>();
+            if (mainWindow != null)
+            {
+                string[] availableDefaultStyles = Directory.GetFiles(appProgramPath.Substring(6) + "\\Styles", "*.css");
+                foreach (string style in availableDefaultStyles)
+                {
+                    AvailableStyles.Add(Path.GetFileNameWithoutExtension(style), style);
+                }
+                if(Directory.Exists(appDataPath + "\\Cache\\Styles")) {
+                    string[] availableUserDefinedStyles = Directory.GetFiles(appDataPath + "\\Cache\\Styles");
+                    foreach (string style in availableUserDefinedStyles)
+                    {
+                        if(AvailableStyles.ContainsKey(Path.GetFileNameWithoutExtension(style))) {
+                            // user defined ones override default styles
+                            AvailableStyles[Path.GetFileNameWithoutExtension(style)] = style;
+                        }
+                        else
+                        {
+                            AvailableStyles.Add(Path.GetFileNameWithoutExtension(style), style);
+                        }
+                    }
+                }
+                foreach(string styleName in AvailableStyles.Keys) {
+                   mainWindow.comboBox_chooseStyle.Items.Add(styleName);
+                }
+                if(!Directory.Exists(appDataPath + "\\Cache\\Styles")) {
+                    Directory.CreateDirectory(appDataPath + "\\Cache\\Styles");
+                }
+                /*
+                fsWatcherStyles = new FileSystemWatcher();
+                fsWatcherStyles.Path = appDataPath + "\\Cache\\Styles";
+                fsWatcherStyles.Filter = "*.css";
+                fsWatcherStyles.SynchronizingObject = ;
+                fsWatcherStyles.Created += (obj, e) =>AvailableStyles.BeginInvoke(DispatcherPriority.Send, new Action(() =>
+  {
+    // Code to handle Changed event
+  }));
+                fsWatcherStyles.Deleted += new FileSystemEventHandler(fsWatcherStyles_Deleted);
+                fsWatcherStyles.EnableRaisingEvents = true;
+                */
+                mainWindow.comboBox_chooseStyle.SelectedValue = Properties.Settings.Default.Style;
+            }
+        }
+
+        public void selectAnotherStyle(string styleName)
+        {
+            if(AvailableStyles.ContainsKey(styleName)) {
+                if (File.Exists(AvailableStyles[styleName]))
+                {
+                    File.Copy(AvailableStyles[styleName], appDataPath + "\\Cache\\actualStylesheet.css",true);
+                    mainWindow.frame_content.Refresh();
+                    Properties.Settings.Default.Style = styleName;
+                }
+            }
+        }
+
+        private void fsWatcherStyles_Created(object source, FileSystemEventArgs e)
+        {
+            if (AvailableStyles.ContainsKey(Path.GetFileNameWithoutExtension(e.FullPath)))
+            {
+                // user defined ones override default styles
+                AvailableStyles[Path.GetFileNameWithoutExtension(e.FullPath)] = e.FullPath;
+            }
+            else
+            {
+                AvailableStyles.Add(Path.GetFileNameWithoutExtension(e.FullPath), e.FullPath);
+                // AppController.Current.mainWindow.comboBox_chooseStyle.Items.Add(Path.GetFileNameWithoutExtension(e.FullPath));
+            }
+        }
+
+        private void fsWatcherStyles_Deleted(object source, FileSystemEventArgs e)
+        {
+            if (AvailableStyles.ContainsKey(Path.GetFileNameWithoutExtension(e.FullPath)))
+            {
+                AvailableStyles.Remove(Path.GetFileNameWithoutExtension(e.FullPath));
+                // AppController.Current.mainWindow.comboBox_chooseStyle.Items.Remove(Path.GetFileNameWithoutExtension(e.FullPath));
+            }
         }
 
         private void loadCacheStoreFromHdd(List<Item> listOfItems)
@@ -232,11 +324,16 @@ namespace Winslew
         }
 
         private void StartCacheUpdate(List<Item> ToBeUpdatedItems) {
+            if(!apiAccess.checkIfOnline())
+            {
+                return;
+            }
             bool isInitialUpdate = false;
             if (ToBeUpdatedItems == null)
             {
                 isInitialUpdate = true;
                 IEnumerable<Item> NextIncompleteItems = itemsCollection.Where((Item bq) => bq.contentCache.IsComplete == false);
+                 
                 ToBeUpdatedItems = new List<Item>();
                 foreach (Item item in NextIncompleteItems)
                 {

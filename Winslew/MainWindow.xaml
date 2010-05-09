@@ -9,6 +9,16 @@
         LocationChanged="Window_LocationChanged"
         >
 <Window.Resources>
+        <Style x:Key="CustomListViewItemStyle" TargetType="{x:Type ListViewItem}">
+            <Style.Triggers>
+                <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                    <Setter Property="Background" Value="#2C2C2C"></Setter>
+                </Trigger>
+                <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                    <Setter Property="Background" Value="#262626"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
         <DataTemplate x:Key="Image">
             <StackPanel Orientation="Horizontal">
                 <Image Source="{Binding Path=contentCache.FavIconPath}" Width="16" Height="16" />
@@ -89,7 +99,10 @@
             </Button>
 
         </ToolBar>
-        <ListView Margin="0,29,0,0" Name="listView_Items" Height="147" VerticalAlignment="Top" SelectionChanged="listView_Items_SelectionChanged" Foreground="Black">
+
+
+
+        <ListView AlternationCount="2" Margin="0,29,0,0" Name="listView_Items" Height="147" VerticalAlignment="Top" SelectionChanged="listView_Items_SelectionChanged" Foreground="Black">
             <ListView.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.4">
                         <LinearGradientBrush.GradientStops>
@@ -107,8 +120,17 @@
             <ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
                     <Setter Property="ToolTip" Value="{Binding Path=DescripiveText}" />
+                    <Style.Triggers>
+                        <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                            <Setter Property="Background" Value="#eeeeee"></Setter>
+                        </Trigger>
+                        <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                            <Setter Property="Background" Value="#f5f5f5"></Setter>
+                        </Trigger>
+                    </Style.Triggers>
                 </Style>
             </ListView.ItemContainerStyle>
+
             <ListView.ContextMenu>
                 <ContextMenu>
                     <MenuItem Name="ContextToggleReadState" Click="ContextToggleReadState_Click"  Header="Toggle read state">
@@ -226,27 +248,33 @@
         </Border>
         
 
-        <Button Height="23" HorizontalAlignment="Right" Margin="0,184,117,0" Name="button_openInBrowser" VerticalAlignment="Top" Width="23" Click="button_openInBrowser_Click">
+        <Button Height="23" HorizontalAlignment="Right" Margin="0,184,203,0" Name="button_openInBrowser" VerticalAlignment="Top" Width="23" Click="button_openInBrowser_Click">
             <Image Source="/Winslew;component/Images/browser.png" ToolTip="Open page in external browser"></Image>
         </Button>
 
-        <Button Height="23" HorizontalAlignment="Right" Margin="0,184,145,0" Name="button_copyUrlToClipboard" VerticalAlignment="Top" Width="23" Click="button_copyUrlToClipboard_Click">
+        <Button Height="23" HorizontalAlignment="Right" Margin="0,184,231,0" Name="button_copyUrlToClipboard" VerticalAlignment="Top" Width="23" Click="button_copyUrlToClipboard_Click">
             <Image Source="/Winslew;component/Images/copyClipboard.png" ToolTip="Copy current selected item url to clipboard"></Image>
         </Button>
 
-        <Button Height="23" HorizontalAlignment="Right" Margin="0,184,173,0" Name="button_printPage" VerticalAlignment="Top" Width="23" Click="button_printPage_Click">
+        <Button Height="23" HorizontalAlignment="Right" Margin="0,184,259,0" Name="button_printPage" VerticalAlignment="Top" Width="23" Click="button_printPage_Click">
             <Image Source="/Winslew;component/Images/print.png" ToolTip="Print the currently displayed webpage"></Image>
         </Button>
 
+        <Button Height="23" HorizontalAlignment="Right" Margin="0,184,175,0" Name="button_updateCache" VerticalAlignment="Top" Width="23" Click="button_updateCache_Click">
+            <Image Source="/Winslew;component/Images/refresh.png" ToolTip="Update cache for this webpage"></Image>
+        </Button>
+
+        <ComboBox SelectionChanged="comboBox_chooseStyle_SelectionChanged" Height="23" HorizontalAlignment="Right" Margin="0,184,90,0" Name="comboBox_chooseStyle" VerticalAlignment="Top" Width="80" ToolTip="Style for more and less display">
+
+        </ComboBox>
+        
         <ComboBox Height="23" HorizontalAlignment="Right" Margin="0,184,4,0" SelectionChanged="comboBox_browserView_SelectionChanged" Name="comboBox_browserView" VerticalAlignment="Top" Width="80" ToolTip="Cache to be displayed">
             <ComboBoxItem Content="Online" Tag="online" />
             <ComboBoxItem Content="Full" Tag="full" />
             <ComboBoxItem Content="More" Tag="more" />
             <ComboBoxItem Content="Less" Tag="less" />
         </ComboBox>
-        <Button Height="23" HorizontalAlignment="Right" Margin="0,184,89,0" Name="button_updateCache" VerticalAlignment="Top" Width="23" Click="button_updateCache_Click">
-            <Image Source="/Winslew;component/Images/refresh.png" ToolTip="Update cache for this webpage"></Image>
-        </Button>
+
 
         <StatusBar Height="23" Margin="1,0,0,-1" Name="statusBar_mainWindow" VerticalAlignment="Bottom" Padding="0,0,0,0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Right" FlowDirection="LeftToRight">
             <StatusBar.Background>

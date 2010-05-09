@@ -59,5 +59,8 @@
     <Setting Name="ApiAppWarnPercentage" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">10</Value>
     </Setting>
+    <Setting Name="Style" Type="System.String" Scope="User">
+      <Value Profile="(Default)">BlackOnWhite</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

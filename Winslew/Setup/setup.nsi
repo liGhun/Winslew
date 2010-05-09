@@ -148,6 +148,9 @@ Section "Winslew"
   SetOutPath "$INSTDIR\\Images"
   File "..\Images\Winslew.png"
   File "..\Images\WinslewSetup.ico"
+
+  SetOutPath "$INSTDIR\\Styles"
+  File "..\Styles\*"
  
   ; Set output path to the installation directory.
   SetOutPath $INSTDIR

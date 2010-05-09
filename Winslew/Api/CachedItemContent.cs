@@ -28,17 +28,7 @@ namespace Winslew.Api
         }
 
 
-        public string MoreVersion
-        {
-            get
-            {
-                return _moreVersion;
-            }
-            set
-            {
-                _moreVersion = value;
-            }
-        }
+        public string MoreVersion {get; set;}
         public DateTime MoreUpdated { get; set; }
         public string MoreUpdatedHumanReadable
         {
@@ -83,7 +73,7 @@ namespace Winslew.Api
         }
         public string FavIconPath { get; set; }
 
-        private string _moreVersion = "";
+        
         public bool IsComplete
         {
             get
