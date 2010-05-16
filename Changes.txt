@@ -1,6 +1,12 @@
 1.3
 Print webpage added
 Cache type "full" added with as much styles and images as possible available offline
+Styles for More and Less view (*)
+Cache creation is background process now
+Change title added
+Better list view
+
+* only on newly generated or updated caches
 
 1.2.1
 Fixed a bug in more/less content handling (leading to they where the same sometimes...)
