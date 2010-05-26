@@ -180,6 +180,34 @@ namespace Winslew.Api
             }
         }
 
+        public bool addTags(List<Dictionary<string, string>> data)
+        {
+            if (Properties.Settings.Default.Username != "" && Properties.Settings.Default.Password != "")
+            {
+
+                string request = createJson(data);
+                Response result = HttpCommunications.SendPostRequest(@"https://readitlaterlist.com/v2/send", new
+                {
+                    username = Properties.Settings.Default.Username,
+                    password = getPassword(),
+                    apikey = apiKey,
+                    update_tags = request
+
+                }, false);
+                // bool success = (!string.IsNullOrEmpty(result) && result.ToLowerInvariant() == "200 ok");
+                if (!result.Success)
+                {
+                    System.Windows.Forms.MessageBox.Show(result.Error, "Login to Read It Later failed");
+                }
+                return result.Success;
+            }
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("Missing username or password", "Setup your credentials in the Preferences first");
+                return false;
+            }
+        }
+
         public bool changeTitle(Dictionary<string, string> data)
         {
             if (Properties.Settings.Default.Username != "" && Properties.Settings.Default.Password != "")
@@ -293,6 +321,22 @@ namespace Winslew.Api
         private  string createJson(Dictionary<string, string> data) {
             Dictionary<string, object> container = new Dictionary<string, object>();
             container.Add("0", data);
+            var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+            return serializer.Serialize(container);
+        }
+
+        private string createJson(List<Dictionary<string, string>> data)
+        {
+            int i = 0;
+            Dictionary<string, object> container = new Dictionary<string, object>();
+            foreach (Dictionary<string, string> singleData in data)
+            {
+                Dictionary<string, string> singleUrl = new Dictionary<string, string>();
+                singleUrl.Add("url", singleData.FirstOrDefault().Key);
+                singleUrl.Add("tags", singleData.FirstOrDefault().Value);
+                container.Add(i.ToString(), singleUrl);
+                i++;
+            }
             var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
             return serializer.Serialize(container);
         }

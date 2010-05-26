@@ -598,6 +598,12 @@ namespace Winslew
             sendSnarlNotification("Item tags changed", "Item tags have been changed", "");
         }
 
+        public void addTags(List<Dictionary<string, string>> data)
+        {
+            apiAccess.addTags(data);
+            SetData(false);
+        }
+
         public void changeTitle(Dictionary<string, string> data)
         {
             apiAccess.changeTitle(data);

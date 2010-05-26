@@ -62,5 +62,8 @@
     <Setting Name="Style" Type="System.String" Scope="User">
       <Value Profile="(Default)">BlackOnWhite</Value>
     </Setting>
+    <Setting Name="TopGridHeight" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">177</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

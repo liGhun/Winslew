@@ -262,5 +262,17 @@ namespace Winslew.Properties {
                 this["Style"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("177")]
+        public double TopGridHeight {
+            get {
+                return ((double)(this["TopGridHeight"]));
+            }
+            set {
+                this["TopGridHeight"] = value;
+            }
+        }
     }
 }

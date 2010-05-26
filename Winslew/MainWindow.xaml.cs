@@ -41,6 +41,8 @@ namespace Winslew
             ListViewColumnAdded.Width = Properties.Settings.Default.ListViewWidthAdded;
             ListViewColumnUpdated.Width = Properties.Settings.Default.ListViewWidthUpdated;
 
+            // = Properties.Settings.Default.TopGridHeight;
+
             if (Properties.Settings.Default.ShowReadItems)
             {
                 CurrentView.Content = "Read view";
@@ -529,16 +531,33 @@ namespace Winslew
         {
             if (listView_Items.SelectedItem != null)
             {
-                var currentItem = listView_Items.SelectedItem as Item;
-                mshtml.IHTMLDocument2 doc = frame_content.Document as mshtml.IHTMLDocument2;
-                doc.execCommand("Print", true, null);
-               /* PrintDialog myPrintDialog = new PrintDialog();
-                if (myPrintDialog.ShowDialog() == true)
+                try
                 {
-                    frame_content.
-                    myPrintDialog.PrintVisual(frame_content, currentItem.title);
-                } */
+                    var currentItem = listView_Items.SelectedItem as Item;
+                    /* xxx Printing not working anymore
+                    mshtml.IHTMLDocument2 doc = frame_content.Document as mshtml.IHTMLDocument2;
+                    doc.execCommand("Print", true, null); */
+                }
+                catch (Exception exp)
+                {
+                    MessageBox.Show(exp.Message, "Printing failed");
+                }
             }
         }
+
+        private void button_addTags_Click(object sender, RoutedEventArgs e)
+        {
+            if (listView_Items.SelectedItems.Count > 0)
+            {
+                List<Item> items = new List<Item>();
+                foreach (Item item in listView_Items.SelectedItems)
+                {
+                    items.Add(item);
+                }
+                AddTags myWnd = new AddTags(items);
+                myWnd.Show();
+            }
+        }
+
     }
 }

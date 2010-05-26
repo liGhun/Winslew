@@ -26,279 +26,299 @@
         </DataTemplate>
     </Window.Resources>
     <Grid>
-        <ToolBar Height="30" Name="toolBar1" VerticalAlignment="Top" HorizontalAlignment="Left">
-            <ToolBar.Background>
-                <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.2">
-                    <LinearGradientBrush.GradientStops>
-                        <GradientStop Offset="0" Color="White" />
-                        <GradientStop Offset="1" Color="LightGray" />
-                    </LinearGradientBrush.GradientStops>
-                </LinearGradientBrush>
-            </ToolBar.Background>
-            <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_refresh" VerticalAlignment="Top" Width="24" Click="button_refresh_Click">
-                <Image Source="/Winslew;component/Images/refresh.png" ToolTip="Refresh"></Image>
-            </Button>
-
-            <Separator />
-
-            <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_toggleView" VerticalAlignment="Top" Width="24" Click="button_toggleView_Click">
-                <Image Name="ToggleView" ToolTip="Toggle current view" Source="/Winslew;component/Images/toggleView.png"></Image>
-            </Button>
-            <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_toggleViewText" VerticalAlignment="Top"  Click="button_toggleView_Click">
-                <Label Name="CurrentView" Height="24" VerticalAlignment="Center" Width="80" FontWeight="Bold">Unread view</Label>
-            </Button>
-
-            <Separator />
-            <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_changeTitle" VerticalAlignment="Top" Width="24" Click="button_changeTitle_Click">
-                <Image Name="ImageChangeTitle" Source="/Winslew;component/Images/changeTitle.png" ToolTip="Change title"></Image>
-            </Button>
-            <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_editTags" VerticalAlignment="Top" Width="24" Click="button_editTags_Click">
-                <Image Name="ImageEditTags" Source="/Winslew;component/Images/edit.png" ToolTip="Edit tags"></Image>
-            </Button>
-            <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_markRead" VerticalAlignment="Top" Width="24" Click="button_markRead_Click">
-                <Image Name="ImageReadState" Source="/Winslew;component/Images/unread.png"></Image>
-            </Button>
-            <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_addNew" VerticalAlignment="Top" Width="24" Click="button_addNew_Click">
-                <Image Name="ImageAddNew" Source="/Winslew;component/Images/add.png" ToolTip="Add new item"></Image>
-            </Button>
-            <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0"  Name="button_delete" VerticalAlignment="Top" Width="24" Click="button_delete_Click">
-                <Image Name="ImageDelete" Source="/Winslew;component/Images/trashcan.png" ToolTip="Delete item" ></Image>
-            </Button>
-
-        </ToolBar>
-        <ToolBar Height="30" Name="toolBar_filter" VerticalAlignment="Top" HorizontalAlignment="Right" Width="204" Margin="0,0,66,0">
-            <ToolBar.Background>
-                <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.2">
-                    <LinearGradientBrush.GradientStops>
-                        <GradientStop Offset="0" Color="White" />
-                        <GradientStop Offset="1" Color="LightGray" />
-                    </LinearGradientBrush.GradientStops>
-                </LinearGradientBrush>
-            </ToolBar.Background>
-            <Image Name="ImageFilter" Source="/Winslew;component/Images/filter.png" ToolTip="Filter" Width="18" Height="18" HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
-            <TextBox Height="23" HorizontalAlignment="Right" Name="textBox_filterTitle" VerticalAlignment="Center" Width="70" ToolTip="Filter title" TextChanged="textBox_filterTitle_TextChanged" Background="Transparent" BorderBrush="Black" />
-            <Separator />
-            <TextBox Height="23" HorizontalAlignment="Right" Name="textBox_filterTags" VerticalAlignment="Center" Width="70" ToolTip="Filter tags" TextChanged="textBox_filterTags_TextChanged" BorderBrush="Black" Background="Transparent" />
-        </ToolBar>
-
-        <ToolBar Height="30" Name="toolBar2" VerticalAlignment="Top" HorizontalAlignment="Right">
-            <ToolBar.Background>
-                <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.2">
-                    <LinearGradientBrush.GradientStops>
-                        <GradientStop Offset="0" Color="White" />
-                        <GradientStop Offset="1" Color="LightGray" />
-                    </LinearGradientBrush.GradientStops>
-                </LinearGradientBrush>
-            </ToolBar.Background>
-
-            <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_preferences" VerticalAlignment="Top" Width="24" Click="button_preferences_Click">
-                <Image Name="ImagePreferenes" Source="/Winslew;component/Images/preferences.png" ToolTip="Preferences"></Image>
-            </Button>
-            <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_help" VerticalAlignment="Top" Width="24" Click="button_help_Click" >
-                <Image Name="ImageHelp" Source="/Winslew;component/Images/help.png" ToolTip="Help / About"></Image>
-            </Button>
-
-        </ToolBar>
-
-
-
-        <ListView AlternationCount="2" Margin="0,29,0,0" Name="listView_Items" Height="147" VerticalAlignment="Top" SelectionChanged="listView_Items_SelectionChanged" Foreground="Black">
-            <ListView.Background>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.4">
-                        <LinearGradientBrush.GradientStops>
-                            <GradientStop Offset="0" Color="White" />
-                            <GradientStop Offset="1" Color="LightGray" />
-                        </LinearGradientBrush.GradientStops>
-                    </LinearGradientBrush>
-            </ListView.Background>
-            <ListView.Resources>
-                <Style TargetType="{x:Type GridViewColumnHeader}">
-                    <Setter Property="Background" Value="LightGray" />
-                    <Setter Property="Foreground" Value="Black" />
-                </Style>
-            </ListView.Resources>
-            <ListView.ItemContainerStyle>
-                <Style TargetType="{x:Type ListViewItem}">
-                    <Setter Property="ToolTip" Value="{Binding Path=DescripiveText}" />
-                    <Style.Triggers>
-                        <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                            <Setter Property="Background" Value="#eeeeee"></Setter>
-                        </Trigger>
-                        <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                            <Setter Property="Background" Value="#f5f5f5"></Setter>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </ListView.ItemContainerStyle>
-
-            <ListView.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Name="ContextToggleReadState" Click="ContextToggleReadState_Click"  Header="Toggle read state">
-                        <MenuItem.Icon>
-                            <Image Source="/Winslew;component/Images/markedRead.png" Width="14" Height="14" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Name="ContextChangeTitle" Click="ContextChangeTitle_Click"  Header="Change title">
-                        <MenuItem.Icon>
-                            <Image Source="/Winslew;component/Images/changeTitle.png" Width="14" Height="14" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Name="ContextEditTags" Click="ContextEditTags_Click"  Header="Edit tags">
-                        <MenuItem.Icon>
-                            <Image Source="/Winslew;component/Images/edit.png" Width="14" Height="14" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Name="ContextOpenInBrower" Click="ContextOpenInBrower_Click" Header="Open item in external browser">
-                        <MenuItem.Icon>
-                            <Image Source="/Winslew;component/Images/browser.png" Width="14" Height="14" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Name="ContextCopyUrl" Click="ContextCopyUrl_Click" Header="Copy url to clipboard">
-                        <MenuItem.Icon>
-                            <Image Source="/Winslew;component/Images/copyClipboard.png" Width="14" Height="14" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Name="ContextPrint" Click="ContextPrint_Click"  Header="Print currently selected webpage">
-                        <MenuItem.Icon>
-                            <Image Source="/Winslew;component/Images/print.png" Width="14" Height="14" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Name="ContextUpdateCache" Click="ContextUpdateCache_Click"  Header="Update cache for this item">
-                        <MenuItem.Icon>
-                            <Image Source="/Winslew;component/Images/update.png" Width="14" Height="14" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Name="ContextDelete" Click="ContextDelete_Click"  Header="Delete this item">
-                        <MenuItem.Icon>
-                            <Image Source="/Winslew;component/Images/trashcan.png" Width="14" Height="14" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                </ContextMenu>
-            </ListView.ContextMenu>
-            <ListView.View>
-                <GridView AllowsColumnReorder="true">
-                    <GridViewColumn 
-                        x:Name="FavIcon" 
-                        Width="30" 
-                        CellTemplate="{StaticResource Image}"
-                        />
-
-                    <GridViewColumn 
-                        DisplayMemberBinding="{Binding Path=title}" 
-                        Width="360" x:Name="ListViewColumnTitle">
-                        <GridViewColumnHeader 
-                            Tag="title" 
-                            Content="Title" 
-                            Click="GridViewColumnHeader_Click"
-                            SizeChanged="GridViewColumnHeader_SizeChanged"/>
-                    </GridViewColumn>
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=tags}" 
-                      Width="120" x:Name="ListViewColumnTags">
-                        <GridViewColumnHeader 
-                            Tag="tags" 
-                            Content="Tags" 
-                            Click="GridViewColumnHeader_Click"
-                            SizeChanged="GridViewColumnHeader_SizeChanged"/>
-                    </GridViewColumn>
-
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=timeAddedHumanReadable}" 
-                      Width="120" x:Name="ListViewColumnAdded">
-                        <GridViewColumnHeader 
-                            Tag="timeAdded" 
-                            Content="Added" 
-                            Click="GridViewColumnHeader_Click"
-                            SizeChanged="GridViewColumnHeader_SizeChanged"/>
-                    </GridViewColumn>
-                        
-                    
-                    <GridViewColumn DisplayMemberBinding="{Binding Path=timeUpdatedHumanReadable}" 
-                      Width="120" x:Name="ListViewColumnUpdated">
-                        <GridViewColumnHeader 
-                            Tag="timeUpdated" 
-                            Content="Updated" 
-                            Click="GridViewColumnHeader_Click"
-                            SizeChanged="GridViewColumnHeader_SizeChanged"/>
-                    </GridViewColumn>
-
-                </GridView>
-
-            </ListView.View>
-        </ListView>
-
-
-
-        <WebBrowser Name="frame_content" 
-            Margin="0,213,0,20"
-               >
+        <Grid.RowDefinitions>
+            <RowDefinition Name="TopGridDef" MinHeight="5" Height="177" />
+            <RowDefinition MinHeight="18"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" MinHeight="30" Name="TopGrid" >
             
-        </WebBrowser>
-
-
-        <Border Height="28" Margin="0,179,0,0" Name="border1" VerticalAlignment="Top">
-            <Border.Background>
+            <ToolBar Height="30" Name="toolBar1" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <ToolBar.Background>
                     <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.2">
                         <LinearGradientBrush.GradientStops>
                             <GradientStop Offset="0" Color="White" />
                             <GradientStop Offset="1" Color="LightGray" />
                         </LinearGradientBrush.GradientStops>
                     </LinearGradientBrush>
-            </Border.Background>
-            <Label Height="30" Name="label_TitleOfItem" Foreground="Black" FontSize="16" FontWeight="Bold" 
-                   Width="782" HorizontalAlignment="Left"></Label>
-        </Border>
-        
+                </ToolBar.Background>
+                <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_refresh" VerticalAlignment="Top" Width="24" Click="button_refresh_Click">
+                    <Image Source="/Winslew;component/Images/refresh.png" ToolTip="Refresh"></Image>
+                </Button>
 
-        <Button Height="23" HorizontalAlignment="Right" Margin="0,184,203,0" Name="button_openInBrowser" VerticalAlignment="Top" Width="23" Click="button_openInBrowser_Click">
-            <Image Source="/Winslew;component/Images/browser.png" ToolTip="Open page in external browser"></Image>
-        </Button>
+                <Separator />
 
-        <Button Height="23" HorizontalAlignment="Right" Margin="0,184,231,0" Name="button_copyUrlToClipboard" VerticalAlignment="Top" Width="23" Click="button_copyUrlToClipboard_Click">
-            <Image Source="/Winslew;component/Images/copyClipboard.png" ToolTip="Copy current selected item url to clipboard"></Image>
-        </Button>
+                <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_toggleView" VerticalAlignment="Top" Width="24" Click="button_toggleView_Click">
+                    <Image Name="ToggleView" ToolTip="Toggle current view" Source="/Winslew;component/Images/toggleView.png"></Image>
+                </Button>
+                <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_toggleViewText" VerticalAlignment="Top"  Click="button_toggleView_Click">
+                    <Label Name="CurrentView" Height="24" VerticalAlignment="Center" Width="80" FontWeight="Bold">Unread view</Label>
+                </Button>
 
-        <Button Height="23" HorizontalAlignment="Right" Margin="0,184,259,0" Name="button_printPage" VerticalAlignment="Top" Width="23" Click="button_printPage_Click">
-            <Image Source="/Winslew;component/Images/print.png" ToolTip="Print the currently displayed webpage"></Image>
-        </Button>
+                <Separator />
+                <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_changeTitle" VerticalAlignment="Top" Width="24" Click="button_changeTitle_Click">
+                    <Image Name="ImageChangeTitle" Source="/Winslew;component/Images/changeTitle.png" ToolTip="Change title"></Image>
+                </Button>
+                <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_editTags" VerticalAlignment="Top" Width="24" Click="button_editTags_Click">
+                    <Image Name="ImageEditTags" Source="/Winslew;component/Images/edit.png" ToolTip="Edit tags"></Image>
+                </Button>
+                <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_addTags" VerticalAlignment="Top" Width="24" Click="button_addTags_Click">
+                    <Image Name="ImageAddTags" Source="/Winslew;component/Images/addTags.png" ToolTip="Add tags"></Image>
+                </Button>
+                <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_markRead" VerticalAlignment="Top" Width="24" Click="button_markRead_Click">
+                    <Image Name="ImageReadState" Source="/Winslew;component/Images/unread.png"></Image>
+                </Button>
+                <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_addNew" VerticalAlignment="Top" Width="24" Click="button_addNew_Click">
+                    <Image Name="ImageAddNew" Source="/Winslew;component/Images/add.png" ToolTip="Add new item"></Image>
+                </Button>
+                <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0"  Name="button_delete" VerticalAlignment="Top" Width="24" Click="button_delete_Click">
+                    <Image Name="ImageDelete" Source="/Winslew;component/Images/trashcan.png" ToolTip="Delete item" ></Image>
+                </Button>
 
-        <Button Height="23" HorizontalAlignment="Right" Margin="0,184,175,0" Name="button_updateCache" VerticalAlignment="Top" Width="23" Click="button_updateCache_Click">
-            <Image Source="/Winslew;component/Images/refresh.png" ToolTip="Update cache for this webpage"></Image>
-        </Button>
+            </ToolBar>
+            <ToolBar Height="30" Name="toolBar_filter" VerticalAlignment="Top" HorizontalAlignment="Right" Width="204" Margin="0,0,66,0">
+                <ToolBar.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.2">
+                        <LinearGradientBrush.GradientStops>
+                            <GradientStop Offset="0" Color="White" />
+                            <GradientStop Offset="1" Color="LightGray" />
+                        </LinearGradientBrush.GradientStops>
+                    </LinearGradientBrush>
+                </ToolBar.Background>
+                <Image Name="ImageFilter" Source="/Winslew;component/Images/filter.png" ToolTip="Filter" Width="18" Height="18" HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
+                <TextBox Height="23" HorizontalAlignment="Right" Name="textBox_filterTitle" VerticalAlignment="Center" Width="70" ToolTip="Filter title" TextChanged="textBox_filterTitle_TextChanged" Background="Transparent" BorderBrush="Black" />
+                <Separator />
+                <TextBox Height="23" HorizontalAlignment="Right" Name="textBox_filterTags" VerticalAlignment="Center" Width="70" ToolTip="Filter tags" TextChanged="textBox_filterTags_TextChanged" BorderBrush="Black" Background="Transparent" />
+            </ToolBar>
 
-        <ComboBox SelectionChanged="comboBox_chooseStyle_SelectionChanged" Height="23" HorizontalAlignment="Right" Margin="0,184,90,0" Name="comboBox_chooseStyle" VerticalAlignment="Top" Width="80" ToolTip="Style for more and less display">
+            <ToolBar Height="30" Name="toolBar2" VerticalAlignment="Top" HorizontalAlignment="Right">
+                <ToolBar.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.2">
+                        <LinearGradientBrush.GradientStops>
+                            <GradientStop Offset="0" Color="White" />
+                            <GradientStop Offset="1" Color="LightGray" />
+                        </LinearGradientBrush.GradientStops>
+                    </LinearGradientBrush>
+                </ToolBar.Background>
 
-        </ComboBox>
-        
-        <ComboBox Height="23" HorizontalAlignment="Right" Margin="0,184,4,0" SelectionChanged="comboBox_browserView_SelectionChanged" Name="comboBox_browserView" VerticalAlignment="Top" Width="80" ToolTip="Cache to be displayed">
-            <ComboBoxItem Content="Online" Tag="online" />
-            <ComboBoxItem Content="Full" Tag="full" />
-            <ComboBoxItem Content="More" Tag="more" />
-            <ComboBoxItem Content="Less" Tag="less" />
-        </ComboBox>
+                <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_preferences" VerticalAlignment="Top" Width="24" Click="button_preferences_Click">
+                    <Image Name="ImagePreferenes" Source="/Winslew;component/Images/preferences.png" ToolTip="Preferences"></Image>
+                </Button>
+                <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_help" VerticalAlignment="Top" Width="24" Click="button_help_Click" >
+                    <Image Name="ImageHelp" Source="/Winslew;component/Images/help.png" ToolTip="Help / About"></Image>
+                </Button>
 
+            </ToolBar>
 
-        <StatusBar Height="23" Margin="1,0,0,-1" Name="statusBar_mainWindow" VerticalAlignment="Bottom" Padding="0,0,0,0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Right" FlowDirection="LeftToRight">
-            <StatusBar.Background>
-                <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.4">
-                    <LinearGradientBrush.GradientStops>
-                        <GradientStop Offset="0" Color="White" />
-                        <GradientStop Offset="1" Color="LightGray" />
-                    </LinearGradientBrush.GradientStops>
-                </LinearGradientBrush>
-            </StatusBar.Background>
-            <Label Content="Api usage: User: - of - left, next reset in - seconds - Winslew: - of - left, next reset in - seconds" Padding="0,0,0,0" FontSize="10" Margin="0,0,0,0" Name="label_apiLimits" />
-            <ProgressBar Name="ProgressBarCurrentAction" Width="80" Margin="0" Padding="0" Height="10" />
-            <Label Content="Updating 2 of 34" Padding="0" FontSize="10" Margin="0" Name="LabelCurrentAction"/>
             
-            <Button  Margin="20,0,0,0" Name="button_openSnarlIcon" Click="button_openSnarl_Click" 
+
+            <ListView AlternationCount="2" Margin="0,29,0,0" Name="listView_Items"  VerticalAlignment="Top" SelectionChanged="listView_Items_SelectionChanged" Foreground="Black">
+                <ListView.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.4">
+                        <LinearGradientBrush.GradientStops>
+                            <GradientStop Offset="0" Color="White" />
+                            <GradientStop Offset="1" Color="LightGray" />
+                        </LinearGradientBrush.GradientStops>
+                    </LinearGradientBrush>
+                </ListView.Background>
+                <ListView.Resources>
+                    <Style TargetType="{x:Type GridViewColumnHeader}">
+                        <Setter Property="Background" Value="LightGray" />
+                        <Setter Property="Foreground" Value="Black" />
+                    </Style>
+                </ListView.Resources>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListViewItem}">
+                        <Setter Property="ToolTip" Value="{Binding Path=DescripiveText}" />
+                        <Style.Triggers>
+                            <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                                <Setter Property="Background" Value="#eeeeee"></Setter>
+                            </Trigger>
+                            <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                                <Setter Property="Background" Value="#f5f5f5"></Setter>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter Property="Background" Value="Yellow"></Setter>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListView.ItemContainerStyle>
+
+                <ListView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Name="ContextToggleReadState" Click="ContextToggleReadState_Click"  Header="Toggle read state">
+                            <MenuItem.Icon>
+                                <Image Source="/Winslew;component/Images/markedRead.png" Width="14" Height="14" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Name="ContextChangeTitle" Click="ContextChangeTitle_Click"  Header="Change title">
+                            <MenuItem.Icon>
+                                <Image Source="/Winslew;component/Images/changeTitle.png" Width="14" Height="14" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Name="ContextEditTags" Click="ContextEditTags_Click"  Header="Edit tags">
+                            <MenuItem.Icon>
+                                <Image Source="/Winslew;component/Images/edit.png" Width="14" Height="14" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Name="ContextOpenInBrower" Click="ContextOpenInBrower_Click" Header="Open item in external browser">
+                            <MenuItem.Icon>
+                                <Image Source="/Winslew;component/Images/browser.png" Width="14" Height="14" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Name="ContextCopyUrl" Click="ContextCopyUrl_Click" Header="Copy url to clipboard">
+                            <MenuItem.Icon>
+                                <Image Source="/Winslew;component/Images/copyClipboard.png" Width="14" Height="14" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Name="ContextPrint" Click="ContextPrint_Click"  Header="Print currently selected webpage">
+                            <MenuItem.Icon>
+                                <Image Source="/Winslew;component/Images/print.png" Width="14" Height="14" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Name="ContextUpdateCache" Click="ContextUpdateCache_Click"  Header="Update cache for this item">
+                            <MenuItem.Icon>
+                                <Image Source="/Winslew;component/Images/update.png" Width="14" Height="14" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Name="ContextDelete" Click="ContextDelete_Click"  Header="Delete this item">
+                            <MenuItem.Icon>
+                                <Image Source="/Winslew;component/Images/trashcan.png" Width="14" Height="14" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </ContextMenu>
+                </ListView.ContextMenu>
+                <ListView.View>
+                    <GridView AllowsColumnReorder="true">
+                        <GridViewColumn 
+                        x:Name="FavIcon" 
+                        Width="30" 
+                        CellTemplate="{StaticResource Image}"
+                        />
+
+                        <GridViewColumn 
+                        DisplayMemberBinding="{Binding Path=title}" 
+                        Width="360" x:Name="ListViewColumnTitle">
+                            <GridViewColumnHeader 
+                            Tag="title" 
+                            Content="Title" 
+                            Click="GridViewColumnHeader_Click"
+                            SizeChanged="GridViewColumnHeader_SizeChanged"/>
+                        </GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=tags}" 
+                      Width="120" x:Name="ListViewColumnTags">
+                            <GridViewColumnHeader 
+                            Tag="tags" 
+                            Content="Tags" 
+                            Click="GridViewColumnHeader_Click"
+                            SizeChanged="GridViewColumnHeader_SizeChanged"/>
+                        </GridViewColumn>
+
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=timeAddedHumanReadable}" 
+                      Width="120" x:Name="ListViewColumnAdded">
+                            <GridViewColumnHeader 
+                            Tag="timeAdded" 
+                            Content="Added" 
+                            Click="GridViewColumnHeader_Click"
+                            SizeChanged="GridViewColumnHeader_SizeChanged"/>
+                        </GridViewColumn>
+
+
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=timeUpdatedHumanReadable}" 
+                      Width="120" x:Name="ListViewColumnUpdated">
+                            <GridViewColumnHeader 
+                            Tag="timeUpdated" 
+                            Content="Updated" 
+                            Click="GridViewColumnHeader_Click"
+                            SizeChanged="GridViewColumnHeader_SizeChanged"/>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+        </Grid>
+
+        <GridSplitter ResizeDirection="Rows" 
+                  Height="5"
+                      
+                    HorizontalAlignment="Stretch" 
+                    VerticalAlignment="Bottom"/>
+
+        <Grid Grid.Row="1">
+
+
+            <WebBrowser Name="frame_content" 
+            Margin="0,35,0,20"
+               >
+
+            </WebBrowser>
+
+
+            <Border Height="28" Margin="0,1,0,0" Name="border1" VerticalAlignment="Top">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.2">
+                        <LinearGradientBrush.GradientStops>
+                            <GradientStop Offset="0" Color="White" />
+                            <GradientStop Offset="1" Color="LightGray" />
+                        </LinearGradientBrush.GradientStops>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Label Height="30" Name="label_TitleOfItem" Foreground="Black" FontSize="16" FontWeight="Bold" 
+                   Width="782" HorizontalAlignment="Left"></Label>
+            </Border>
+
+
+            <Button Height="23" HorizontalAlignment="Right" Margin="0,5,203,0" Name="button_openInBrowser" VerticalAlignment="Top" Width="23" Click="button_openInBrowser_Click">
+                <Image Source="/Winslew;component/Images/browser.png" ToolTip="Open page in external browser"></Image>
+            </Button>
+
+            <Button Height="23" HorizontalAlignment="Right" Margin="0,5,231,0" Name="button_copyUrlToClipboard" VerticalAlignment="Top" Width="23" Click="button_copyUrlToClipboard_Click">
+                <Image Source="/Winslew;component/Images/copyClipboard.png" ToolTip="Copy current selected item url to clipboard"></Image>
+            </Button>
+
+            <Button Height="23" HorizontalAlignment="Right" Margin="0,5,259,0" Name="button_printPage" VerticalAlignment="Top" Width="23" Click="button_printPage_Click">
+                <Image Source="/Winslew;component/Images/print.png" ToolTip="Print the currently displayed webpage"></Image>
+            </Button>
+
+            <Button Height="23" HorizontalAlignment="Right" Margin="0,5,175,0" Name="button_updateCache" VerticalAlignment="Top" Width="23" Click="button_updateCache_Click">
+                <Image Source="/Winslew;component/Images/refresh.png" ToolTip="Update cache for this webpage"></Image>
+            </Button>
+
+            <ComboBox SelectionChanged="comboBox_chooseStyle_SelectionChanged" Height="23" HorizontalAlignment="Right" Margin="0,5,90,0" Name="comboBox_chooseStyle" VerticalAlignment="Top" Width="80" ToolTip="Style for more and less display">
+
+            </ComboBox>
+
+            <ComboBox Height="23" HorizontalAlignment="Right" Margin="0,5,4,0" SelectionChanged="comboBox_browserView_SelectionChanged" Name="comboBox_browserView" VerticalAlignment="Top" Width="80" ToolTip="Cache to be displayed">
+                <ComboBoxItem Content="Online" Tag="online" />
+                <ComboBoxItem Content="Full" Tag="full" />
+                <ComboBoxItem Content="More" Tag="more" />
+                <ComboBoxItem Content="Less" Tag="less" />
+            </ComboBox>
+
+
+            <StatusBar Height="23" Margin="1,0,0,-1" Name="statusBar_mainWindow" VerticalAlignment="Bottom" Padding="0,0,0,0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Right" FlowDirection="LeftToRight">
+                <StatusBar.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.4">
+                        <LinearGradientBrush.GradientStops>
+                            <GradientStop Offset="0" Color="White" />
+                            <GradientStop Offset="1" Color="LightGray" />
+                        </LinearGradientBrush.GradientStops>
+                    </LinearGradientBrush>
+                </StatusBar.Background>
+                <Label Content="Api usage: User: - of - left, next reset in - seconds - Winslew: - of - left, next reset in - seconds" Padding="0,0,0,0" FontSize="10" Margin="0,0,0,0" Name="label_apiLimits" />
+                <ProgressBar Name="ProgressBarCurrentAction" Width="80" Margin="0" Padding="0" Height="10" />
+                <Label Content="Updating 2 of 34" Padding="0" FontSize="10" Margin="0" Name="LabelCurrentAction"/>
+
+                <Button  Margin="20,0,0,0" Name="button_openSnarlIcon" Click="button_openSnarl_Click" 
                      ToolTip="Snarl notification system not running.&#xa;Snarl is used to display popup notifications with Winslew. Winslew runs without Snarl but no popups will be shown.&#xa;Click to download Snarl from its website" 
                      Padding="0" BorderBrush="{x:Null}" Background="{x:Null}" HorizontalAlignment="Right">
-                <Image Name="SnarlIcon" Source="/Winslew;component/Images/snarl.png"/>
-            </Button>
-            <Button Name="button_openSnarlText"
+                    <Image Name="SnarlIcon" Source="/Winslew;component/Images/snarl.png"/>
+                </Button>
+                <Button Name="button_openSnarlText"
                      ToolTip="Snarl notification system not running.&#xa;Snarl is used to display popup notifications with Winslew. Winslew runs without Snarl but no popups will be shown.&#xa;Click to download Snarl from its website"
                     Click="button_openSnarl_Click" Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" HorizontalAlignment="Right">
-            <Label  Content="Snarl not running" Padding="0,0,0,0" FontSize="10" Margin="0,0,0,0" Name="label_snarlNotRunning" HorizontalAlignment="Right" FontWeight="Normal" HorizontalContentAlignment="Right" />
-            </Button>
-        </StatusBar>
+                    <Label  Content="Snarl not running" Padding="0,0,0,0" FontSize="10" Margin="0,0,0,0" Name="label_snarlNotRunning" HorizontalAlignment="Right" FontWeight="Normal" HorizontalContentAlignment="Right" />
+                </Button>
+            </StatusBar>
+        </Grid>
     </Grid>
 </Window>
