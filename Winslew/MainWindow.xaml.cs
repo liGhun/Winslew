@@ -559,5 +559,20 @@ namespace Winslew
             }
         }
 
+        private void button_removeTags_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ContextAddTags_Click(object sender, RoutedEventArgs e)
+        {
+            button_addTags_Click(null, null);
+        }
+
+        private void ContextRemoveTags_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
     }
 }

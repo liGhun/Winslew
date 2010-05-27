@@ -193,6 +193,8 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Resource Include="Images\addTags.png" />
+    <Resource Include="Images\removeTags.png" />
+    <Resource Include="Images\editBlank.png" />
     <Content Include="Styles\BlackOnWhite.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

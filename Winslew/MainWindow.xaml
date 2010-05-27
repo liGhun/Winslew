@@ -59,10 +59,13 @@
                     <Image Name="ImageChangeTitle" Source="/Winslew;component/Images/changeTitle.png" ToolTip="Change title"></Image>
                 </Button>
                 <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_editTags" VerticalAlignment="Top" Width="24" Click="button_editTags_Click">
-                    <Image Name="ImageEditTags" Source="/Winslew;component/Images/edit.png" ToolTip="Edit tags"></Image>
+                    <Image Name="ImageEditTags" Source="/Winslew;component/Images/edit.png" ToolTip="Edit tags of current item"></Image>
                 </Button>
                 <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_addTags" VerticalAlignment="Top" Width="24" Click="button_addTags_Click">
-                    <Image Name="ImageAddTags" Source="/Winslew;component/Images/addTags.png" ToolTip="Add tags"></Image>
+                    <Image Name="ImageAddTags" Source="/Winslew;component/Images/addTags.png" ToolTip="Add tags to multiple items"></Image>
+                </Button>
+                <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_removeTags" VerticalAlignment="Top" Width="24" Click="button_removeTags_Click">
+                    <Image Name="ImageRemoveTags" Source="/Winslew;component/Images/removeTags.png" ToolTip="Remove tags from multiple items"></Image>
                 </Button>
                 <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_markRead" VerticalAlignment="Top" Width="24" Click="button_markRead_Click">
                     <Image Name="ImageReadState" Source="/Winslew;component/Images/unread.png"></Image>
@@ -155,10 +158,25 @@
                                 <Image Source="/Winslew;component/Images/changeTitle.png" Width="14" Height="14" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Name="ContextEditTags" Click="ContextEditTags_Click"  Header="Edit tags">
+                        <MenuItem Name="Edittagssubmenu" Header="Edit tags">
                             <MenuItem.Icon>
-                                <Image Source="/Winslew;component/Images/edit.png" Width="14" Height="14" />
+                                <Image Source="/Winslew;component/Images/editBlank.png" Width="14" Height="14" />
                             </MenuItem.Icon>
+                            <MenuItem Name="ContextEditTags" Click="ContextEditTags_Click"  Header="Edit tags of current item">
+                                <MenuItem.Icon>
+                                    <Image Source="/Winslew;component/Images/edit.png" Width="14" Height="14" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Name="ContextAddTags" Click="ContextAddTags_Click"  Header="Add tags to multiple items">
+                                <MenuItem.Icon>
+                                    <Image Source="/Winslew;component/Images/addTags.png" Width="14" Height="14" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Name="ContextRemoveTags" Click="ContextRemoveTags_Click"  Header="Remove tags from multiple items">
+                                <MenuItem.Icon>
+                                    <Image Source="/Winslew;component/Images/removeTags.png" Width="14" Height="14" />
+                                </MenuItem.Icon>
+                            </MenuItem>
                         </MenuItem>
                         <MenuItem Name="ContextOpenInBrower" Click="ContextOpenInBrower_Click" Header="Open item in external browser">
                             <MenuItem.Icon>
