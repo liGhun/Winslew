@@ -110,6 +110,9 @@
     <Compile Include="Preferences.xaml.cs">
       <DependentUpon>Preferences.xaml</DependentUpon>
     </Compile>
+    <Compile Include="RemoveTags.xaml.cs">
+      <DependentUpon>RemoveTags.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Snarl\M_RESULT.cs" />
     <Compile Include="Snarl\SnarlConnector.cs" />
     <Compile Include="Snarl\SnarlException.cs" />
@@ -168,6 +171,10 @@
     <Page Include="Preferences.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="RemoveTags.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UpdateAvailable.xaml">
       <SubType>Designer</SubType>

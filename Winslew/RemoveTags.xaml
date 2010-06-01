@@ -1,0 +1,24 @@
+﻿<Window x:Class="Winslew.RemoveTags"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Remove tags" Height="300" Width="300">
+    <Grid>
+        <Label Content="Please select the tags you want to remove" Height="28" Margin="12,12,12,0" Name="label1" VerticalAlignment="Top" HorizontalContentAlignment="Center" />
+        <ListView Height="174" Margin="12,46,12,0" Name="listViewTags" VerticalAlignment="Top">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding Path=ShallBeDeleted}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=tag, Mode=TwoWay}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Button Content="Cancel" Height="23" HorizontalAlignment="Left" Margin="12,226,0,0" Name="buttonCancel" VerticalAlignment="Top" Width="75" />
+        <Button Content="Remove" Height="23" HorizontalAlignment="Left" Margin="191,226,0,0" Name="buttonRemove" Click="buttonRemove_Click" VerticalAlignment="Top" Width="75" />
+    </Grid>
+</Window>

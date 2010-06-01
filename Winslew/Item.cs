@@ -39,6 +39,22 @@ namespace Winslew
             }
         }
 
+        public bool TagsHaveBeenUpdated { get { return _tagsHaveBeenUpdated; } }
+
+        private bool _tagsHaveBeenUpdated = false;
+
+        public void removeTag(string ToBeRemovedTag)
+        {
+            char[] delimiters = new char[] { ',' };
+            string[] allTags = this.tags.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
+            if(allTags.Contains(ToBeRemovedTag.ToLower())) {
+                List<string> tagsList = new List<string>(allTags);
+                _tagsHaveBeenUpdated = true;
+                tagsList.Remove(ToBeRemovedTag.ToLower());
+                tags = string.Join(",",tagsList.ToArray());
+            }
+        }
+
         public Item()
         {
             contentCache = new Api.CachedItemContent();

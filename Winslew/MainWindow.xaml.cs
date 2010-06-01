@@ -561,7 +561,16 @@ namespace Winslew
 
         private void button_removeTags_Click(object sender, RoutedEventArgs e)
         {
-
+            if (listView_Items.SelectedItems.Count > 0)
+            {
+                List<Item> items = new List<Item>();
+                foreach (Item item in listView_Items.SelectedItems)
+                {
+                    items.Add(item);
+                }
+                RemoveTags myWnd = new RemoveTags(items);
+                myWnd.Show();
+            }
         }
 
         private void ContextAddTags_Click(object sender, RoutedEventArgs e)
@@ -571,7 +580,7 @@ namespace Winslew
 
         private void ContextRemoveTags_Click(object sender, RoutedEventArgs e)
         {
-
+            button_removeTags_Click(null, null);
         }
 
     }
