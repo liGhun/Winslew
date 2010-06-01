@@ -1,6 +1,7 @@
 1.4
 List view / browser window now can be resized
-Add multiple tags at once
+Add tags to multiple items at once
+Remove tags from multiple items at once
 Fixed Styles being exchanged black<->white
 
 1.3
