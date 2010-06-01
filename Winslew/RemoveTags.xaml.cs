@@ -81,7 +81,7 @@ namespace Winslew
 
             foreach(Item item in items.Where((Item it) => it.TagsHaveBeenUpdated == true)) {
                 thisItem = new Dictionary<string, string>();
-                thisItem.Add(item.id, item.tags);
+                thisItem.Add(item.url, item.tags);
                 toBeUpdatedItems.Add(thisItem);
             }
 
