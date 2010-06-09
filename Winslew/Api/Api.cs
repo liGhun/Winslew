@@ -268,13 +268,32 @@ namespace Winslew.Api
         {
             if (isOnline)
             {
-                return true;
+                isOnline = true;
             }
             else
             {
                 isOnline = isMachineReachable("li-ghun.de");
-                return(isOnline);
+                if (isOnline)
+                {
+                    isOnline = true;
+                }
+                else
+                {
+                    // second try with different approach
+                    HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create("http://www.li-ghun.de/");
+                    request.Timeout = 1000;
+                    try
+                    {
+                        request.GetResponse();
+                        isOnline = true;
+                    }
+                    catch
+                    {
+                        isOnline = false;
+                    }
+                }
             }
+            return isOnline;
         }
 
         private bool isMachineReachable(string hostName)
