@@ -93,6 +93,7 @@
       <DependentUpon>AddTags.xaml</DependentUpon>
     </Compile>
     <Compile Include="Api\FetchWebpage.cs" />
+    <Compile Include="Api\Imgur.cs" />
     <Compile Include="AppController.cs" />
     <Compile Include="BuyLicense.xaml.cs">
       <DependentUpon>BuyLicense.xaml</DependentUpon>
@@ -105,6 +106,9 @@
       <DependentUpon>EditTags.xaml</DependentUpon>
     </Compile>
     <Compile Include="Formatter\prettyVersion.cs" />
+    <Compile Include="InProgress.xaml.cs">
+      <DependentUpon>InProgress.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Item.cs" />
     <Compile Include="LicenseChecker.cs" />
     <Compile Include="Preferences.xaml.cs">
@@ -150,6 +154,10 @@
     <Page Include="EditTags.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="InProgress.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -202,6 +210,7 @@
     <Resource Include="Images\addTags.png" />
     <Resource Include="Images\removeTags.png" />
     <Resource Include="Images\editBlank.png" />
+    <Resource Include="Images\imageUpload.png" />
     <Content Include="Styles\BlackOnWhite.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

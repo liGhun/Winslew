@@ -570,6 +570,18 @@ namespace Winslew
             SetData(false);
             
             mainWindow.refreshItems();
+
+            for (int i = 0; i < mainWindow.listView_Items.Items.Count; i++)
+            {
+                if (((Item)mainWindow.listView_Items.Items[i]).url == url)
+                {
+                    // Reset the selection and add the new items.
+                    mainWindow.listView_Items.SelectedItems.Clear();
+                    mainWindow.listView_Items.SelectedIndex = i;
+                    mainWindow.listView_Items.ScrollIntoView(mainWindow.listView_Items.SelectedItem);
+                    break;
+                }
+            }
             return true;
         }
 

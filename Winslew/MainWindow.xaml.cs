@@ -583,5 +583,31 @@ namespace Winslew
             button_removeTags_Click(null, null);
         }
 
+        private void button_uploadImage_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            
+            dlg.DefaultExt = ".png"; // Default file extension
+            dlg.Filter = "Images (*.png,*.jpg,*.gif,*.tif,*.bmp,*.pdf,*.xcf)|*.png;*.jpeg;*.jpg;*.gif;*.tif;*.tiff;*.bmp;*.pdf;*.xcf"; // Filter files by extension
+
+            // Show open file dialog box
+            Nullable<bool> result = dlg.ShowDialog();
+
+            // Process open file dialog box results
+            if (result == true)
+            {
+                // Open document
+                InProgress progressWindow = new InProgress();
+                progressWindow.Show();
+                string filename = dlg.FileName;
+                string uploadedImageUrl = Api.Imgur.uploadImage(dlg.FileName);
+
+                if(!string.IsNullOrEmpty(uploadedImageUrl)) {
+                    AppController.Current.addItem(uploadedImageUrl, System.IO.Path.GetFileName(dlg.FileName));
+                }
+                progressWindow.Close();
+            }
+        }
+
     }
 }
