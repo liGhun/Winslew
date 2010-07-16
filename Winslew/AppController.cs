@@ -677,5 +677,10 @@ namespace Winslew
                 mainWindow.button_openSnarlText.Visibility = System.Windows.Visibility.Collapsed;
             }
         }
+
+        public void MemorizeImgurUpload(Api.ImgurData imgData)
+        {
+            cacheStore.MemorizeImgurUpload(imgData);
+        }
     }
 }

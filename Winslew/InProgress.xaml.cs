@@ -25,6 +25,7 @@ namespace Winslew
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+           // currentProgress.BeginStoryboard(InfinitLoop);
             
 
         }

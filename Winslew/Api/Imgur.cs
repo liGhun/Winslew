@@ -8,7 +8,7 @@ namespace Winslew.Api
 {
     public class Imgur
     {
-        public static string uploadImage(string path)
+        public static ImgurData uploadImage(string path)
         {
             Response result = HttpCommunications.SendPostRequest(@"http://imgur.com/api/upload", new
                 {
@@ -38,14 +38,14 @@ namespace Winslew.Api
                 {
                     System.Windows.Forms.MessageBox.Show("Unknown error while sending image to Imgur image hosting service.", "Sending to Imgur failed");
                 }
-                return "";
+                return null;
             }
             else
             {
                 xmlDoc.LoadXml(result.Content);
-                XmlNode imagePage = xmlDoc.SelectSingleNode("/rsp/imgur_page");
-                string imageUrl = imagePage.InnerText;
-                return imageUrl;
+                ImgurData responseData = new ImgurData(xmlDoc);
+                
+                return responseData;
             }
         }
 
@@ -79,6 +79,41 @@ namespace Winslew.Api
             {
                 return "";
             }
+        }
+    }
+
+    public class ImgurData
+    {
+        public string imageHash { get; set; }
+        public string deleteHash { get; set; }
+        public string originalImage { get; set; }
+        public string largeThumbnail { get; set; }
+        public string smallThumbnail { get; set; }
+        public string imgurPage { get; set; }
+        public string deletePage { get; set; }
+
+        public ImgurData(XmlDocument xmlData)
+        {
+            XmlNode xmlNode = xmlData.SelectSingleNode("/rsp/image_hash");
+            imageHash = xmlNode.InnerText;
+
+            xmlNode = xmlData.SelectSingleNode("/rsp/delete_hash");
+            deleteHash = xmlNode.InnerText;
+
+            xmlNode = xmlData.SelectSingleNode("/rsp/original_image");
+            originalImage = xmlNode.InnerText;
+
+            xmlNode = xmlData.SelectSingleNode("/rsp/large_thumbnail");
+            largeThumbnail = xmlNode.InnerText;
+
+            xmlNode = xmlData.SelectSingleNode("/rsp/small_thumbnail");
+            smallThumbnail = xmlNode.InnerText;
+
+            xmlNode = xmlData.SelectSingleNode("/rsp/imgur_page");
+            imgurPage = xmlNode.InnerText;
+
+            xmlNode = xmlData.SelectSingleNode("/rsp/delete_page");
+            deletePage = xmlNode.InnerText;
         }
     }
 }

@@ -598,14 +598,26 @@ namespace Winslew
             {
                 // Open document
                 InProgress progressWindow = new InProgress();
+                progressWindow.textBlockDescription.Text = dlg.FileName;
                 progressWindow.Show();
-                string filename = dlg.FileName;
-                string uploadedImageUrl = Api.Imgur.uploadImage(dlg.FileName);
+                System.Threading.ThreadStart ts = delegate
+                {
+                    string filename = dlg.FileName;
+                    Api.ImgurData uploadedImageData = Api.Imgur.uploadImage(dlg.FileName);
 
-                if(!string.IsNullOrEmpty(uploadedImageUrl)) {
-                    AppController.Current.addItem(uploadedImageUrl, System.IO.Path.GetFileName(dlg.FileName));
-                }
-                progressWindow.Close();
+                    if(uploadedImageData != null) {
+                        AppController.Current.addItem(uploadedImageData.imgurPage, System.IO.Path.GetFileNameWithoutExtension(dlg.FileName));
+                    }
+
+                    Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, (EventHandler)
+                        delegate
+                        {
+                            AppController.Current.MemorizeImgurUpload(uploadedImageData);
+                            progressWindow.Close();
+                    }, null, null);
+                };
+                ts.BeginInvoke(null, null);
+                
             }
         }
 

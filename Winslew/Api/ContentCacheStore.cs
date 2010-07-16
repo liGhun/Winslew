@@ -14,6 +14,8 @@ namespace Winslew.Api
         public List<CachedItemContent> Cache { get; set; }
         private string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Winslew";
         public string pathToNAPage = "";
+
+        Dictionary<string, ImgurData> LocallyAddedContent;
         
 
         public ContentCacheStore()
@@ -24,6 +26,8 @@ namespace Winslew.Api
             {
                 Directory.CreateDirectory(appDataPath + "\\Cache");
             }
+
+            LocallyAddedContent = new Dictionary<string, string>();
 
             string notAvailableText = "<html><head><title>View not available...</title>";
             notAvailableText += "</head><body>\n";
@@ -232,6 +236,29 @@ namespace Winslew.Api
             return returnValue;
         }
 
+        public string CreateCacheVersionOfLocalImage(string localFilePath, string cacheDir, ImgurData imgurData)
+        {
+            string returnValue = "";
+            if (File.Exists(localFilePath) || File.Exists(Path.Combine(cacheDir, Path.GetFileName(localFilePath))))
+            {
+                if (!File.Exists(Path.Combine(cacheDir, Path.GetFileName(localFilePath))))
+                {
+                    File.Copy(localFilePath, Path.Combine(cacheDir, Path.GetFileName(localFilePath)));
+                }
+                returnValue = "<html><head><title>" + Path.GetFileNameWithoutExtension(localFilePath) + "</title>\n";
+                returnValue += "<meta http-equiv=\"Content-Type\" content=\"utf-8\">\n";
+                returnValue += "<link rel=\"stylesheet\" type=\"text/css\" href=\"../actualStylesheet.css\" />\n</head>\n";
+                returnValue += "<div id=\"WinslewTitle\"><h1>" + Path.GetFileNameWithoutExtension(localFilePath) + "</h1></div>\n";
+                returnValue += "<div id=\"WinslewBody\"><img src=\"" + Path.Combine(cacheDir, Path.GetFileName(localFilePath)) + "\"</img></div>";
+                returnValue += "<div id=\"WinslewDeleteImgurImage\"><a href=\"" + imgurData.deletePage + "\">Delete this image from Imgur</a></div>\n";
+                returnValue += "\n</body>\n</html>";
+            }
+            return returnValue;
+        }
+
+        public void MemorizeImgurUpload(ImgurData imgData) {
+            LocallyAddedContent.Add(imgData.imgurPage, imgData);
+        }
 
         private Image GetFavicon(string Inurl)
         {
