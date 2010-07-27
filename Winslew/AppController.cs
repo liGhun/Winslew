@@ -116,6 +116,25 @@ namespace Winslew
             this.pathToIcon = pathToIcon = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\images\\Winslew.png";
             snarlMsgWindow = new NativeWindowApplication.SnarlMsgWnd();
             SnarlMessageWindowHandle = snarlMsgWindow.Handle;
+
+            if (SnarlConnector.GetSnarlWindow() != IntPtr.Zero)
+            {
+                SnarlConnector.RegisterConfig(SnarlMessageWindowHandle, "Winslew", Snarl.WindowsMessage.WM_USER + 55, pathToIcon);
+                SnarlConnector.RegisterAlert("Winslew", "New item");
+                SnarlConnector.RegisterAlert("Winslew", "Item added");
+                SnarlConnector.RegisterAlert("Winslew", "Item marked as read");
+                SnarlConnector.RegisterAlert("Winslew", "Item marked as unread");
+                SnarlConnector.RegisterAlert("Winslew", "Item tags changed");
+                SnarlConnector.RegisterAlert("Winslew", "Item deleted");
+                SnarlConnector.RegisterAlert("Winslew", "Cache has been updated");
+                SnarlConnector.RegisterAlert("Winslew", "Image upload has been started");
+                SnarlConnector.RegisterAlert("Winslew", "Image upload has been completed");
+                SnarlConnector.RegisterAlert("Winslew", "Image upload failed");
+                SnarlConnector.RegisterAlert("Winslew", "User API limit critical");
+                SnarlConnector.RegisterAlert("Winslew", "Application API limit critical");
+
+                hideSnarlHint();
+            }
            
             UpdateAvailable myUpdateCheck = new UpdateAvailable();
         }
@@ -129,21 +148,7 @@ namespace Winslew
                 mainWindow = new MainWindow();
             }
 
-            if (SnarlConnector.GetSnarlWindow() != IntPtr.Zero)
-            {
-                SnarlConnector.RegisterConfig(SnarlMessageWindowHandle, "Winslew", Snarl.WindowsMessage.WM_USER + 55, pathToIcon);
-                SnarlConnector.RegisterAlert("Winslew", "New item");
-                SnarlConnector.RegisterAlert("Winslew", "Item added");
-                SnarlConnector.RegisterAlert("Winslew", "Item marked as read");
-                SnarlConnector.RegisterAlert("Winslew", "Item marked as unread");
-                SnarlConnector.RegisterAlert("Winslew", "Item tags changed");
-                SnarlConnector.RegisterAlert("Winslew", "Item deleted");
-                SnarlConnector.RegisterAlert("Winslew", "Cache has been updated");
-                SnarlConnector.RegisterAlert("Winslew", "User API limit critical");
-                SnarlConnector.RegisterAlert("Winslew", "Application API limit critical");
 
-                hideSnarlHint();
-            }
 
 
             if (apiAccess.checkIfOnline())
@@ -681,6 +686,10 @@ namespace Winslew
         public void MemorizeImgurUpload(Api.ImgurData imgData)
         {
             cacheStore.MemorizeImgurUpload(imgData);
+        }
+
+        public int ShowSnarlNotificton(string className, string title, string text, int duration) {
+            return SnarlConnector.ShowMessageEx(className, title, text, duration, pathToIcon, SnarlMessageWindowHandle, WindowsMessage.WM_USER + 65,"");
         }
     }
 }

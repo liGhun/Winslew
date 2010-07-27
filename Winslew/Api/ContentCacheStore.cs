@@ -27,7 +27,7 @@ namespace Winslew.Api
                 Directory.CreateDirectory(appDataPath + "\\Cache");
             }
 
-            LocallyAddedContent = new Dictionary<string, string>();
+            LocallyAddedContent = new Dictionary<string, ImgurData>();
 
             string notAvailableText = "<html><head><title>View not available...</title>";
             notAvailableText += "</head><body>\n";
@@ -151,15 +151,33 @@ namespace Winslew.Api
             {
                 if (returnValue.FullVersion == null || overrideExisting)
                 {
-                    FetchWebpage myFetcher = new FetchWebpage();
-                    if (myFetcher.FullFetch(itemToBeCached.url, cacheDir + "\\full\\"))
+                    if (LocallyAddedContent.ContainsKey(itemToBeCached.url))
                     {
                         returnValue.FullVersion = cacheDir + "\\full\\index.html";
+                        if (!Directory.Exists(cacheDir + "\\full"))
+                        {
+                            Directory.CreateDirectory(cacheDir + "\\full");
+                        }
                         returnValue.FullUpdated = DateTime.Now;
+
+                        string content = CreateCacheVersionOfLocalImage(cacheDir, LocallyAddedContent[itemToBeCached.url]);
+
+                        StreamWriter fh = File.CreateText(returnValue.FullVersion);
+                        fh.Write(content);
+                        fh.Close();
                     }
                     else
                     {
-                        returnValue.FullVersion = null;
+                        FetchWebpage myFetcher = new FetchWebpage();
+                        if (myFetcher.FullFetch(itemToBeCached.url, cacheDir + "\\full\\"))
+                        {
+                            returnValue.FullVersion = cacheDir + "\\full\\index.html";
+                            returnValue.FullUpdated = DateTime.Now;
+                        }
+                        else
+                        {
+                            returnValue.FullVersion = null;
+                        }
                     }
                 }
             }
@@ -167,54 +185,80 @@ namespace Winslew.Api
             string fullText = "";
             if (returnValue.LessVersion == null || overrideExisting)
             {
-                Response cachedLessContent = AppController.Current.getCacheText(itemToBeCached.url, "less");
-                if (cachedLessContent.Content != null && cachedLessContent.Content != "")
-                {
-                    fullText = "<html>\n<head>\n<title>" + cachedLessContent.TextTitle + "</title>\n";
-                    fullText += "<meta http-equiv=\"Content-Type\" content=\"" + cachedLessContent.TextContentType + "\">\n";
-                    fullText += "<link rel=\"stylesheet\" type=\"text/css\" href=\"../actualStylesheet.css\" />\n</head>\n";
-                    fullText += "<body>\n";
-                    fullText += "<div id=\"WinslewTitle\"><h1>" + cachedLessContent.TextTitle + "</h1></div>\n";
-                    fullText += "<div id=\"WinslewBody\">" + cachedLessContent.Content + "</div>";
-                    fullText += "\n</body>\n</html>";
+                if(LocallyAddedContent.ContainsKey(itemToBeCached.url)) {
+                        returnValue.LessVersion = cacheDir + "\\" + returnValue.Id.ToString() + "-less.html";
+                        returnValue.LessUpdated = DateTime.Now;
 
-                    returnValue.LessVersion = cacheDir + "\\" + returnValue.Id.ToString() + "-less.html";
-                    returnValue.LessUpdated = DateTime.Now;
+                        string content = CreateCacheVersionOfLocalImage(cacheDir,LocallyAddedContent[itemToBeCached.url]);
 
-                    StreamWriter fh = File.CreateText(returnValue.LessVersion);
-                    fh.Write(fullText);
-                    fh.Close();
+                        StreamWriter fh = File.CreateText(returnValue.LessVersion);
+                        fh.Write(content);
+                        fh.Close();
                 }
                 else
                 {
-                    returnValue.LessVersion = null;
+                    Response cachedLessContent = AppController.Current.getCacheText(itemToBeCached.url, "less");
+                    if (cachedLessContent.Content != null && cachedLessContent.Content != "")
+                    {
+                        fullText = "<html>\n<head>\n<title>" + cachedLessContent.TextTitle + "</title>\n";
+                        fullText += "<meta http-equiv=\"Content-Type\" content=\"" + cachedLessContent.TextContentType + "\">\n";
+                        fullText += "<link rel=\"stylesheet\" type=\"text/css\" href=\"../actualStylesheet.css\" />\n</head>\n";
+                        fullText += "<body>\n";
+                        fullText += "<div id=\"WinslewTitle\"><h1>" + cachedLessContent.TextTitle + "</h1></div>\n";
+                        fullText += "<div id=\"WinslewBody\">" + cachedLessContent.Content + "</div>";
+                        fullText += "\n</body>\n</html>";
+
+                        returnValue.LessVersion = cacheDir + "\\" + returnValue.Id.ToString() + "-less.html";
+                        returnValue.LessUpdated = DateTime.Now;
+
+                        StreamWriter fh = File.CreateText(returnValue.LessVersion);
+                        fh.Write(fullText);
+                        fh.Close();
+                    }
+                    else
+                    {
+                        returnValue.LessVersion = null;
+                    }
                 }
             }
 
             if (returnValue.MoreVersion == null || overrideExisting)
             {
-                Response cachedMoreContent = AppController.Current.getCacheText(itemToBeCached.url, "more");
-                if (cachedMoreContent.Content != "" && cachedMoreContent.Content != null)
-                {
-                    fullText = "<html>\n<head>\n<title>" + cachedMoreContent.TextTitle + "</title>\n";
-                    fullText += "<meta http-equiv=\"Content-Type\" content=\"" + cachedMoreContent.TextContentType + "\">\n";
-                    fullText += "<link rel=\"stylesheet\" type=\"text/css\" href=\"../actualStylesheet.css\" />\n</head>\n";
-                    fullText += "<body>\n";
-                    fullText += "<div id=\"WinslewTitle\"><h1>" + cachedMoreContent.TextTitle + "</h1></div>\n";
-                    fullText += "<div id=\"WinslewBody\">" + cachedMoreContent.Content + "</div>";
-                    fullText += "\n</body>\n</html>";
-
+                if(LocallyAddedContent.ContainsKey(itemToBeCached.url)) {
                     returnValue.MoreVersion = cacheDir + "\\" + returnValue.Id.ToString() + "-more.html";
-                    returnValue.MoreUpdated = DateTime.Now;
+                    returnValue.LessUpdated = DateTime.Now;
 
-                    StreamWriter fhMore = File.CreateText(returnValue.MoreVersion);
-                    fhMore.Write(fullText);
-                    fhMore.Close();
+                    string content = CreateCacheVersionOfLocalImage(cacheDir,LocallyAddedContent[itemToBeCached.url]);
 
+                    StreamWriter fh = File.CreateText(returnValue.MoreVersion);
+                    fh.Write(content);
+                    fh.Close();
                 }
                 else
                 {
-                    returnValue.MoreVersion = null;
+                    Response cachedMoreContent = AppController.Current.getCacheText(itemToBeCached.url, "more");
+                    if (cachedMoreContent.Content != "" && cachedMoreContent.Content != null)
+                    {
+                        fullText = "<html>\n<head>\n<title>" + cachedMoreContent.TextTitle + "</title>\n";
+                        fullText += "<meta http-equiv=\"Content-Type\" content=\"" + cachedMoreContent.TextContentType + "\">\n";
+                        fullText += "<link rel=\"stylesheet\" type=\"text/css\" href=\"../actualStylesheet.css\" />\n</head>\n";
+                        fullText += "<body>\n";
+                        fullText += "<div id=\"WinslewTitle\"><h1>" + cachedMoreContent.TextTitle + "</h1></div>\n";
+                        fullText += "<div id=\"WinslewBody\">" + cachedMoreContent.Content + "</div>";
+                        fullText += "\n</body>\n</html>";
+
+                        returnValue.MoreVersion = cacheDir + "\\" + returnValue.Id.ToString() + "-more.html";
+                        returnValue.MoreUpdated = DateTime.Now;
+
+                        StreamWriter fhMore = File.CreateText(returnValue.MoreVersion);
+                        fhMore.Write(fullText);
+                        fhMore.Close();
+
+                    }
+                    else
+                    {
+                        returnValue.MoreVersion = null;
+                    }
                 }
             }
 
@@ -236,8 +280,9 @@ namespace Winslew.Api
             return returnValue;
         }
 
-        public string CreateCacheVersionOfLocalImage(string localFilePath, string cacheDir, ImgurData imgurData)
+        public string CreateCacheVersionOfLocalImage(string cacheDir, ImgurData imgurData)
         {
+            string localFilePath = imgurData.originalLocalImagePath;
             string returnValue = "";
             if (File.Exists(localFilePath) || File.Exists(Path.Combine(cacheDir, Path.GetFileName(localFilePath))))
             {
@@ -250,14 +295,14 @@ namespace Winslew.Api
                 returnValue += "<link rel=\"stylesheet\" type=\"text/css\" href=\"../actualStylesheet.css\" />\n</head>\n";
                 returnValue += "<div id=\"WinslewTitle\"><h1>" + Path.GetFileNameWithoutExtension(localFilePath) + "</h1></div>\n";
                 returnValue += "<div id=\"WinslewBody\"><img src=\"" + Path.Combine(cacheDir, Path.GetFileName(localFilePath)) + "\"</img></div>";
-                returnValue += "<div id=\"WinslewDeleteImgurImage\"><a href=\"" + imgurData.deletePage + "\">Delete this image from Imgur</a></div>\n";
+                returnValue += "<div id=\"WinslewDeleteImgurImage\"><a href=\"" + imgurData.deletePage + "\">Delete this image from Imgur</a> (will not remove it from Winslew cache or Read It Later)</div>\n";
                 returnValue += "\n</body>\n</html>";
             }
             return returnValue;
         }
 
         public void MemorizeImgurUpload(ImgurData imgData) {
-            LocallyAddedContent.Add(imgData.imgurPage, imgData);
+            LocallyAddedContent.Add(imgData.originalImage, imgData);
         }
 
         private Image GetFavicon(string Inurl)

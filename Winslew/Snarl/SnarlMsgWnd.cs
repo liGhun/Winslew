@@ -64,6 +64,8 @@ namespace NativeWindowApplication
                     SnarlConnector.RegisterAlert("Winslew", "Item deleted");
                     SnarlConnector.RegisterAlert("Winslew", "Cache has been updated");
                     SnarlConnector.RegisterAlert("Winslew", "User API limit critical");
+                    SnarlConnector.RegisterAlert("Winslew", "Image upload has been started");
+                    SnarlConnector.RegisterAlert("Winslew", "Image upload completed");
                     SnarlConnector.RegisterAlert("Winslew", "Application API limit critical");
 
                     AppController.Current.hideSnarlHint();

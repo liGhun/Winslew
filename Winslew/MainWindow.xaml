@@ -77,7 +77,7 @@
                     <Image Name="ImageUpload" Source="/Winslew;component/Images/imageUpload.png" ToolTip="Upload an image and add it to RiL"></Image>
                 </Button>
                 <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0"  Name="button_delete" VerticalAlignment="Top" Width="24" Click="button_delete_Click">
-                    <Image Name="ImageDelete" Source="/Winslew;component/Images/trashcan.png" ToolTip="Delete item" ></Image>
+                    <Image Name="ImageDelete" Source="/Winslew;component/Images/trashcan.png" ToolTip="Delete item"></Image>
                 </Button>
 
             </ToolBar>

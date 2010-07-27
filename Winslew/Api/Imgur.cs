@@ -10,12 +10,22 @@ namespace Winslew.Api
     {
         public static ImgurData uploadImage(string path)
         {
-            Response result = HttpCommunications.SendPostRequest(@"http://imgur.com/api/upload", new
-                {
-                    key = "b4bbe31bdb063506ebb97a18e516a9cc",
-                    image = EncodeAsBase64String(path)
-                }, false);
-
+            Response result;
+            try
+            {
+                result = HttpCommunications.SendPostRequest(@"http://imgur.com/api/upload", new
+                    {
+                        key = "b4bbe31bdb063506ebb97a18e516a9cc",
+                        image = EncodeAsBase64String(path)
+                    }, false);
+            }
+            catch (Exception exp)
+            {
+                result = new Response();
+                result.Success = false;
+                System.Windows.Forms.MessageBox.Show(exp.Message, "Sending to Imgur failed");
+                return null;
+            }
             XmlDocument xmlDoc = new XmlDocument();
 
             if (!result.Success)
@@ -31,7 +41,7 @@ namespace Winslew.Api
                     }
                     catch
                     {
-                        System.Windows.Forms.MessageBox.Show("Unknown error while sending image to Imgur image hosting service.", "Sending to Imgur failed");
+                        System.Windows.Forms.MessageBox.Show("Error in response message from Imgur", "Sending to Imgur failed");
                     }
                 }
                 else
@@ -42,10 +52,16 @@ namespace Winslew.Api
             }
             else
             {
-                xmlDoc.LoadXml(result.Content);
-                ImgurData responseData = new ImgurData(xmlDoc);
-                
-                return responseData;
+                try
+                {
+                    xmlDoc.LoadXml(result.Content);
+                    ImgurData responseData = new ImgurData(xmlDoc);
+                    return responseData;
+                }
+                catch
+                {
+                    return null;
+                }                 
             }
         }
 
@@ -91,6 +107,7 @@ namespace Winslew.Api
         public string smallThumbnail { get; set; }
         public string imgurPage { get; set; }
         public string deletePage { get; set; }
+        public string originalLocalImagePath { get; set; }
 
         public ImgurData(XmlDocument xmlData)
         {

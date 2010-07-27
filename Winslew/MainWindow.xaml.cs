@@ -231,16 +231,18 @@ namespace Winslew
 
         private void button_delete_Click(object sender, RoutedEventArgs e)
         {
-            if (listView_Items.SelectedItem != null)
+            if (listView_Items.SelectedItems.Count > 0)
             {
-                var currentItem = listView_Items.SelectedItem as Item;
-                Dictionary<string, string> thisItem = new Dictionary<string, string>();
-                thisItem.Add("url", currentItem.url);
-                if (apiAccess.delete(thisItem))
+                foreach (Item currentItem in listView_Items.SelectedItems)
                 {
-                    AppController.Current.sendSnarlNotification("Item deleted", "Item has been deleted", currentItem.title);
-                    AppController.Current.itemsCollection.Remove(currentItem);
-                    toggleReadIcon(true);
+                    Dictionary<string, string> thisItem = new Dictionary<string, string>();
+                    thisItem.Add("url", currentItem.url);
+                    if (apiAccess.delete(thisItem))
+                    {
+                        AppController.Current.sendSnarlNotification("Item deleted", "Item has been deleted", currentItem.title);
+                        AppController.Current.itemsCollection.Remove(currentItem);
+                        toggleReadIcon(true);
+                    }
                 }
                 refreshItems();
             }
@@ -534,9 +536,9 @@ namespace Winslew
                 try
                 {
                     var currentItem = listView_Items.SelectedItem as Item;
-                    /* xxx Printing not working anymore
-                    mshtml.IHTMLDocument2 doc = frame_content.Document as mshtml.IHTMLDocument2;
-                    doc.execCommand("Print", true, null); */
+                    //Printing not working anymore
+                   // mshtml.IHTMLDocument2 doc = frame_content.Document as mshtml.IHTMLDocument2;
+                   // doc.execCommand("Print", true, null); 
                 }
                 catch (Exception exp)
                 {
@@ -596,30 +598,22 @@ namespace Winslew
             // Process open file dialog box results
             if (result == true)
             {
-                // Open document
-                InProgress progressWindow = new InProgress();
-                progressWindow.textBlockDescription.Text = dlg.FileName;
-                progressWindow.Show();
-                System.Threading.ThreadStart ts = delegate
+                string filename = dlg.FileName;
+                int snarlId = AppController.Current.ShowSnarlNotificton("Image upload has been started", "Upload has been started", "Upload of file " + dlg.FileName + " has been started",0);
+                Api.ImgurData uploadedImageData = Api.Imgur.uploadImage(dlg.FileName);
+                Snarl.SnarlConnector.HideMessage(snarlId);
+                if (uploadedImageData != null)
                 {
-                    string filename = dlg.FileName;
-                    Api.ImgurData uploadedImageData = Api.Imgur.uploadImage(dlg.FileName);
-
-                    if(uploadedImageData != null) {
-                        AppController.Current.addItem(uploadedImageData.imgurPage, System.IO.Path.GetFileNameWithoutExtension(dlg.FileName));
-                    }
-
-                    Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, (EventHandler)
-                        delegate
-                        {
-                            AppController.Current.MemorizeImgurUpload(uploadedImageData);
-                            progressWindow.Close();
-                    }, null, null);
-                };
-                ts.BeginInvoke(null, null);
-                
+                    AppController.Current.ShowSnarlNotificton("Image upload has been completed", "Upload completed", "Upload of file " + dlg.FileName + " has been completed", 10);
+                    uploadedImageData.originalLocalImagePath = dlg.FileName;
+                    AppController.Current.MemorizeImgurUpload(uploadedImageData);
+                    AppController.Current.addItem(uploadedImageData.originalImage, System.IO.Path.GetFileNameWithoutExtension(dlg.FileName));
+                }
+                else
+                {
+                    AppController.Current.ShowSnarlNotificton("Image upload failed", "Upload failed", "Upload of file " + dlg.FileName + " failed", 10);
+                }
             }
         }
-
     }
 }
