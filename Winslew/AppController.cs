@@ -25,6 +25,7 @@ namespace Winslew
         private string pathToIcon = "";
         public Api.Api apiAccess = new Api.Api();
         public DateTime expirationDate = new DateTime(2010, 04, 01);
+        private bool snarlIsRunning = false;
 
         private BackgroundWorker backgroundWorker1;
         private List<Item> queueOfToBeUpdatedItems = new List<Item>();
@@ -132,7 +133,7 @@ namespace Winslew
                 SnarlConnector.RegisterAlert("Winslew", "Image upload failed");
                 SnarlConnector.RegisterAlert("Winslew", "User API limit critical");
                 SnarlConnector.RegisterAlert("Winslew", "Application API limit critical");
-
+                snarlIsRunning = true;
                 hideSnarlHint();
             }
            
@@ -146,6 +147,10 @@ namespace Winslew
             if (mainWindow == null)
             {
                 mainWindow = new MainWindow();
+                if (SnarlConnector.GetSnarlWindow() != IntPtr.Zero)
+                {
+                    hideSnarlHint();
+                }
             }
 
 
@@ -202,6 +207,10 @@ namespace Winslew
 
             mainWindow.Show();
             mainWindow.Focus();
+            if (snarlIsRunning)
+            {
+                hideSnarlHint();
+            }
             StartCacheUpdate(null);
 
         }

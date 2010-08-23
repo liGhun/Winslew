@@ -536,8 +536,13 @@ namespace Winslew
                 try
                 {
                     var currentItem = listView_Items.SelectedItem as Item;
+                    
+                    System.Windows.Forms.HtmlDocument doc = frame_content.Document as System.Windows.Forms.HtmlDocument;
+                    doc.ExecCommand("Print",true,null);
+
+                    
                     //Printing not working anymore
-                   // mshtml.IHTMLDocument2 doc = frame_content.Document as mshtml.IHTMLDocument2;
+                 //   mshtml.IHTMLDocument2 doc = frame_content.Document as mshtml.IHTMLDocument2;
                    // doc.execCommand("Print", true, null); 
                 }
                 catch (Exception exp)

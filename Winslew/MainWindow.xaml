@@ -296,10 +296,10 @@
                 <Image Source="/Winslew;component/Images/copyClipboard.png" ToolTip="Copy current selected item url to clipboard"></Image>
             </Button>
 
-            <Button Height="23" HorizontalAlignment="Right" Margin="0,5,259,0" Name="button_printPage" VerticalAlignment="Top" Width="23" Click="button_printPage_Click">
+            <!--<Button Height="23" HorizontalAlignment="Right" Margin="0,5,259,0" Name="button_printPage" VerticalAlignment="Top" Width="23" Click="button_printPage_Click">
                 <Image Source="/Winslew;component/Images/print.png" ToolTip="Print the currently displayed webpage"></Image>
             </Button>
-
+            -->
             <Button Height="23" HorizontalAlignment="Right" Margin="0,5,175,0" Name="button_updateCache" VerticalAlignment="Top" Width="23" Click="button_updateCache_Click">
                 <Image Source="/Winslew;component/Images/refresh.png" ToolTip="Update cache for this webpage"></Image>
             </Button>
