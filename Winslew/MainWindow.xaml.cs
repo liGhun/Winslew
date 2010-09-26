@@ -620,5 +620,11 @@ namespace Winslew
                 }
             }
         }
+
+        private void button_newPastebin_Click(object sender, RoutedEventArgs e)
+        {
+            Dialogs.Pastebin newPastebinWindow = new Dialogs.Pastebin();
+            newPastebinWindow.Show();
+        }
     }
 }

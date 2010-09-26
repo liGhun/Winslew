@@ -83,10 +83,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="About.xaml.cs">
+    <Compile Include="Dialogs\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AddNew.xaml.cs">
+    <Compile Include="Dialogs\AddNew.xaml.cs">
       <DependentUpon>AddNew.xaml</DependentUpon>
     </Compile>
     <Compile Include="AddTags.xaml.cs">
@@ -94,6 +94,7 @@
     </Compile>
     <Compile Include="Api\FetchWebpage.cs" />
     <Compile Include="Api\Imgur.cs" />
+    <Compile Include="Api\Pastebin.cs" />
     <Compile Include="AppController.cs" />
     <Compile Include="BuyLicense.xaml.cs">
       <DependentUpon>BuyLicense.xaml</DependentUpon>
@@ -102,6 +103,9 @@
       <DependentUpon>ChangeTitle.xaml</DependentUpon>
     </Compile>
     <Compile Include="Crypto.cs" />
+    <Compile Include="Dialogs\Pastebin.xaml.cs">
+      <DependentUpon>Pastebin.xaml</DependentUpon>
+    </Compile>
     <Compile Include="EditTags.xaml.cs">
       <DependentUpon>EditTags.xaml</DependentUpon>
     </Compile>
@@ -131,11 +135,11 @@
     <Compile Include="UpdatingCache.xaml.cs">
       <DependentUpon>UpdatingCache.xaml</DependentUpon>
     </Compile>
-    <Page Include="About.xaml">
+    <Page Include="Dialogs\About.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="AddNew.xaml">
+    <Page Include="Dialogs\AddNew.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -150,6 +154,10 @@
     <Page Include="ChangeTitle.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialogs\Pastebin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="EditTags.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -310,6 +318,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -65,5 +65,17 @@
     <Setting Name="TopGridHeight" Type="System.Double" Scope="User">
       <Value Profile="(Default)">177</Value>
     </Setting>
+    <Setting Name="PastebinEmail" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="PastebinSubdomain" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="PastebinPrivate" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Public</Value>
+    </Setting>
+    <Setting Name="PastebinExpiration" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Never</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

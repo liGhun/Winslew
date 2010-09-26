@@ -274,5 +274,53 @@ namespace Winslew.Properties {
                 this["TopGridHeight"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PastebinEmail {
+            get {
+                return ((string)(this["PastebinEmail"]));
+            }
+            set {
+                this["PastebinEmail"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PastebinSubdomain {
+            get {
+                return ((string)(this["PastebinSubdomain"]));
+            }
+            set {
+                this["PastebinSubdomain"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Public")]
+        public string PastebinPrivate {
+            get {
+                return ((string)(this["PastebinPrivate"]));
+            }
+            set {
+                this["PastebinPrivate"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Never")]
+        public string PastebinExpiration {
+            get {
+                return ((string)(this["PastebinExpiration"]));
+            }
+            set {
+                this["PastebinExpiration"] = value;
+            }
+        }
     }
 }
