@@ -47,6 +47,10 @@ namespace Winslew
                     button_RILTest.IsEnabled = false;
                     button_RILTest.Content = "Login valid";
                     loginHasBeenTestedSuccessfully = true;
+                    if (!Properties.Settings.Default.IsValidLicense)
+                    {
+                        LicenseChecker.checkOnlineForLicense();
+                    }
                 }
             }
             catch
@@ -69,6 +73,26 @@ namespace Winslew
         {
             if (apiAccess.checkLoginData(textBox_RILusername.Text, passwordBox_RILpassword.Password))
             {
+                Properties.Settings.Default.Password = Crypto.EncryptString(Crypto.ToSecureString(passwordBox_RILpassword.Password));
+                Properties.Settings.Default.Username = textBox_RILusername.Text;
+                Properties.Settings.Default.Save();
+                bool licenseValid = LicenseChecker.checkLicense(textBox_RILusername.Text, textBox_licenseCode.Text);
+                if (!licenseValid)
+                {
+                    if (LicenseChecker.checkOnlineForLicense())
+                    {
+                        licenseValid = true;
+                        textBox_licenseCode.Text = Properties.Settings.Default.LicenseCode;
+                    }
+                }
+                if (licenseValid)
+                {
+                    licenseIsValid();
+                }
+                else
+                {
+                    licenseIsNotValid();
+                }
                 toggleSaveButton(true);
                 loginHasBeenTestedSuccessfully = true;
             }
@@ -139,32 +163,83 @@ namespace Winslew
             }
             Properties.Settings.Default.LicenseCode = textBox_licenseCode.Text;
             if(LicenseChecker.checkLicense(Properties.Settings.Default.Username, textBox_licenseCode.Text)) {
-                label_licValid.Content = "License valid";
-                label_licValid.Foreground = new SolidColorBrush(Colors.Green);
-                button_getLicense.IsEnabled = false;
-                button_getLicense.Content = "Thank you";
-                Properties.Settings.Default.Save();
-                if (unlicensed && Properties.Settings.Default.LoginHasBeenTestedSuccessfully)
-                {
-                    AppController.Current.SetData(true);
-                    AppController.Current.refreshMainWindow();
-                }
-                unlicensed = false;
+                licenseIsValid();
             }
             else
             {
-                label_licValid.Content = "Not licensed";
-                label_licValid.Foreground = new SolidColorBrush(Colors.Red);
-                button_getLicense.IsEnabled = true;
-                button_getLicense.Content = "Buy license";
-                unlicensed = true;
+                licenseIsNotValid();
             }
             Properties.Settings.Default.Save();
+        }
+
+        private void licenseIsValid()
+        {
+            label_licValid.Content = "License valid";
+            label_licValid.Foreground = new SolidColorBrush(Colors.Green);
+            button_getLicense.IsEnabled = false;
+            button_getLicense.Content = "Thank you";
+            checkBox_retrieveLicense.IsEnabled = false;
+            textBox_licenseCode.Text = Properties.Settings.Default.LicenseCode;
+            Properties.Settings.Default.Save();
+            if (unlicensed && Properties.Settings.Default.LoginHasBeenTestedSuccessfully)
+            {
+                AppController.Current.UpdateItemsFromRiL(true);
+                AppController.Current.refreshMainWindow();
+            }
+            unlicensed = false;
+            
+        }
+
+        private void licenseIsNotValid()
+        {
+            label_licValid.Content = "Not licensed";
+            label_licValid.Foreground = new SolidColorBrush(Colors.Orange);
+            button_getLicense.IsEnabled = true;
+            button_getLicense.Content = "Buy license";
+            checkBox_retrieveLicense.IsEnabled = true;
+            unlicensed = true;
         }
 
         private void button_getLicense_Click(object sender, RoutedEventArgs e)
         {
             System.Diagnostics.Process.Start("http://www.li-ghun.de/Winslew/Download/");
+        }
+
+
+        bool AreAllValidNumericChars(string str)
+        {
+            bool ret = true;
+
+
+            int l = str.Length;
+            for (int i = 0; i < l; i++)
+            {
+                char ch = str[i];
+                ret &= Char.IsDigit(ch);
+            }
+
+            return ret;
+        }
+
+        private void textBox_autoRefresh_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !AreAllValidNumericChars(e.Text);
+            base.OnPreviewTextInput(e); 
+        }
+
+        private void checkBox_autoRefresh_Checked(object sender, RoutedEventArgs e)
+        {
+            if (IsInitialized)
+            {
+                if (checkBox_autoRefresh.IsChecked == true)
+                {
+                    AppController.Current.startAutoRefreshTimer(Properties.Settings.Default.AutoRefreshInterval);
+                }
+                else
+                {
+                    AppController.Current.stopAutoRefreshTimer();
+                }
+            }
         }
     }
 }

@@ -1,7 +1,8 @@
 ﻿<Window x:Class="Winslew.InProgress"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Upload in progress..." Height="138" Width="300" WindowStyle="None" Icon="/Winslew;component/Images/imageUpload.png" Loaded="Window_Loaded">
+        Title="Upload in progress..." Height="138" Width="300" WindowStyle="None" Icon="/Winslew;component/Images/imageUpload.png" Loaded="Window_Loaded"
+        Style="{StaticResource DefaultWindowStyle}">
     <Grid>
         <TextBlock Height="23" Margin="12,12,12,0" Name="textBlockTitle" Text="Upload in progress..." VerticalAlignment="Top" TextAlignment="Center" />
         <ProgressBar Height="30" Margin="12,41,12,0" Name="currentProgress" VerticalAlignment="Top" IsIndeterminate="True">

@@ -1,21 +1,16 @@
 ﻿<Window x:Class="Winslew.AddNew"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Title="AddNew" Height="144" Width="300" Icon="/Winslew;component/Images/add.png">
-    <Window.Background>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.2">
-            <LinearGradientBrush.GradientStops>
-                <GradientStop Offset="0" Color="White" />
-                <GradientStop Offset="1" Color="LightGray" />
-            </LinearGradientBrush.GradientStops>
-        </LinearGradientBrush>
-    </Window.Background>
+    Title="AddNew" Height="174" Width="300" Icon="/Winslew;component/Images/add.png"
+        Style="{StaticResource DefaultWindowStyle}">
     <Grid>
         <Label Height="28" Margin="12,12,0,0" Name="label1" VerticalAlignment="Top" HorizontalAlignment="Left" Width="38">URL</Label>
-        <Label Height="28" Margin="12,38,0,0" Name="label2" VerticalAlignment="Top" HorizontalAlignment="Left" Width="38">Title</Label>
-        <TextBox Height="23" Margin="56,14,12,0" Name="textBox_url" VerticalAlignment="Top" TextChanged="textBox_url_TextChanged">http://</TextBox>
-        <TextBox Margin="56,43,12,0" Name="textBox_title" Height="23" VerticalAlignment="Top" />
-        <Button Margin="191,72,0,0" Name="button_save" Height="23" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" IsEnabled="False" Click="button_save_Click">Save</Button>
-        <Button Margin="110,72,0,0" Name="button_cancel" Height="23" VerticalAlignment="Top" HorizontalAlignment="Left" Width="75" Click="button_cancel_Click">Cancel</Button>
+        <Label Height="28" Margin="12,41,0,0" Name="label2" VerticalAlignment="Top" HorizontalAlignment="Left" Width="38">Title</Label>
+        <TextBox Height="23" Margin="56,14,12,0" Name="textBox_url" VerticalAlignment="Top" TextChanged="textBox_url_TextChanged" TabIndex="1">http://</TextBox>
+        <TextBox Margin="56,43,12,0" Name="textBox_title" Height="23" VerticalAlignment="Top" TabIndex="2" />
+        <Button Margin="191,100,0,0" Name="button_save" Height="23" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" IsEnabled="False" Click="button_save_Click" TabIndex="5">Save</Button>
+        <Button Margin="110,100,0,0" Name="button_cancel" Height="23" VerticalAlignment="Top" HorizontalAlignment="Left" Width="75" Click="button_cancel_Click" TabIndex="4">Cancel</Button>
+        <Label Content="Tags" Height="28" HorizontalAlignment="Left" Margin="12,70,0,0" Name="label3" VerticalAlignment="Top" Width="38" />
+        <TextBox Height="23" Margin="56,72,12,0" Name="textBox_tags" VerticalAlignment="Top" TabIndex="3" />
     </Grid>
 </Window>

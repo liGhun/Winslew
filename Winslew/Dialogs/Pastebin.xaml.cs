@@ -19,10 +19,15 @@ namespace Winslew.Dialogs
     public partial class Pastebin : Window
     {
         Api.Pastebin api;
+        Dictionary<string, string> translatorSuffixToHighlighter;
 
         public Pastebin()
         {
             InitializeComponent();
+
+            translatorSuffixToHighlighter = new Dictionary<string, string>();
+            fillTranslatorForHighlighter();
+
             api = new Api.Pastebin();
             comboBox_syntaxHighlighting.ItemsSource = api.AvailableFormats;
             comboBox_syntaxHighlighting.DisplayMemberPath = "Value";
@@ -31,10 +36,6 @@ namespace Winslew.Dialogs
             comboBox_syntaxHighlighting.UpdateLayout();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         private void button_sendToPastebin_Click(object sender, RoutedEventArgs e)
         {
@@ -49,9 +50,16 @@ namespace Winslew.Dialogs
                     isPrivate = false;
                 }
                 Api.Pastebin.Result result = api.AddToPastebin(textBox_text.Text, textBox_title.Text, textBox_email.Text, textBox_subdomain.Text, isPrivate, comboBox_expiration.SelectedValue.ToString(), comboBox_syntaxHighlighting.SelectedValue.ToString());
-                if (result.Success)
+                if (result.PastebinUrl.StartsWith("http"))
                 {
-                    AppController.Current.addItem(result.PastebinUrl, textBox_title.Text);
+                    if (textBox_RiLTags.Text != "")
+                    {
+                        AppController.Current.addToListWithTags(result.PastebinUrl, textBox_title.Text, textBox_RiLTags.Text);
+                    }
+                    else
+                    {
+                        AppController.Current.addItem(result.PastebinUrl, textBox_title.Text);
+                    }
                     Close();
                 }
                 else
@@ -86,6 +94,30 @@ namespace Winslew.Dialogs
             }
         }
 
+        public void selectHighlighter(string selector) {
+            selector = selector.ToLower();
+            selector = selector.TrimStart('.');
+            if (translatorSuffixToHighlighter.ContainsKey(selector))
+            {
+                selector = translatorSuffixToHighlighter[selector];
+            }
+            if(api.AvailableFormats.ContainsKey(selector)) {
+                comboBox_syntaxHighlighting.SelectedValue = selector;
+            }
+        }
+
+        private void fillTranslatorForHighlighter()
+        {
+            translatorSuffixToHighlighter.Add("as", "actionscript3");
+            translatorSuffixToHighlighter.Add("scpt", "applescript");
+            translatorSuffixToHighlighter.Add("au3", "autoit");
+            translatorSuffixToHighlighter.Add("aut", "autoit");
+            translatorSuffixToHighlighter.Add("sh", "bash");
+            translatorSuffixToHighlighter.Add("dil", "delphi");
+            translatorSuffixToHighlighter.Add("cs", "csharp");
+            translatorSuffixToHighlighter.Add("e", "eiffel");
+            translatorSuffixToHighlighter.Add("rb", "ruby");
+        }
         
     }
 }

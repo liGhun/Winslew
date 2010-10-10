@@ -194,13 +194,6 @@ namespace Winslew.Api
                 return returnValue;
             }
 
-            if (!result.Success)
-            {
-                returnValue.ErrorText = result.Error;
-                returnValue.Success = false;
-            }
-            else
-            {
 
                 if (!result.Content.StartsWith("http"))
                 {
@@ -213,7 +206,7 @@ namespace Winslew.Api
                     returnValue.ErrorText = "";
                     returnValue.PastebinUrl = result.Content;
                 }
-            }
+
 
             return returnValue;
         }

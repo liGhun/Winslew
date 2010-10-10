@@ -37,7 +37,7 @@ namespace Winslew
 
         private void button_humanIconTheme_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start("http://packages.ubuntu.com/search?keywords=human-icon-theme");
+            Process.Start("http://tango.freedesktop.org/Tango_Icon_Gallery");
         }
 
         private void button_snarlCsharp_Click(object sender, RoutedEventArgs e)
@@ -48,6 +48,16 @@ namespace Winslew
         private void button_snarl_Click(object sender, RoutedEventArgs e)
         {
             Process.Start("http://www.fullphat.net/");
+        }
+
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start("http://www.dezinerfolio.com/");
+        }
+
+        private void buttonDocu_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start("http://www.li-ghun.de/Winslew/Documentation/");
         }
 
 

@@ -1,9 +1,9 @@
 ﻿<Window x:Class="Winslew.BuyLicense"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Title="Please purchase a license" Height="211" Width="300" WindowStartupLocation="CenterScreen" Visibility="Visible" ResizeMode="NoResize" Icon="/Winslew;component/Images/Winslew.ico" SizeToContent="Manual" Topmost="True">
+    Title="Please purchase a license" Height="234" Width="300" WindowStartupLocation="CenterScreen" Visibility="Visible" ResizeMode="NoResize" Icon="/Winslew;component/Images/Winslew.ico" Topmost="True">
     <Window.Background>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.4">
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.2">
             <LinearGradientBrush.GradientStops>
                 <GradientStop Offset="0" Color="White" />
                 <GradientStop Offset="1" Color="Red" />
@@ -14,6 +14,6 @@
     <Grid>
         <TextBlock Margin="12,12,12,0" Name="textBlock1" Height="86" VerticalAlignment="Top" TextWrapping="Wrap" Text="We are sorry but you are running an unlicensed copy of Winslew and have exceeded the maximum number of shown items. Please purchase a license to view more than 10 items at once." TextAlignment="Center" />
         <Button Height="23" Margin="12,104,12,0" Name="button_buyit" VerticalAlignment="Top" Click="button_buyit_Click">Purchase a license for 2,99 EUR</Button>
-        <TextBlock Height="37" Margin="12,133,12,0" Name="textBlock2" VerticalAlignment="Top" Text="This window is only shown once per installation of Winslew." TextAlignment="Center" TextWrapping="Wrap" />
+        <TextBlock Height="50" Margin="12,133,12,0" Name="textBlock2" VerticalAlignment="Top" Text="This window is only shown once per installation of Winslew. Hint: You can view the not shown items buy using the filters" TextAlignment="Center" TextWrapping="Wrap" />
     </Grid>
 </Window>

@@ -16,7 +16,7 @@ namespace Winslew.Api
          private bool isOnline;
          private long lastRetrievalTime = 0;
 
-         public void addToList(string newUrl, string newTitle)
+         public Response addToList(string newUrl, string newTitle)
         {
             if (newUrl != null)
             {
@@ -29,14 +29,68 @@ namespace Winslew.Api
                     title = newTitle
 
                 }, false);
-               // bool success = (!string.IsNullOrEmpty(result) && result.ToLowerInvariant() == "200 ok");
+                // bool success = (!string.IsNullOrEmpty(result) && result.ToLowerInvariant() == "200 ok");
                 if (!result.Success)
                 {
-                    System.Windows.Forms.MessageBox.Show("Error sending item to Read It Later", "Read it later error");
+                    System.Windows.Forms.MessageBox.Show("Error sending item to Read It Later", result.Error);
                 }
-
+                return result;
+            }
+            else
+            {
+                Response empty = new Response();
+                empty.Success = false;
+                empty.Error = "No url given";
+                return empty;
             }
         }
+
+         public Response addToList(string newUrl)
+         {
+             if (newUrl != null)
+             {
+                 Response result = HttpCommunications.SendPostRequest(@"https://readitlaterlist.com/v2/add", new
+                 {
+                     username = Properties.Settings.Default.Username,
+                     password = getPassword(),
+                     apikey = apiKey,
+                     url = newUrl,
+
+                 }, false);
+                 // bool success = (!string.IsNullOrEmpty(result) && result.ToLowerInvariant() == "200 ok");
+                 if (!result.Success)
+                 {
+                     System.Windows.Forms.MessageBox.Show("Error sending item to Read It Later", result.Error);
+                 }
+                 return result;
+             }
+             else
+             {
+                 Response empty = new Response();
+                 empty.Success = false;
+                 empty.Error = "No url given";
+                 return empty;
+             }
+         }
+
+         public void addToListWithTags(string newUrl, string title, string tags)
+         {
+             Response initialResponse = addToList(newUrl, title);
+             if (initialResponse.Success && tags != "")
+             {
+                 setAndOverrideTagsForSingleEntry(newUrl, tags);
+             }
+         }
+
+         public void setAndOverrideTagsForSingleEntry(string url, string tags)
+         {
+             List<Dictionary<string, string>> toBeAddedTags = new List<Dictionary<string, string>>();
+
+             Dictionary<string, string> thisItem = new Dictionary<string, string>();
+             thisItem.Add(url, tags);
+             toBeAddedTags.Add(thisItem);
+             AppController.Current.addTags(toBeAddedTags);
+         }
 
         public bool checkLoginData(string RIL_username, string RIL_password)
         {

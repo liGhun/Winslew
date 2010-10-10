@@ -115,7 +115,7 @@
     </Compile>
     <Compile Include="Item.cs" />
     <Compile Include="LicenseChecker.cs" />
-    <Compile Include="Preferences.xaml.cs">
+    <Compile Include="Dialogs\Preferences.xaml.cs">
       <DependentUpon>Preferences.xaml</DependentUpon>
     </Compile>
     <Compile Include="RemoveTags.xaml.cs">
@@ -184,7 +184,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Preferences.xaml">
+    <Page Include="Dialogs\Preferences.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -215,19 +215,32 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Images\editBlank.png" />
+    <Resource Include="Images\refresh.png" />
+    <Resource Include="Images\text.png" />
+    <Resource Include="Images\trashcan.png" />
+    <Resource Include="Images\quit.png" />
+    <Resource Include="Images\add.png" />
+    <Resource Include="Images\copyClipboard.png" />
+    <Resource Include="Images\help.png" />
+    <Resource Include="Images\preferences.png" />
+    <Resource Include="Images\imageUpload.png" />
+    <Resource Include="Images\uploadText.png" />
+    <Resource Include="Images\filter.png" />
     <Resource Include="Images\addTags.png" />
     <Resource Include="Images\removeTags.png" />
-    <Resource Include="Images\editBlank.png" />
-    <Resource Include="Images\imageUpload.png" />
+    <Resource Include="Images\tags.png" />
+    <Resource Include="Images\browser.png" />
+    <Resource Include="Images\extermalApps.png" />
     <Content Include="Styles\BlackOnWhite.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Styles\WhiteOnBlack.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Styles\Khaki.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <None Include="Styles\Khaki.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -238,8 +251,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <Resource Include="Images\browser.png" />
-    <Resource Include="Images\copyClipboard.png" />
     <Resource Include="Images\pasteClipboard.png" />
     <Resource Include="Images\snarl.png" />
     <Resource Include="Images\print.png" />
@@ -263,14 +274,8 @@
     <None Include="Winslew.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\add.png" />
-    <Resource Include="Images\edit.png" />
-    <Resource Include="Images\help.png" />
     <Resource Include="Images\markedRead.png" />
-    <Resource Include="Images\preferences.png" />
-    <Resource Include="Images\refresh.png" />
     <Resource Include="Images\toggleView.png" />
-    <Resource Include="Images\trashcan.png" />
     <Resource Include="Images\unread.png" />
     <Resource Include="Images\Winslew.ico" />
     <Content Include="Images\Winslew.png">
@@ -279,8 +284,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\update.png" />
-    <Resource Include="Images\filter.png" />
-    <Resource Include="Winslew.ico" />
+    <Content Include="Winslew.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Setup\Documentation.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

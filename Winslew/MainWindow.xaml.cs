@@ -14,6 +14,8 @@ using System.Windows.Shapes;
 using System.Collections.ObjectModel;
 using System.Net.Sockets;
 using System.ComponentModel;
+using System.Timers;
+using System.Windows.Threading;
 
 namespace Winslew
 {
@@ -26,7 +28,13 @@ namespace Winslew
         public Api.Api apiAccess = new Api.Api();
         private GridViewColumnHeader _CurSortCol = null;
         private SortAdorner _CurAdorner = null;
-       
+
+        private WindowState m_storedWindowState = WindowState.Normal;
+        private System.Windows.Forms.NotifyIcon m_notifyIcon;
+        private System.Windows.Forms.ContextMenu m_notifyMenu;
+
+        public DispatcherTimer dispatcherTimer;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -61,9 +69,40 @@ namespace Winslew
                 comboBox_browserView.Text = "More";
             }
 
-           // frame_content.DataContextChanged += BrowserStartLoad;
-           // frame_content.LoadCompleted += BrowserOnLoadCompleted;
+            // tray icon stuff
+            m_notifyIcon = new System.Windows.Forms.NotifyIcon();
+            m_notifyIcon.Text = "Winslew";
+            m_notifyIcon.Icon = new System.Drawing.Icon("Winslew.ico");
+            m_notifyIcon.DoubleClick += new EventHandler(m_notifyIcon_Click);
+            System.Windows.Forms.MenuItem showMainMenu = new System.Windows.Forms.MenuItem("Show main window", new System.EventHandler(trayContextShow));
 
+            m_notifyMenu = new System.Windows.Forms.ContextMenu();
+            m_notifyMenu.MenuItems.Add("Winslew");
+            m_notifyMenu.MenuItems.Add("-");
+            m_notifyMenu.MenuItems.Add(showMainMenu);
+            m_notifyMenu.MenuItems.Add(new System.Windows.Forms.MenuItem("Refresh now", new System.EventHandler(trayContextRefresh)));
+            m_notifyMenu.MenuItems.Add(new System.Windows.Forms.MenuItem("Preferences", new System.EventHandler(trayContextPreferences)));
+            m_notifyMenu.MenuItems.Add("-");
+            m_notifyMenu.MenuItems.Add(new System.Windows.Forms.MenuItem("Add new item url", new System.EventHandler(trayContextAddItem)));
+            m_notifyMenu.MenuItems.Add(new System.Windows.Forms.MenuItem("Upload image", new System.EventHandler(trayContextUploadImage)));
+            m_notifyMenu.MenuItems.Add(new System.Windows.Forms.MenuItem("Store text online", new System.EventHandler(trayContextNewPastebin)));
+            m_notifyMenu.MenuItems.Add(new System.Windows.Forms.MenuItem("Upload text online", new System.EventHandler(trayContextUploadPastebin)));
+            m_notifyMenu.MenuItems.Add("-");
+            m_notifyMenu.MenuItems.Add(new System.Windows.Forms.MenuItem("Quit", new System.EventHandler(trayContextQuit)));
+
+            m_notifyIcon.ContextMenu = m_notifyMenu;
+
+            dispatcherTimer = new DispatcherTimer();
+            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+
+           frame_content.LoadCompleted += BrowserOnLoadCompleted;
+            
+
+        }
+
+        void dispatcherTimer_Tick(object sender, EventArgs e)
+        {
+            button_refresh_Click(null, null);
         }
 
         ~MainWindow() {
@@ -74,15 +113,25 @@ namespace Winslew
 
         private void BrowserOnLoadCompleted(object sender, NavigationEventArgs navigationEventArgs)
         {
-            Snarl.SnarlConnector.ShowMessage("Site lodaded", "fine", 10, "", IntPtr.Zero, 0);    
+            button_addCurrentViewedPage.Visibility = Visibility.Collapsed;
+            Image_AddCurrentlyViewPage.Visibility = Visibility.Collapsed;
+            // Snarl.SnarlConnector.ShowMessage("Site lodaded", "fine", 10, "", IntPtr.Zero, 0);    
+            if (frame_content.Source.AbsoluteUri.StartsWith("http"))
+            {
+                if (AppController.Current.itemsCollection.Where(i => i.url == frame_content.Source.AbsoluteUri).Count() == 0)
+                {
+                    button_addCurrentViewedPage.Visibility = Visibility.Visible;
+                    Image_AddCurrentlyViewPage.Visibility = Visibility.Visible;
+                }
+            }
+
         }
 
         private void BrowserStartLoad(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (frame_content.DataContext != null)
-            {
-                Snarl.SnarlConnector.ShowMessage("Site loding", "just a second please", 10, "", IntPtr.Zero, 0);
-            }
+                // Snarl.SnarlConnector.ShowMessage("Site loding", "just a second please", 10, "", IntPtr.Zero, 0);
+                button_addCurrentViewedPage.Visibility = Visibility.Collapsed;
+                Image_AddCurrentlyViewPage.Visibility = Visibility.Collapsed;
         }
 
         public void refreshItems() {
@@ -152,7 +201,7 @@ namespace Winslew
             {
                 var currentItem = listView_Items.SelectedItem as Item;
                 updateViewOfFrame();
-                label_TitleOfItem.Content = currentItem.title;
+                label_TitleOfItem.Text = currentItem.title;
                 if (currentItem.read)
                 {
                     toggleReadIcon(true);
@@ -197,7 +246,7 @@ namespace Winslew
 
         private void button_refresh_Click(object sender, RoutedEventArgs e)
         {
-            AppController.Current.SetData(false);
+            AppController.Current.UpdateItemsFromRiL(false);
         }
 
         private void button_editTags_Click(object sender, RoutedEventArgs e)
@@ -253,11 +302,11 @@ namespace Winslew
             About myHelpWIndow = new About();
             if (Properties.Settings.Default.IsValidLicense)
             {
-                myHelpWIndow.label_license.Content = "This copy is licensed to " + Properties.Settings.Default.Username;
+                myHelpWIndow.label_license.Text = "This copy is licensed to " + Properties.Settings.Default.Username;
             }
             else
             {
-                myHelpWIndow.label_license.Content = "This is copy is unlicensed and in trial mode";
+                myHelpWIndow.label_license.Text = "This is copy is unlicensed and in trial mode";
             }
             myHelpWIndow.Show();
         }
@@ -626,5 +675,149 @@ namespace Winslew
             Dialogs.Pastebin newPastebinWindow = new Dialogs.Pastebin();
             newPastebinWindow.Show();
         }
+
+
+        #region Tray icon
+
+        protected void trayContextShow(Object sender, System.EventArgs e)
+        {
+            m_notifyIcon_Click(null, null);
+        }
+
+        protected void trayContextRefresh(Object sender, System.EventArgs e)
+        {
+            button_refresh_Click(null, null);
+        }
+
+
+        protected void trayContextPreferences(Object sender, System.EventArgs e)
+        {
+            button_preferences_Click(null, null);
+        }
+
+        protected void trayContextUploadImage(Object sender, System.EventArgs e)
+        {
+            button_uploadImage_Click(null, null);
+        }
+
+        protected void trayContextNewPastebin(Object sender, System.EventArgs e)
+        {
+            button_newPastebin_Click(null, null);
+        }
+
+        protected void trayContextUploadPastebin(Object sender, System.EventArgs e)
+        {
+            button_uploadPastebin_Click(null, null);
+        }
+
+        protected void trayContextAddItem(Object sender, System.EventArgs e)
+        {
+            AddNew itemAdd = new AddNew();
+            itemAdd.Show();
+        }
+
+        protected void trayContextQuit(Object sender, System.EventArgs e)
+        {
+            Close();
+        }
+
+        void OnStateChanged(object sender, EventArgs args)
+        {
+            if (WindowState == WindowState.Minimized)
+            {
+                if (Properties.Settings.Default.MinimizeToTray)
+                {
+                    Hide();
+                }
+            }
+            else if (WindowState != WindowState.Minimized)
+            {
+                ShowTrayIcon(false);
+                m_storedWindowState = WindowState;
+            }
+        }
+        void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs args)
+        {
+            CheckTrayIcon();
+        }
+
+        void m_notifyIcon_Click(object sender, EventArgs e)
+        {
+            Show();
+            WindowState = m_storedWindowState;
+        }
+        void CheckTrayIcon()
+        {
+            ShowTrayIcon(!IsVisible);
+        }
+
+        void ShowTrayIcon(bool show)
+        {
+            if (m_notifyIcon != null)
+                m_notifyIcon.Visible = show;
+        }
+
+        #endregion
+
+        private void button_addCurrentViewedPage_Click(object sender, RoutedEventArgs e)
+        {
+            AddNew newItem = new AddNew();
+            newItem.SetUrl(frame_content.Source.AbsoluteUri);
+            newItem.Show();
+        }
+
+        private void button_uploadPastebin_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+
+            dlg.DefaultExt = ".txt"; // Default file extension
+            dlg.Filter = "Textfiles (*.txt,*.xml,*.*)|*.txt;*.xml;*.*"; // Filter files by extension
+
+            // Show open file dialog box
+            Nullable<bool> result = dlg.ShowDialog();
+
+            // Process open file dialog box results
+            if (result == true)
+            {
+                string filename = dlg.FileName;
+                string text = "";
+                System.IO.StreamReader textReader = System.IO.File.OpenText(dlg.FileName);
+
+                // int snarlId = AppController.Current.ShowSnarlNotificton("Image upload has been started", "Upload has been started", "Upload of file " + dlg.FileName + " has been started", 0);
+                string input = null;
+                while ((input = textReader.ReadLine()) != null)
+                {
+                    text += input + "\n";
+                }
+                textReader.Close();
+                textReader = null;
+
+                text = text.TrimEnd();
+
+                Dialogs.Pastebin myPastebin = new Dialogs.Pastebin();
+                myPastebin.textBox_text.Text = text;
+                myPastebin.textBox_title.Text = System.IO.Path.GetFileNameWithoutExtension(dlg.FileName);
+                myPastebin.selectHighlighter(System.IO.Path.GetExtension(dlg.FileName));
+                myPastebin.Show();
+            }
+        }
+
+        private void ContextUploadImage_Click(object sender, RoutedEventArgs e)
+        {
+            button_uploadImage_Click(null, null);
+        }
+
+        private void ContextNewPastebin_Click(object sender, RoutedEventArgs e)
+        {
+            button_newPastebin_Click(null, null);
+        }
+
+        private void ContextUploadPastebin_Click(object sender, RoutedEventArgs e)
+        {
+            button_uploadPastebin_Click(null, null);
+        }
+
+
     }
+
 }

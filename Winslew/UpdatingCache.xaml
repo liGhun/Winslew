@@ -3,7 +3,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Title="Updating Cache"
         IsHitTestVisible="False" Opacity="0.87"
-        Height="184" Width="373" Icon="/Winslew;component/Images/refresh.png" WindowStyle="None" WindowStartupLocation="CenterScreen" ResizeMode="CanResize" Topmost="True" AllowsTransparency="True">
+        Height="184" Width="373" Icon="/Winslew;component/Images/refresh.png" WindowStyle="None" 
+        WindowStartupLocation="CenterScreen" ResizeMode="CanResize" Background="Transparent" Topmost="True" AllowsTransparency="True">
 
     <Border CornerRadius="15" BorderThickness="2"
              Padding="5" BorderBrush="Black">

@@ -1,15 +1,9 @@
 ﻿<Window x:Class="Winslew.UpdateAvailable"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Update available" Height="339" Width="629" Icon="/Winslew;component/Images/update.png">
-    <Window.Background>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.2">
-            <LinearGradientBrush.GradientStops>
-                <GradientStop Offset="0" Color="White" />
-                <GradientStop Offset="1" Color="LightGray" />
-            </LinearGradientBrush.GradientStops>
-        </LinearGradientBrush>
-    </Window.Background>
+        Title="Update available" Height="339" Width="629" Icon="/Winslew;component/Images/update.png"
+        Style="{StaticResource DefaultWindowStyle}">
+
     <Grid>
         <Label Content="Newer version of Winslew available" Height="28" Margin="42,12,12,0" Name="label1" VerticalAlignment="Top" FontWeight="Bold" />
         <Label Content="Installed version: 0.0.0.0 - now available: 0.0.0.0" Height="28" Margin="12,35,12,0" Name="label_oldNew" VerticalAlignment="Top" />

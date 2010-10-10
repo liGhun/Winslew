@@ -28,6 +28,15 @@ namespace Winslew
             textBox_url.Focus();
         }
 
+        public void SetUrl(string url) {
+            textBox_url.Text = url;
+        }
+
+        public void SetTitle(string title)
+        {
+            textBox_title.Text = title;
+        }
+
         private void button_cancel_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -35,7 +44,7 @@ namespace Winslew
 
         private void button_save_Click(object sender, RoutedEventArgs e)
         {
-            AppController.Current.addItem(textBox_url.Text, textBox_title.Text);
+            AppController.Current.addToListWithTags(textBox_url.Text, textBox_title.Text, textBox_tags.Text);
             this.Close();
         }
 
@@ -53,5 +62,6 @@ namespace Winslew
                 }
             }
         }
+
     }
 }

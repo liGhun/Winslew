@@ -22,6 +22,10 @@ namespace Winslew.Api
         {
             Cache = new List<CachedItemContent>();
             pathToNAPage = appDataPath + "\\Cache\\NotAvailable.html";
+            if (!Directory.Exists(appDataPath))
+            {
+                Directory.CreateDirectory(appDataPath);
+            }
             if (!Directory.Exists(appDataPath + "\\Cache"))
             {
                 Directory.CreateDirectory(appDataPath + "\\Cache");

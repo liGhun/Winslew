@@ -7,7 +7,18 @@ namespace Winslew
 {
     class LicenseChecker
     {
-        public static bool checkLicense(string username, string licenseCode)
+        public static bool checkLicense(string username, string licenseCode) {
+            if (checkLicenseOffline(username, licenseCode))
+            {
+                return true;
+            }
+            else
+            {
+                return checkOnlineForLicense();
+            }
+        }
+
+        private static bool checkLicenseOffline(string username, string licenseCode)
         {
             Properties.Settings.Default.IsValidLicense = false;
             if(licenseCode.Length != 10) {
@@ -38,6 +49,41 @@ namespace Winslew
                 s.Append(b.ToString("x2").ToLower());
             }
             return s.ToString();
+        }
+
+        public static bool checkOnlineForLicense()
+        {
+            if (Properties.Settings.Default.CheckForLicense && Properties.Settings.Default.Username != "" && Properties.Settings.Default.Password != "")
+            {
+                try
+                {
+                    Api.Response response = HttpCommunications.SendPostRequest("http://www.li-ghun.de/Winslew/api/checkLicense/",
+                        new
+                        {
+                            userhash = LicenseChecker.GetMD5Hash(Properties.Settings.Default.Username),
+                            data = "jh6i7bi8bo"
+                        }, true);
+                    if (response.Content != null)
+                    {
+                        if (response.Content != "")
+                        {
+                            bool licenseValid = LicenseChecker.checkLicenseOffline(Properties.Settings.Default.Username, response.Content.Trim());
+                            if (licenseValid)
+                            {
+                                Properties.Settings.Default.LicenseCode = response.Content.Trim();
+                                Properties.Settings.Default.IsValidLicense = true;
+                                Properties.Settings.Default.Save();
+                                return true;
+                            }
+                        }
+                    }
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+            return false;
         }
     }
 }

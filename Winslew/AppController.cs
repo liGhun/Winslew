@@ -13,6 +13,7 @@ using System.Xml.Serialization;
 using System.IO;
 using System.Net.Sockets;
 using System.Diagnostics;
+using System.Timers;
 
 namespace Winslew
 {
@@ -69,9 +70,6 @@ namespace Winslew
 
             try
             {
-
-
-
                 // Checking and (if needed) creating preferences directories and files
 
                 appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Winslew\\";
@@ -113,6 +111,7 @@ namespace Winslew
                 Preferences myPrefWindow = new Preferences();
                 myPrefWindow.Show();
             }
+ 
 
             this.pathToIcon = pathToIcon = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\images\\Winslew.png";
             snarlMsgWindow = new NativeWindowApplication.SnarlMsgWnd();
@@ -136,14 +135,21 @@ namespace Winslew
                 snarlIsRunning = true;
                 hideSnarlHint();
             }
-           
-            UpdateAvailable myUpdateCheck = new UpdateAvailable();
+
+            if (Properties.Settings.Default.CheckForUpdates)
+            {
+                UpdateAvailable myUpdateCheck = new UpdateAvailable();
+            }
         }
 
 
 
         public void credentialsSavedSuccessfully()
         {
+            if (!Properties.Settings.Default.IsValidLicense)
+            {
+                LicenseChecker.checkOnlineForLicense();
+            }
             if (mainWindow == null)
             {
                 mainWindow = new MainWindow();
@@ -153,13 +159,10 @@ namespace Winslew
                 }
             }
 
-
-
-
             if (apiAccess.checkIfOnline())
             {
 
-                SetData(false);
+                UpdateItemsFromRiL(false);
                 isInitialFetch = false;
 
                 List<Item> tempList = new List<Item>();
@@ -212,6 +215,8 @@ namespace Winslew
                 hideSnarlHint();
             }
             StartCacheUpdate(null);
+
+
 
         }
 
@@ -522,7 +527,7 @@ namespace Winslew
             mainWindow.refreshItems();
         }
 
-        public void SetData(bool freshRefresh)
+        public void UpdateItemsFromRiL(bool freshRefresh)
         {
             IEnumerable<Item> data = apiAccess.getList(freshRefresh, false, true);
             if (isInitialFetch || freshRefresh)
@@ -573,15 +578,26 @@ namespace Winslew
                     }
                 }
             }
+            if (Properties.Settings.Default.AutoRefresh)
+            {
+                startAutoRefreshTimer(Properties.Settings.Default.AutoRefreshInterval);
+            }
         }
 
  
 
         public bool addItem(string url, string title)
         {
-            apiAccess.addToList(url, title);
+            if (title != null)
+            {
+                apiAccess.addToList(url, title);
+            }
+            else
+            {
+                apiAccess.addToList(url);
+            }
             
-            SetData(false);
+            UpdateItemsFromRiL(false);
             
             mainWindow.refreshItems();
 
@@ -597,6 +613,11 @@ namespace Winslew
                 }
             }
             return true;
+        }
+
+        public void addToListWithTags(string newUrl, string title, string tags)
+        {
+            apiAccess.addToListWithTags(newUrl, title, tags);
         }
 
         public void updateItem(Item oldItem, Item newItem)
@@ -627,7 +648,7 @@ namespace Winslew
         public void addTags(List<Dictionary<string, string>> data)
         {
             apiAccess.addTags(data);
-            SetData(false);
+            UpdateItemsFromRiL(false);
         }
 
         public void changeTitle(Dictionary<string, string> data)
@@ -699,6 +720,32 @@ namespace Winslew
 
         public int ShowSnarlNotificton(string className, string title, string text, int duration) {
             return SnarlConnector.ShowMessageEx(className, title, text, duration, pathToIcon, SnarlMessageWindowHandle, WindowsMessage.WM_USER + 65,"");
+        }
+
+        static private void UpdateTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            AppController.Current.UpdateItemsFromRiL(false);
+        }
+
+        public void startAutoRefreshTimer(int minutes)
+        {
+            if (mainWindow != null)
+            {
+                TimeSpan myTimespan = new TimeSpan(0, minutes, 0);
+                mainWindow.dispatcherTimer.Interval = myTimespan;
+                mainWindow.dispatcherTimer.Start();
+            }
+        }
+
+        public void stopAutoRefreshTimer()
+        {
+            if (mainWindow != null)
+            {
+                if (mainWindow.dispatcherTimer != null)
+                {
+                    mainWindow.dispatcherTimer.Stop();
+                }
+            }
         }
     }
 }

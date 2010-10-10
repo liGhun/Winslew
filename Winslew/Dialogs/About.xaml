@@ -1,27 +1,23 @@
 ﻿<Window x:Class="Winslew.About"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Title="About Winslew" Height="314" Width="448" Icon="/Winslew;component/Images/help.png" WindowStartupLocation="CenterScreen">
-    <Window.Background>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.2">
-            <LinearGradientBrush.GradientStops>
-                <GradientStop Offset="0" Color="White" />
-                <GradientStop Offset="1" Color="LightGray" />
-            </LinearGradientBrush.GradientStops>
-        </LinearGradientBrush>
-    </Window.Background>
+    Title="About Winslew" Height="314" Width="448" Icon="/Winslew;component/Images/help.png" WindowStartupLocation="CenterScreen"
+        Style="{StaticResource DefaultWindowStyle}"
+        >
+
     <Grid>
         <Label Height="28" Margin="12,12,12,0" Name="label_Winslew_version" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Padding="0">Winslew 1.0.0.0</Label>
         <TextBlock Margin="12,46,12,0" Name="textBlock1" Height="38" VerticalAlignment="Top" Text="Winslew is a client for the service &quot;Read It Later&quot; and is developed and copyright by Sven Walther 2010" TextWrapping="Wrap" />
         <Button Height="23" Margin="12,107,0,0" Name="button_visitHomepage" VerticalAlignment="Top" HorizontalAlignment="Left" Width="105" Click="button_visitHomepage_Click">Visit homepage</Button>
         <Button Height="23" Margin="123,107,194,0" Name="button_visitRIL" VerticalAlignment="Top" Click="button_visitRIL_Click">Visit Read It Later</Button>
-        <TextBlock Height="39" Margin="12,0,12,76" Name="textBlock_credits" VerticalAlignment="Bottom" TextWrapping="Wrap" Text="Winslew uses icons of the human icons set and the Snarl C# connection by Toke Noer" />
+        <TextBlock Height="39" Margin="12,160,12,0" Name="textBlock_credits" VerticalAlignment="Top" TextWrapping="Wrap" Text="Winslew uses icons of the Tango icons set as well as On Stage collection and the Snarl C# connection by Toke Noer" />
         <Label Margin="12,136,12,112" Name="label_credits" FontWeight="Bold" Padding="0">Credits</Label>
-        <Button Height="23" HorizontalAlignment="Left" Margin="12,0,0,55" Name="button_humanIconTheme" VerticalAlignment="Bottom" Width="123" Click="button_humanIconTheme_Click">Human Icon Theme</Button>
-        <Button Height="23" HorizontalAlignment="Right" Margin="0,0,129,55" Name="button_snarlCsharp" VerticalAlignment="Bottom" Width="75" Click="button_snarlCsharp_Click">Snarl C#</Button>
-        <TextBlock Height="32" Margin="12,0,12,17" Name="textBlock_konstantin" VerticalAlignment="Bottom" Text="A special thanks goes to Konstantins Onufrijevs for teaching me how to deal with WPF and public web services " TextWrapping="Wrap" />
-        <Button Height="23" Margin="141,0,210,55" Name="button_snarl" VerticalAlignment="Bottom" Click="button_snarl_Click">Snarl</Button>
-        <Label Height="22" Margin="12,83
-               ,12,0" Name="label_license" VerticalAlignment="Top" Padding="0">This copy is licensed until ...</Label>
+        <Button Height="23" HorizontalAlignment="Left" Margin="12,197,0,0" Name="button_humanIconTheme" VerticalAlignment="Top" Width="105" Click="button_humanIconTheme_Click">Tango Icon Set</Button>
+        <Button Height="23" HorizontalAlignment="Left" Margin="319,197,0,0" Name="button_snarlCsharp" VerticalAlignment="Top" Width="75" Click="button_snarlCsharp_Click">Snarl C#</Button>
+        <TextBlock Height="32" Margin="12,226,12,0" Name="textBlock_konstantin" VerticalAlignment="Top" Text="A special thanks goes to Konstantins Onufrijevs for teaching me how to deal with WPF and public web services " TextWrapping="Wrap" />
+        <Button Height="23" Margin="238,197,0,0" Name="button_snarl" VerticalAlignment="Top" Click="button_snarl_Click" HorizontalAlignment="Left" Width="75">Snarl</Button>
+        <TextBlock Height="22" Margin="12,83,12,0" Name="label_license" VerticalAlignment="Top" Padding="0">This copy is licensed until ...</TextBlock>
+        <Button Content="On Stage Icons" Height="23" HorizontalAlignment="Left" Margin="123,197,0,0" Name="button1" VerticalAlignment="Top" Width="109" Click="button1_Click" />
+        <Button Content="Documentation" Height="23" HorizontalAlignment="Left" Margin="284,12,0,0" Name="buttonDocu" VerticalAlignment="Top" Width="130" Click="buttonDocu_Click" />
     </Grid>
 </Window>

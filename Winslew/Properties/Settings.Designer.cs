@@ -301,25 +301,61 @@ namespace Winslew.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Public")]
-        public string PastebinPrivate {
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CheckForUpdates {
             get {
-                return ((string)(this["PastebinPrivate"]));
+                return ((bool)(this["CheckForUpdates"]));
             }
             set {
-                this["PastebinPrivate"] = value;
+                this["CheckForUpdates"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Never")]
-        public string PastebinExpiration {
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CheckForLicense {
             get {
-                return ((string)(this["PastebinExpiration"]));
+                return ((bool)(this["CheckForLicense"]));
             }
             set {
-                this["PastebinExpiration"] = value;
+                this["CheckForLicense"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AutoRefresh {
+            get {
+                return ((bool)(this["AutoRefresh"]));
+            }
+            set {
+                this["AutoRefresh"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int AutoRefreshInterval {
+            get {
+                return ((int)(this["AutoRefreshInterval"]));
+            }
+            set {
+                this["AutoRefreshInterval"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool MinimizeToTray {
+            get {
+                return ((bool)(this["MinimizeToTray"]));
+            }
+            set {
+                this["MinimizeToTray"] = value;
             }
         }
     }
