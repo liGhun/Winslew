@@ -32,6 +32,7 @@ namespace Winslew
         private WindowState m_storedWindowState = WindowState.Normal;
         private System.Windows.Forms.NotifyIcon m_notifyIcon;
         private System.Windows.Forms.ContextMenu m_notifyMenu;
+        private bool isInRunningMode = false;
 
         public DispatcherTimer dispatcherTimer;
 
@@ -96,8 +97,8 @@ namespace Winslew
             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
 
            frame_content.LoadCompleted += BrowserOnLoadCompleted;
-            
 
+           isInRunningMode = true;
         }
 
         void dispatcherTimer_Tick(object sender, EventArgs e)
@@ -106,7 +107,18 @@ namespace Winslew
         }
 
         ~MainWindow() {
-
+            isInRunningMode = false;
+            if (m_notifyIcon != null)
+            {
+                try
+                {
+                    m_notifyIcon.Visible = false;
+                }
+                catch
+                {
+                }
+            }
+            
             Properties.Settings.Default.Save();
             AppController.Current.revokeSnarl();
         }
@@ -411,9 +423,10 @@ namespace Winslew
             {
                 List<Item> tempList = new List<Item>();
                 var currentItem = listView_Items.SelectedItem as Item;
+                currentItem.contentCache.FullVersion = null;
                 tempList.Add(currentItem);
                 AppController.Current.updateCache(tempList, true);
-                AppController.Current.sendSnarlNotification("Cache has been updated", "Cache has been updated", currentItem.title);
+                AppController.Current.sendSnarlNotification("Cache has been updated", "Cache is being updated", currentItem.title);
                 if (currentItem.contentCache != null)
                 {
                     if (currentItem.contentCache.Updated != null)
@@ -723,6 +736,10 @@ namespace Winslew
 
         void OnStateChanged(object sender, EventArgs args)
         {
+            if (!isInRunningMode)
+            {
+                return;
+            }
             if (WindowState == WindowState.Minimized)
             {
                 if (Properties.Settings.Default.MinimizeToTray)

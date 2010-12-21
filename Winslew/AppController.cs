@@ -351,6 +351,10 @@ namespace Winslew
             if (ToBeUpdatedItems == null)
             {
                 isInitialUpdate = true;
+                if (itemsCollection == null)
+                {
+                    return;
+                }
                 IEnumerable<Item> NextIncompleteItems = itemsCollection.Where((Item bq) => bq.contentCache.IsComplete == false);
                  
                 ToBeUpdatedItems = new List<Item>();
@@ -408,12 +412,21 @@ namespace Winslew
             int done = 0;
             foreach (Item currentItem in ToBeWorkedItems)
             {
+                if (currentItem.contentCache.FullVersion == null)
+                {
+                    initialFastFetch = true;
+                }
+                else
+                {
+                    initialFastFetch = false;
+                }
                 System.Threading.Thread.Sleep(10);                
                 currentItem.contentCache = cacheStore.addToCache(currentItem, false, false, initialFastFetch);
-                AppController.Current.sendSnarlNotification("Cache has been updated", "Cache of more and less version has been updated", currentItem.title);
+                AppController.Current.sendSnarlNotification("Cache has been updated", "Cache of more and less versions has been updated", currentItem.title);
                 done++;
                 Return.Add(currentItem);
                 backgroundWorker1.ReportProgress(done, currentItem);
+
             }
 
             if (initialFastFetch)
@@ -494,6 +507,7 @@ namespace Winslew
         {
             if (itemsCollection != null)
             {
+                string tempStorePath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Winslew\\ContentCache.xml";
                 string storePath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Winslew\\ContentCache.xml";
                 List<Item> tempList = new List<Item>();
                 foreach (Item item in itemsCollection)
@@ -503,9 +517,21 @@ namespace Winslew
                 XmlSerializer xmlSerializer = new
                 XmlSerializer(typeof(List<Item>), new
                 XmlRootAttribute("ItemsCollection"));
-                TextWriter writer = new StreamWriter(storePath);
+                if (File.Exists(tempStorePath))
+                {
+                    File.Delete(tempStorePath);
+                }
+                TextWriter writer = new StreamWriter(tempStorePath);
                 xmlSerializer.Serialize(writer, tempList);
                 writer.Close();
+                if (File.Exists(storePath) && File.Exists(tempStorePath))
+                {
+                    File.Delete(storePath);
+                }
+                if (File.Exists(tempStorePath))
+                {
+                    File.Move(tempStorePath, storePath);
+                }
             }
         }
 

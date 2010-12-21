@@ -109,7 +109,7 @@ namespace Winslew.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("800")]
+        [global::System.Configuration.DefaultSettingValueAttribute("849")]
         public double MainWindowWidth {
             get {
                 return ((double)(this["MainWindowWidth"]));

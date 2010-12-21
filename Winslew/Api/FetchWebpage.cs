@@ -16,12 +16,12 @@ namespace Winslew.Api
 
         public bool FullFetch(string url, string pathToSaveIn)
         {
-            
+
             try
             {
                 OpenUrl = url;
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                request.UserAgent = "FetchWebpage 1.0";
+                request.UserAgent = "Winslew FetchWebpage 1.2 (http://www-li-ghun.de/Winslew)";
 
                 string responseStream = "";
 
@@ -77,16 +77,18 @@ namespace Winslew.Api
         {
             List<string> returnList = new List<string>();
 
-            Regex PatternForImageTags = new Regex("<img .*src=\"?(?<url>[^ \"]*)", RegexOptions.IgnoreCase);
+            Regex PatternForImageTags = new Regex("<img .*?src=\"(?<url>[^\"]*)[^>]*", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
             MatchCollection AllImages = PatternForImageTags.Matches(htmlSource);
             foreach (Match SingleImageUrl in AllImages)
             {
-
+                //Console.WriteLine("Found image: " + SingleImageUrl.Groups["url"].Value.Trim());
                 if (!returnList.Contains(SingleImageUrl.Groups["url"].Value.Trim()))
                 {
+                    //Console.WriteLine("Adding image to found list: " + SingleImageUrl.Groups["url"].Value.Trim());
                     returnList.Add(SingleImageUrl.Groups["url"].Value.Trim());
                 }
+
             }
             return returnList;
         }
@@ -108,38 +110,46 @@ namespace Winslew.Api
                 try
                 {
                     string cleanedImageUrl = imageUrl;
-                    // Console.Writeline("Original image url: " + imageUrl);
+                    //Console.WriteLine("Original image url: " + imageUrl);
 
                     string suffix = "";
                     if (imageUrl.Contains("?"))
                     {
-                        Console.Write(" - contains a ? at position ");
+                        //Console.Write(" - contains a ? at position ");
                         int positionOfQuestionMark = Math.Max(0, imageUrl.IndexOf("?"));
-                        Console.Write(positionOfQuestionMark.ToString() + " of " + imageUrl.Length.ToString() + " characters\r\n");
+                        // Console.Write(positionOfQuestionMark.ToString() + " of " + imageUrl.Length.ToString() + " characters\r\n");
                         cleanedImageUrl = imageUrl.Substring(0, positionOfQuestionMark);
-                        // Console.Writeline("  -> new url: " + cleanedImageUrl);
+                        // Console.WriteLine("  -> new url: " + cleanedImageUrl);
                     }
 
                     int indexOfLastPoint = cleanedImageUrl.LastIndexOf(".");
-                    if (indexOfLastPoint >= 0)
-                    {
-                        suffix = cleanedImageUrl.Substring(indexOfLastPoint);
-                        // Console.Writeline("Extracted suffix: " + suffix);
-                        string imageFullPath = imageUrl;
-                        if (!imageFullPath.ToLower().StartsWith("http"))
-                        {
-                            imageFullPath = hostUrl + imageFullPath;
-                        }
-                        SaveImageToFile(imageFullPath, absolutePathToStorage + "\\" + relativePath + "\\" + ImageCounter.ToString() + suffix);
-                        htmlSource = htmlSource.Replace(imageUrl, relativePath + "/" + ImageCounter.ToString() + suffix);
-                        // Console.Writeline("------------");
-                        ImageCounter++;
-                    }
+                    if (indexOfLastPoint <= 0)
+                        suffix = ".unknownImageFormat";
                     else
                     {
-                        htmlSource = htmlSource.Replace(imageUrl, "myDefaultReplacement.png");
-                        // Console.Writeline("!! Didn't get the suffix");
+                        suffix = cleanedImageUrl.Substring(indexOfLastPoint);
                     }
+                    // Console.Writeline("Extracted suffix: " + suffix);
+                    string imageFullPath = imageUrl;
+                    if (imageFullPath.StartsWith("/"))
+                    {
+                        System.Uri uri = new System.Uri(hostUrl);
+                        imageFullPath = uri.Scheme + "://" + uri.Host + imageFullPath;
+                    }
+                    else if (!imageFullPath.ToLower().StartsWith("http"))
+                    {
+                        imageFullPath = hostUrl + imageFullPath;
+                    }
+                    SaveImageToFile(imageFullPath, absolutePathToStorage + "\\" + relativePath + "\\" + ImageCounter.ToString() + suffix);
+                    htmlSource = htmlSource.Replace(imageUrl, relativePath + "/" + ImageCounter.ToString() + suffix);
+                    // Console.Writeline("------------");
+                    ImageCounter++;
+
+                    //else
+                    //{
+                    //    htmlSource = htmlSource.Replace(imageUrl, "myDefaultReplacement.png");
+                    //    // Console.Writeline("!! Didn't get the suffix");
+                    //}
                 }
                 catch (Exception exp)
                 {
@@ -220,7 +230,7 @@ namespace Winslew.Api
                 }
                 catch (Exception exp)
                 {
-                    
+
                     Trace.WriteLine(exp.Message);
                 }
             }
@@ -265,9 +275,9 @@ namespace Winslew.Api
                     string suffix = "";
                     if (imageUrl.Contains("?"))
                     {
-                        Console.Write(" - contains a ? at position ");
+                        // Console.Write(" - contains a ? at position ");
                         int positionOfQuestionMark = Math.Max(0, imageUrl.IndexOf("?"));
-                        Console.Write(positionOfQuestionMark.ToString() + " of " + imageUrl.Length.ToString() + " characters\r\n");
+                        // Console.Write(positionOfQuestionMark.ToString() + " of " + imageUrl.Length.ToString() + " characters\r\n");
                         cleanedImageUrl = imageUrl.Substring(0, positionOfQuestionMark);
                         // Console.Writeline("  -> new url: " + cleanedImageUrl);
                     }

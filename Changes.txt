@@ -1,3 +1,15 @@
+1.5.1.1
+Bugfix: Winslew sometimes crashed on closing
+Writing the offline list now more reliable
+
+1.5.1
+Generator of full view cache now gets much more images
+Minimize to tray no more confuses if main window is shown on startup
+Tray icon now disappears always on application exit
+Main window width is now wide enough on first start to show all buttons / dropdowns
+Some bugfixes in offline mode
+Update cache button now also updates the full view in all cases             
+
 1.5
 Upload text to Pastebin
 Minimize to tray (configurable)
