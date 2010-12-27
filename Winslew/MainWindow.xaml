@@ -344,8 +344,11 @@
                 </ToolBar>
             </ToolBarTray>
 
+            
+            
+            
             <WebBrowser Grid.Row="1" Name="frame_content">
-            </WebBrowser>
+            </WebBrowser> 
 
 
             <StatusBar Grid.Row="2" Height="23" Margin="1,0,0,-1" Name="statusBar_mainWindow" VerticalAlignment="Bottom" Padding="0,0,0,0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Right" FlowDirection="LeftToRight" Background="#bcc7d8">
@@ -364,6 +367,7 @@
                     <Label  Content="Snarl not running" Padding="0,0,0,0" FontSize="10" Margin="0,0,0,0" Name="label_snarlNotRunning" HorizontalAlignment="Right" FontWeight="Normal" HorizontalContentAlignment="Right" />
                 </Button>
             </StatusBar>
+            
         </Grid>
     </Grid>
 </Window>
