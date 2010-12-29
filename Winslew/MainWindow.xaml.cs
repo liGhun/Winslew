@@ -34,6 +34,9 @@ namespace Winslew
         private System.Windows.Forms.ContextMenu m_notifyMenu;
         private bool isInRunningMode = false;
 
+        private System.Windows.Forms.Integration.WindowsFormsHost _MyHost;
+        public WebKit.WebKitBrowser webKitBrowser;
+
         public DispatcherTimer dispatcherTimer;
 
         public MainWindow()
@@ -70,6 +73,11 @@ namespace Winslew
                 comboBox_browserView.Text = "More";
             }
 
+            _MyHost = new System.Windows.Forms.Integration.WindowsFormsHost();
+            webKitBrowser = new WebKit.WebKitBrowser();
+            _MyHost.Child = webKitBrowser;
+            WebkitBrowserGrid.Children.Add(_MyHost);
+
             // tray icon stuff
             m_notifyIcon = new System.Windows.Forms.NotifyIcon();
             m_notifyIcon.Text = "Winslew";
@@ -96,9 +104,27 @@ namespace Winslew
             dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
 
-           frame_content.LoadCompleted += BrowserOnLoadCompleted;
+            webKitBrowser.Navigated += new System.Windows.Forms.WebBrowserNavigatedEventHandler(webKitBrowser_Navigated);
+
+           //frame_content.LoadCompleted += BrowserOnLoadCompleted;
 
            isInRunningMode = true;
+        }
+
+        void webKitBrowser_Navigated(object sender, System.Windows.Forms.WebBrowserNavigatedEventArgs e)
+        {
+            button_addCurrentViewedPage.Visibility = Visibility.Collapsed;
+            Image_AddCurrentlyViewPage.Visibility = Visibility.Collapsed;
+            // Snarl.SnarlConnector.ShowMessage("Site lodaded", "fine", 10, "", IntPtr.Zero, 0);    
+            if (e.Url.AbsoluteUri.ToString().StartsWith("http"))
+            {
+                if (AppController.Current.itemsCollection.Where(i => i.url == e.Url.AbsoluteUri).Count() == 0)
+                {
+                    button_addCurrentViewedPage.Visibility = Visibility.Visible;
+                    Image_AddCurrentlyViewPage.Visibility = Visibility.Visible;
+                }
+            }
+
         }
 
         void dispatcherTimer_Tick(object sender, EventArgs e)
@@ -123,22 +149,7 @@ namespace Winslew
             AppController.Current.revokeSnarl();
         }
 
-        private void BrowserOnLoadCompleted(object sender, NavigationEventArgs navigationEventArgs)
-        {
-            button_addCurrentViewedPage.Visibility = Visibility.Collapsed;
-            Image_AddCurrentlyViewPage.Visibility = Visibility.Collapsed;
-            // Snarl.SnarlConnector.ShowMessage("Site lodaded", "fine", 10, "", IntPtr.Zero, 0);    
-            if (frame_content.Source.AbsoluteUri.StartsWith("http"))
-            {
-                if (AppController.Current.itemsCollection.Where(i => i.url == frame_content.Source.AbsoluteUri).Count() == 0)
-                {
-                    button_addCurrentViewedPage.Visibility = Visibility.Visible;
-                    Image_AddCurrentlyViewPage.Visibility = Visibility.Visible;
-                }
-            }
-
-        }
-
+        
         private void BrowserStartLoad(object sender, DependencyPropertyChangedEventArgs e)
         {
                 // Snarl.SnarlConnector.ShowMessage("Site loding", "just a second please", 10, "", IntPtr.Zero, 0);
@@ -371,7 +382,7 @@ namespace Winslew
 
         public void updateViewOfFrame()
         {
-            if (listView_Items.SelectedItem != null && frame_content != null)
+            if (listView_Items.SelectedItem != null && webKitBrowser != null)
             {
                 var currentItem = listView_Items.SelectedItem as Item;
                 if (currentItem.contentCache != null || Properties.Settings.Default.CurrentView.ToLower().EndsWith("online"))
@@ -379,28 +390,28 @@ namespace Winslew
 
                     if (Properties.Settings.Default.CurrentView.ToLower().EndsWith("online") && apiAccess.checkIfOnline())
                     {
-                        frame_content.Source = new Uri(currentItem.url);
+                        webKitBrowser.Navigate(currentItem.url);
                     }
                     else if (Properties.Settings.Default.CurrentView.ToLower().EndsWith("full") && System.IO.File.Exists(currentItem.contentCache.FullVersion))
                     {
-                        frame_content.Source = new Uri(currentItem.contentCache.FullVersion);
+                        webKitBrowser.Navigate(new Uri(currentItem.contentCache.FullVersion).AbsoluteUri);
                     }
                     else if (Properties.Settings.Default.CurrentView.ToLower().EndsWith("more") && System.IO.File.Exists(currentItem.contentCache.MoreVersion))
                     {
-                        frame_content.Source = new Uri(currentItem.contentCache.MoreVersion);
+                        webKitBrowser.Navigate(new Uri(currentItem.contentCache.MoreVersion).AbsoluteUri);
                     }
                     else if (Properties.Settings.Default.CurrentView.ToLower().EndsWith("less") && System.IO.File.Exists(currentItem.contentCache.LessVersion))
                     {
-                        frame_content.Source = new Uri(currentItem.contentCache.LessVersion);
+                        webKitBrowser.Navigate(new Uri(currentItem.contentCache.LessVersion).AbsoluteUri);
                     }
                     else
                     {
-                        frame_content.Source = new Uri(AppController.Current.cacheStore.pathToNAPage);
+                        webKitBrowser.Navigate(new Uri(AppController.Current.cacheStore.pathToNAPage).AbsoluteUri);
                     }
                 }
                 else
                 {
-                    frame_content.Source = new Uri(AppController.Current.cacheStore.pathToNAPage);
+                    webKitBrowser.Navigate(new Uri(AppController.Current.cacheStore.pathToNAPage).AbsoluteUri);
                 }
             }
         }
@@ -435,7 +446,7 @@ namespace Winslew
                     }
                 }
             }
-            frame_content.Refresh();
+            webKitBrowser.Reload();
         }
 
 
@@ -599,8 +610,8 @@ namespace Winslew
                 {
                     var currentItem = listView_Items.SelectedItem as Item;
                     
-                    System.Windows.Forms.HtmlDocument doc = frame_content.Document as System.Windows.Forms.HtmlDocument;
-                    doc.ExecCommand("Print",true,null);
+             //       System.Windows.Forms.HtmlDocument doc = frame_content.Document as System.Windows.Forms.HtmlDocument;
+              //      doc.ExecCommand("Print",true,null);
 
                     
                     //Printing not working anymore
@@ -779,7 +790,8 @@ namespace Winslew
         private void button_addCurrentViewedPage_Click(object sender, RoutedEventArgs e)
         {
             AddNew newItem = new AddNew();
-            newItem.SetUrl(frame_content.Source.AbsoluteUri);
+            newItem.SetUrl(webKitBrowser.Url.AbsoluteUri);
+            newItem.SetTitle(webKitBrowser.DocumentTitle);
             newItem.Show();
         }
 

@@ -272,7 +272,7 @@ namespace Winslew
                 if (File.Exists(AvailableStyles[styleName]))
                 {
                     File.Copy(AvailableStyles[styleName], appDataPath + "\\Cache\\actualStylesheet.css",true);
-                    mainWindow.frame_content.Refresh();
+                    mainWindow.webKitBrowser.Reload();
                     Properties.Settings.Default.Style = styleName;
                 }
             }
@@ -489,13 +489,30 @@ namespace Winslew
                 mainWindow.refreshItems();  
                 if (mainWindow.listView_Items.SelectedItem == UpdatedOne)
                 {
-                    mainWindow.frame_content.Refresh();
+                    mainWindow.webKitBrowser.Reload();
                 }
             }
         }
 
 
         // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+        public void toggleListViewColors(bool useWhite) {
+            if (useWhite)
+            {
+                Properties.Settings.Default.AlternateColor1 = "#ffffff";
+                Properties.Settings.Default.AlternateColor2 = "#eeeeee";
+            }
+            else
+            {
+                Properties.Settings.Default.AlternateColor1 = "#bcc7d8";
+                Properties.Settings.Default.AlternateColor2 = "#c2ccdb";
+            }
+            if (mainWindow != null)
+            {
+                mainWindow.listView_Items.UpdateLayout();
+            }
+        }
 
 
         public void revokeSnarl()

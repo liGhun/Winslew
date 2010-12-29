@@ -86,5 +86,17 @@
     <Setting Name="MinimizeToTray" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="WhiteBackgroundOnList" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="AlternateColor1" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#bcc7d8</Value>
+    </Setting>
+    <Setting Name="AlternateColor2" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#c2ccdb</Value>
+    </Setting>
+    <Setting Name="ShowNavigationBar" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

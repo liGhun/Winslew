@@ -168,6 +168,8 @@ Section "Winslew"
   ; File "..\Winslew.exe.manifest"
   File "LICENSE.txt"
   File "Documentation.ico"
+
+  File "..\Webkit\*"
   
   ; Write the installation path into the registry
   WriteRegStr HKLM SOFTWARE\Winslew" "Install_Dir" "$INSTDIR"

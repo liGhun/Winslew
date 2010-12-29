@@ -358,5 +358,53 @@ namespace Winslew.Properties {
                 this["MinimizeToTray"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool WhiteBackgroundOnList {
+            get {
+                return ((bool)(this["WhiteBackgroundOnList"]));
+            }
+            set {
+                this["WhiteBackgroundOnList"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("#bcc7d8")]
+        public string AlternateColor1 {
+            get {
+                return ((string)(this["AlternateColor1"]));
+            }
+            set {
+                this["AlternateColor1"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("#c2ccdb")]
+        public string AlternateColor2 {
+            get {
+                return ((string)(this["AlternateColor2"]));
+            }
+            set {
+                this["AlternateColor2"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ShowNavigationBar {
+            get {
+                return ((bool)(this["ShowNavigationBar"]));
+            }
+            set {
+                this["ShowNavigationBar"] = value;
+            }
+        }
     }
 }

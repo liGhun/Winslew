@@ -1,4 +1,13 @@
-1.5.1.1
+1.6
+Uses now Webkit for page rendering instead of Internet Explorer
+ - faster
+ - more compatible
+ - no more stressing alert boxes about risks or JavaScript errors
+Add current page button now automatically fetches title of page (part of Webkit API)
+Alternate colors of list view can be changed to a much lighter scheme (white/light gray)
+Preference window now has multiple tabs as more options are available
+
+1.5.1.1 (no public release)
 Bugfix: Winslew sometimes crashed on closing
 Writing the offline list now more reliable
 

@@ -6,7 +6,7 @@
         <Label Height="28" Margin="12,12,0,0" Name="label1" VerticalAlignment="Top" HorizontalAlignment="Left" Width="52">To</Label>
         <TextBox Height="23" HorizontalAlignment="Left" Margin="70,12,0,0" Name="textBox_to" VerticalAlignment="Top" Width="181" />
         <Label Height="28" Margin="280,10,0,0" Name="label2" VerticalAlignment="Top" HorizontalAlignment="Left" Width="52">From</Label>
-        <TextBox Height="23" HorizontalAlignment="Left" Margin="338,12,0,0" Name="textBox_from" VerticalAlignment="Top" Width="255">li' Ghun (Sven Walther) &lt;info@li-ghun.de&gt;</TextBox>
+        <TextBox Height="23" HorizontalAlignment="Left" Margin="338,12,0,0" Name="textBox_from" VerticalAlignment="Top" Width="255">li' Ghun (Sven Walther) &lt;sven@sven-walther.de&gt;</TextBox>
         <TextBox Height="23" Margin="70,41,12,0" Name="textBox_subject" VerticalAlignment="Top">Your personal license code for Winslew</TextBox>
         <Label Height="28" HorizontalAlignment="Left" Margin="12,41,0,0" Name="label3" VerticalAlignment="Top" Width="52">Subject</Label>
         <TextBox Margin="12,70,12,48" Name="textBox_text" />

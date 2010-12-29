@@ -75,6 +75,10 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="UIAutomationProvider" />
+    <Reference Include="WebKitBrowser, Version=0.5.0.0, Culture=neutral, PublicKeyToken=b967213f6d29a3be, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Webkit\WebKitBrowser.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -285,7 +289,9 @@
     <None Include="Webkit\WebKit.resources\inspector\SourceHTMLTokenizer.re2js" />
     <None Include="Webkit\WebKit.resources\inspector\SourceJavaScriptTokenizer.re2js" />
     <None Include="Webkit\WebKit.resources\inspector\WebKit.qrc" />
-    <None Include="Webkit\WebKitBrowser.dll.manifest" />
+    <None Include="Webkit\WebKitBrowser.dll.manifest">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Winslew.pfx" />
   </ItemGroup>
   <ItemGroup>
@@ -299,22 +305,62 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\update.png" />
-    <Content Include="Webkit\CFLite.dll" />
-    <Content Include="Webkit\icudt40.dll" />
-    <Content Include="Webkit\icuin40.dll" />
-    <Content Include="Webkit\icuuc40.dll" />
-    <Content Include="Webkit\JavaScriptCore.dll" />
-    <Content Include="Webkit\libcurl.dll" />
-    <Content Include="Webkit\libeay32.dll" />
-    <Content Include="Webkit\libexslt.dll" />
-    <Content Include="Webkit\libxml2.dll" />
-    <Content Include="Webkit\libxslt.dll" />
-    <Content Include="Webkit\objc.dll" />
-    <Content Include="Webkit\pthreadVC2.dll" />
-    <Content Include="Webkit\SQLite3.dll" />
-    <Content Include="Webkit\ssleay32.dll" />
-    <Content Include="Webkit\WebKit.dll" />
-    <Content Include="Webkit\WebKit.Interop.dll" />
+    <Content Include="Webkit\CFLite.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Webkit\icudt40.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Webkit\icuin40.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Webkit\icuuc40.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Webkit\JavaScriptCore.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Webkit\libcurl.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Webkit\libeay32.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Webkit\libexslt.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Webkit\libxml2.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Webkit\libxslt.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Webkit\msvcp100.dll" />
+    <Content Include="Webkit\msvcp70.dll" />
+    <Content Include="Webkit\msvcp71.dll" />
+    <Content Include="Webkit\msvcr100.dll" />
+    <Content Include="Webkit\msvcr100_clr0400.dll" />
+    <Content Include="Webkit\msvcr70.dll" />
+    <Content Include="Webkit\msvcr71.dll" />
+    <Content Include="Webkit\msvcrt.dll" />
+    <Content Include="Webkit\objc.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Webkit\pthreadVC2.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Webkit\SQLite3.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Webkit\ssleay32.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Webkit\WebKit.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Webkit\WebKit.Interop.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Webkit\WebKit.resources\en.lproj\localizedStrings.js" />
     <Content Include="Webkit\WebKit.resources\inspector\AbstractTimelinePanel.js" />
     <Content Include="Webkit\WebKit.resources\inspector\ApplicationCacheItemsView.js" />
@@ -574,7 +620,9 @@
     <Content Include="Webkit\WebKit.resources\inspector\WatchExpressionsSidebarPane.js" />
     <Content Include="Webkit\WebKit.resources\inspector\WelcomeView.js" />
     <Content Include="Webkit\WebKit.resources\inspector\WorkersSidebarPane.js" />
-    <Content Include="Webkit\WebKitBrowser.dll" />
+    <Content Include="Webkit\WebKitBrowser.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Webkit\WebKitBrowserTest.exe" />
     <Content Include="Winslew.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

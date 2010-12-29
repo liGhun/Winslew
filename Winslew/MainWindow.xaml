@@ -9,9 +9,15 @@
         LocationChanged="Window_LocationChanged"
         StateChanged="OnStateChanged" IsVisibleChanged="OnIsVisibleChanged"
         Style="{StaticResource DefaultWindowStyle}"
+        xmlns:WinForms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+        xmlns:Prefs="clr-namespace:Winslew.Properties"
         >
+    
 <Window.Resources>
-        <Style x:Key="CustomListViewItemStyle" TargetType="{x:Type ListViewItem}">
+        
+            <Prefs:Settings x:Key="settings" />
+        
+        <!--<Style x:Key="CustomListViewItemStyle" TargetType="{x:Type ListViewItem}">
             <Style.Triggers>
                 <Trigger Property="ItemsControl.AlternationIndex" Value="0">
                     <Setter Property="Background" Value="#2C2C2C"></Setter>
@@ -21,7 +27,7 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-
+-->
         <DataTemplate x:Key="Image">
             <StackPanel Orientation="Horizontal">
                 <Image Source="{Binding Path=contentCache.FavIconPath}" Width="16" Height="16" />
@@ -126,10 +132,10 @@
                         <Setter Property="ToolTip" Value="{Binding Path=DescripiveText}" />
                         <Style.Triggers>
                             <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                                <Setter Property="Background" Value="#bcc7d8"></Setter>
+                            <Setter Property="Background" Value="{Binding Source={x:Static Prefs:Settings.Default}, Path=AlternateColor1,Mode=OneWay}"></Setter>
                             </Trigger>
                             <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                                <Setter Property="Background" Value="#c2ccdb"></Setter>
+                            <Setter Property="Background" Value="{Binding Source={x:Static Prefs:Settings.Default}, Path=AlternateColor2,Mode=OneWay}"></Setter>
                             </Trigger>
                             <Trigger Property="IsSelected" Value="true">
                                 <Setter Property="Background">
@@ -345,10 +351,10 @@
             </ToolBarTray>
 
             
+            <Grid Grid.Row="1" Name="WebkitBrowserGrid" />
             
-            
-            <WebBrowser Grid.Row="1" Name="frame_content">
-            </WebBrowser> 
+          <!--  <WebBrowser Grid.Row="1" Name="frame_content">
+            </WebBrowser> -->
 
 
             <StatusBar Grid.Row="2" Height="23" Margin="1,0,0,-1" Name="statusBar_mainWindow" VerticalAlignment="Bottom" Padding="0,0,0,0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Right" FlowDirection="LeftToRight" Background="#bcc7d8">

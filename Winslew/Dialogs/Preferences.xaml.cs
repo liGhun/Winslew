@@ -241,5 +241,14 @@ namespace Winslew
                 }
             }
         }
+
+        private void checkBoxWhiteList_Checked(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.WhiteBackgroundOnList = checkBoxWhiteList.IsChecked.Value;
+            if (!isInit)
+            {
+                AppController.Current.toggleListViewColors(checkBoxWhiteList.IsChecked.Value);
+            }
+        }
     }
 }

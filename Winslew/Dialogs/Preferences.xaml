@@ -2,7 +2,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:Winslew.Properties"
-    Title="Preferences" Height="253" Width="373"
+    Title="Preferences" Height="270" Width="403"
          Icon="/Winslew;component/Images/preferences.png" WindowStartupLocation="CenterScreen"
         Style="{StaticResource DefaultWindowStyle}"
         >
@@ -10,27 +10,44 @@
         <local:Settings x:Key="settings" />
     </Window.Resources>
     <Grid DataContext="{StaticResource settings}" >
-        <Label Margin="12,12,0,0" Name="label6" HorizontalAlignment="Left" Width="66" Height="28" VerticalAlignment="Top" HorizontalContentAlignment="Right">Username</Label>
-        <TextBox Height="23" 
+        <TabControl Name="tabControlReadItLater" Margin="12,12,12,41">
+            <TabItem Header="Account" Name="tabItem1">
+                <Grid>
+                    <Label Margin="12,12,0,0" Name="label6" HorizontalAlignment="Left" Width="66" Height="28" VerticalAlignment="Top" HorizontalContentAlignment="Right">Username</Label>
+                    <TextBox Height="23" 
                              Margin="84,12,0,0" 
                              Name="textBox_RILusername" 
                              VerticalAlignment="Top" 
                              HorizontalAlignment="Left" Width="91" TextChanged="textBox_RILusername_TextChanged" />
-        <Label Margin="12,41,0,0" Name="label7" HorizontalAlignment="Left" Width="66" Height="28" VerticalAlignment="Top" HorizontalContentAlignment="Right">Password</Label>
-        <PasswordBox  Margin="84,41,0,0" Name="passwordBox_RILpassword" PasswordChanged="passwordBox_RILpassword_PasswordChanged" HorizontalAlignment="Left" Width="91" Height="23" VerticalAlignment="Top" />
-        <Button Height="23" Margin="181,12.225,0,0" Name="button_RILTest" VerticalAlignment="Top" Click="button_RILTest_Click" HorizontalAlignment="Left" Width="158">Login with existing account</Button>
-        <Button Margin="181,42,0,0" Name="button_createAccount" Click="button_createAccount_Click" Height="23" VerticalAlignment="Top" HorizontalAlignment="Left" Width="158">Create new account</Button>
-        <Button ToolTip="Saving only available after Login has been entered and tested successfully" Margin="251,108,0,0" Name="button_save" IsEnabled="False" Height="23" VerticalAlignment="Top" Click="button_save_Click" HorizontalAlignment="Left" Width="88">Save settings</Button>
-        <Label Margin="12,153,0,0" Name="labeLicense" HorizontalAlignment="Left" Width="66" Height="28" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="Licensekey"></Label>
-        <TextBox Margin="84,155,0,0" Name="textBox_licenseCode" HorizontalAlignment="Left" Width="91" Height="23" VerticalAlignment="Top" ToolTip="Enter your purchased license code here" MaxLength="10" TextChanged="textBox_licenseCode_TextChanged" />
-        <Button Margin="264,154,0,0" Name="button_getLicense" Height="23" VerticalAlignment="Top" HorizontalAlignment="Left" Width="75" Click="button_getLicense_Click">Buy license</Button>
-        <Label Margin="181,154,0,0" Name="label_licValid" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="77" Foreground="Orange">Not licensed</Label>
-        <CheckBox Content="Check online for updates on startup" IsChecked="{Binding Path=Default.CheckForUpdates,Mode=TwoWay}" Height="16" Margin="12,115,106,0" Name="checkBox_autoUpdate" VerticalAlignment="Top" ToolTip="Will check online on every start of Winslew if a newer version is available for download" />
-        <CheckBox Content="Check online for purchased license code" IsChecked="{Binding Path=Default.CheckForLicense,Mode=TwoWay}" Height="16" Margin="12,187,12,0" Name="checkBox_retrieveLicense" VerticalAlignment="Top" ToolTip="Will check online if a license code is available." />
-        <CheckBox Content="Minimize to tray" IsChecked="{Binding Path=Default.MinimizeToTray,Mode=TwoWay}" Height="16" Margin="12,71,12,0" Name="checkBox_minimizeToTray" VerticalAlignment="Top" ToolTip="When pressing the minimize button Winslew will be shown only in the system tray icon area" />
-        <CheckBox Content="Auto refresh every" IsChecked="{Binding Path=Default.AutoRefresh,Mode=TwoWay}" Height="16" HorizontalAlignment="Left" Margin="12,93,0,0" Name="checkBox_autoRefresh" VerticalAlignment="Top" ToolTip="Automatically sync with Read It Later" Checked="checkBox_autoRefresh_Checked" />
-        <TextBox Text="{Binding Path=Default.AutoRefreshInterval,Mode=TwoWay}" Height="23" HorizontalAlignment="Left" Margin="129,90,0,0" Name="textBox_autoRefreshInterval" VerticalAlignment="Top" Width="37" TextAlignment="Center"  PreviewTextInput="textBox_autoRefresh_OnPreviewTextInput" />
-        <Label Content="minutes" Height="28" HorizontalAlignment="Left" Margin="172,88,0,0" Name="label1" VerticalAlignment="Top" />
-        <Separator Height="11" Margin="12,137,12,0" Name="separator1" VerticalAlignment="Top" />
+                    <Label Margin="12,41,0,0" Name="label7" HorizontalAlignment="Left" Width="66" Height="28" VerticalAlignment="Top" HorizontalContentAlignment="Right">Password</Label>
+                    <PasswordBox  Margin="84,41,0,0" Name="passwordBox_RILpassword" PasswordChanged="passwordBox_RILpassword_PasswordChanged" HorizontalAlignment="Left" Width="91" Height="23" VerticalAlignment="Top" />
+                    <Button Height="23" Margin="181,12.225,0,0" Name="button_RILTest" VerticalAlignment="Top" Click="button_RILTest_Click" HorizontalAlignment="Left" Width="158">Login with existing account</Button>
+                    <Button Margin="181,42,0,0" Name="button_createAccount" Click="button_createAccount_Click" Height="23" VerticalAlignment="Top" HorizontalAlignment="Left" Width="158">Create new account</Button>
+                    
+                    <Label Margin="12,92,0,0" Name="labeLicense" HorizontalAlignment="Left" Width="66" Height="28" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="Licensekey"></Label>
+                    <TextBox Margin="84,94,0,0" Name="textBox_licenseCode" HorizontalAlignment="Left" Width="91" Height="23" VerticalAlignment="Top" ToolTip="Enter your purchased license code here" MaxLength="10" TextChanged="textBox_licenseCode_TextChanged" />
+                    <Button Margin="264,93,0,0" Name="button_getLicense" Height="23" VerticalAlignment="Top" HorizontalAlignment="Left" Width="75" Click="button_getLicense_Click">Buy license</Button>
+                    <Label Margin="181,93,0,0" Name="label_licValid" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="77" Foreground="Orange">Not licensed</Label>
+                    
+                    
+                    
+                    
+                    <Separator Height="11" Margin="18,75,6,0" Name="separator1" VerticalAlignment="Top" />
+                    <CheckBox Content="Check online for purchased license code" Height="16" IsChecked="{Binding Path=Default.CheckForLicense, Mode=TwoWay}" Margin="18,122,6,0" Name="checkBox_retrieveLicense" ToolTip="Will check online if a license code is available." VerticalAlignment="Top" />
+                </Grid>
+            </TabItem>
+            <TabItem Name="TabItemLayout" Header="Layout and behaviour">
+                <Grid>
+                    <CheckBox Content="Minimize to tray" IsChecked="{Binding Path=Default.MinimizeToTray,Mode=TwoWay}" Height="16" Margin="12,6,12,0" Name="checkBox_minimizeToTray" VerticalAlignment="Top" ToolTip="When pressing the minimize button Winslew will be shown only in the system tray icon area" />
+                    <CheckBox Content="Check online for updates on startup" IsChecked="{Binding Path=Default.CheckForUpdates,Mode=TwoWay}" Height="16" Margin="12,50,106,0" Name="checkBox_autoUpdate" VerticalAlignment="Top" ToolTip="Will check online on every start of Winslew if a newer version is available for download" />
+                    <CheckBox Content="Auto refresh every" IsChecked="{Binding Path=Default.AutoRefresh,Mode=TwoWay}" Height="16" HorizontalAlignment="Left" Margin="12,28,0,0" Name="checkBox_autoRefresh" VerticalAlignment="Top" ToolTip="Automatically sync with Read It Later" Checked="checkBox_autoRefresh_Checked" />
+                    <TextBox Text="{Binding Path=Default.AutoRefreshInterval,Mode=TwoWay}" Height="23" HorizontalAlignment="Left" Margin="129,25,0,0" Name="textBox_autoRefreshInterval" VerticalAlignment="Top" Width="37" TextAlignment="Center"  PreviewTextInput="textBox_autoRefresh_OnPreviewTextInput" />
+                    <Label Content="minutes" Height="28" HorizontalAlignment="Left" Margin="172,23,0,0" Name="label1" VerticalAlignment="Top" />
+                    <CheckBox IsChecked="{Binding Path=Default.WhiteBackgroundOnList,Mode=TwoWay}" Content="Light background on list view" Height="16" Margin="12,72,12,0" Name="checkBoxWhiteList" VerticalAlignment="Top" Checked="checkBoxWhiteList_Checked" Unchecked="checkBoxWhiteList_Checked"/>
+                    <CheckBox IsChecked="{Binding Path=Default.ShowNavigationBar,Mode=TwoWay}" Content="Show browser navigation bar" Height="16" Margin="12,94,12,0" Name="checkBoxNavigationBar" VerticalAlignment="Top" />
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <Button ToolTip="Saving only available after Login has been entered and tested successfully" Margin="0,0,12,12" Name="button_save" IsEnabled="False" Height="23" VerticalAlignment="Bottom" Click="button_save_Click" HorizontalAlignment="Right" Width="88">Save settings</Button>
     </Grid>
 </Window>
