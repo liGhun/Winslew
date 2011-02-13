@@ -1,0 +1,9 @@
+/*
+ * IE6 Bugfixes for MyDealz
+ * remember: all thesis-settings must begin with .custom!
+ */
+
+
+.custom img { behavior: url(images/1.htc); }.custom #header .logo { margin-bottom: 2em; }
+.custom .post-meta-bottom { height: 1%; }
+.custom dl#comment_list dd, .custom dl#comment_list dl dd { border-bottom: 1px solid #c2d99c !important; } .custom #skin_top { overflow: hidden; height: expression( this.scrollHeight > 89 ? "90px" : "auto" ); /* sets max-height for IE */ } .custom #content { display: inline; margin-right: 0em; width: 58em;  } .custom #sidebars { display: inline; } .custom #skin_left { overflow: hidden; } .custom #skin_right { overflow: hidden; }

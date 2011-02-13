@@ -69,6 +69,24 @@ namespace LicenseKeyGenerator
                 }
             }
             return false;
+
+            /*
+             
+             INSERT INTO  `winslewLicenses`.`licenses` (
+`username` ,
+`userhash` ,
+`license` ,
+`email` ,
+`firstname` ,
+`lastname`
+)
+VALUES (
+'mokociemba',  'd0e1bc3bb31cbe26c5f6ab52eaf2eeb4',  '44c355fd4b',  'mokociemba@gmail.com',  'Marc-Oliver',  'Kociemba'
+);
+
+             
+              
+             */
         }
 
         private bool sendEmail()

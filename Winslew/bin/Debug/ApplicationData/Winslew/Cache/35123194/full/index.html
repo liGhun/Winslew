@@ -1,0 +1,157 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>
+    Sicheres und einfaches Multithreading in Windows Forms</title><link href="css/1/cachedCss.css" rel="stylesheet" type="text/css" /><link rel="alternate" media="print" href="http://msdn.microsoft.com/de-de/library/ms951089(d=printer).aspx" /><meta name="DSC.dcsuri" content="/de-de/library/ms951089(l=de-de,v=MSDN.10).aspx" /><meta name="NormalizedUrl" content="http://msdn.microsoft.com/de-de/library/ms951089(l=de-de,v=MSDN.10).aspx" /><meta name="MN" content="D14229EC-11:21:13 AM" /><meta name="Search.ShortId" content="ms951089" /><meta name="Ms.Locale" content="de-de" /></head><body><div class="header"><table border="0" cellpadding="0" cellspacing="0" class="headerBar cl_lightweight_topnav_slice"><tr><td class="leftSection cl_lightweight_header_leftSection_wave leftSectionImageClusterOverride"><div class="tabContainer"><a href="/de-de/" title="Homepage" class=" headerTab">Homepage</a><a href="/de-de/library" title="Library" class="headerTabSelected cl_lightweight_selected_tab_repeatX ">Library</a><a href="/de-de/bb188199.aspx" title="Lernen" class=" headerTab">Lernen</a><a href="/de-de/aa570309.aspx" title="Downloads" class=" headerTab">Downloads</a><a href="/de-de/aa570318.aspx" title="Support" class=" headerTab">Support</a><a href="/de-de/aa497440.aspx" title="Community" class=" headerTab">Community</a></div></td><td class="rightSection cl_lightweight_header_rightSection_wave rightSectionImageClusterOverride"><div class="tabContainer"><a href="http://login.live.com/login.srf?wa=wsignin1.0&amp;rpsnv=11&amp;ct=1272306072&amp;rver=6.0.5276.0&amp;wp=MCLBI&amp;wlcxt=msdn$msdn$msdn&amp;wreply=http://msdn.microsoft.com/de-de/library/ms951089.aspx&amp;lc=1031&amp;id=254354" title=" Anmelden  "> Anmelden   </a><span class="pipe">|</span><a href="http://msdn.microsoft.com/de-de/library/preferences/locale/?returnurl=%252fde-de%252flibrary%252fms951089.aspx" title="United States - English">United States - English </a><span class="pipe">|</span><a href="http://msdn.microsoft.com/de-de/library/preferences/experience/?returnurl=%252fde-de%252flibrary%252fms951089.aspx" title="Einstellungen">Einstellungen</a></div></td></tr></table></div><div class="contentPlaceHolder"><div class="navigation"><div class="searchcontainer"><form id="SearchForm" action="http://social.msdn.microsoft.com/Search/de-de" method="get"><div class="Search"><img src="images/7.gif" class="LT_image cl_lt_search" /><div class="SearchPanel cl_slice_Search"><input id="searchTextBox" type="text" maxlength="200" class="SearchBox" name="query" value="" /><a onclick="javascript:document.getElementById('SearchForm').submit();" style="display: inline-block; vertical-align: top;"><div class="SearchButton"><img class="cl_search_icon" src="images/6.png" /></div></a></div><img src="images/7.gif" class="RT_image cl_rt_search" /></div></form><span id="HCColorTest"></span></div><div class="navcontainer"><div class="nav"><div class="toclevel0 ancestry"><div><a href="http://msdn.microsoft.com/de-de/library/ms123401(v=MSDN.10).aspx" title="MSDN Library">MSDN Library</a></div><div><a href="http://msdn.microsoft.com/de-de/library/bb905071(v=MSDN.10).aspx" title="Entwicklerbibliothek">Entwicklerbibliothek</a></div><div><a href="http://msdn.microsoft.com/de-de/library/cc952524(v=MSDN.10).aspx" title=".NET-Entwicklung">.NET-Entwicklung</a></div><div><a href="http://msdn.microsoft.com/de-de/library/cc952525(v=MSDN.10).aspx" title=".NET Framework">.NET Framework</a></div><div><a href="http://msdn.microsoft.com/de-de/library/cc952527(v=MSDN.10).aspx" title="Multithreading">Multithreading</a></div></div><div class="toclevel1 current"><a href="http://msdn.microsoft.com/de-de/library/ms951089(v=MSDN.10).aspx" title="Sicheres und einfaches Multithreading in Windows Forms">Sicheres und einfaches Multithrea…</a></div><div class="toclevel2 children"></div></div></div></div><div class="content"><img src="images/7.gif" class="logo cl_msdn_lightweight_logo" alt="MSDN" /><div class="topicContainer"><div class="topic" xmlns:mtps="http://msdn2.microsoft.com/mtps" xmlns="http://www.w3.org/1999/xhtml"><div class="majorTitle" xmlns:msxsl="urn:schemas-microsoft-com:xslt"></div><div class="title" xmlns:msxsl="urn:schemas-microsoft-com:xslt">Sicheres und einfaches Multithreading in Windows Forms</div><div id="mainSection"><div id="mainBody"><div><div>Veröffentlicht: 04. Sep 2002<span> | </span>Aktualisiert: 22. Jun 2004</div><div>Von Chris Sells</div><br /><table border="0" align="right" style="margin-left: 15px"><tr><td><div><h5>Download</h5><div><div><a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dnforms/html/winforms06112002.asp">AsynchCalcPi.exe</a><br /><div></div></div></div><div></div></div></td></tr></table><p><br />Alles begann ganz harmlos. Zum ersten Mal sollte ich eine Kreisfläche unter .NET berechnen. Hierzu war selbstverständlich eine exakte Darstellung von Pi (p) erforderlich. <b>System.Math.PI</b> ist nützlich; da sie aber nur maximal 20 Nachkommastellen ausgibt, sorgte ich mich um die Genauigkeit meiner Berechnung. (Tatsächlich benötigte ich 21 Nachkommastellen, um absolut sicher zu sein). Und wie es sich für einen einigermaßen brauchbaren Programmierer gehört, vergaß ich zunächst einmal völlig das eigentlich zu lösende Problem und schrieb stattdessen ein Programm, mit dem ich Pi auf beliebig viele Nachkommastellen genau berechnen konnte. Abbildung 1 zeigt meine Lösung.<br /></p><p><img border="0" alt="Bild01" src="http://i.msdn.microsoft.com/ms951089.simplemultithreading_01(de-de,MSDN.10).gif" /></p><p><b>Abbildung 1. Nachkommastellen der Anwendung Pi</b></p><p><br /></p><p><b>Fortschritt bei Operationen mit langer Laufzeit</b><br />Zwar müssen die meisten Anwendungen keine Nachkommastellen von Pi berechnen, doch müssen viele Arten von Anwendungen Operationen mit langer Laufzeit ausführen, wie beispielsweise Dokumente drucken, einen Webdienst aufrufen oder die Zinserträge eines bestimmten Milliardärs in Kalifornien berechnen. Und die Benutzer warten in der Regel geduldig, bis derartige Operationen abgeschlossen sind, und erledigen in der Zwischenzeit häufig andere Aufgaben - sofern beim laufenden Vorgang nur ein Fortschritt sichtbar ist. Aus diesem Grund enthält sogar meine kleine Anwendung eine Statusanzeige.</p><p>Der von mir verwendete Algorithmus berechnet Pi mit jeweils 9 Nachkommastellen. Wenn eine neue Gruppe von Nachkommastellen verfügbar ist, aktualisiert das Programm den Text und verschiebt die Statusanzeige, um den Fortschritt visuell darzustellen. Abbildung 2 zeigt beispielsweise den Fortschritt bei der Berechnung von Pi mit 1.000 Nachkommastellen (wenn 21 Stellen gut sind, können 1.000 Stellen auch nicht schaden, oder?).<br /></p><p><img border="0" alt="Bild02" src="images/1.gif" /></p><p><b>Abbildung 2. Berechnen von Pi mit 1.000 Nachkommastellen</b></p><p><br /></p><p>Im nachstehenden Code ist zu sehen, wie die Benutzeroberfläche (UI, User Interface) aktualisiert wird, während die Nachkommastellen von Pi berechnet werden:</p><pre>
+void ShowProgress(string pi, int totalDigits, int digitsSoFar) {
+  _pi.Text = pi;
+  _piProgress.Maximum = totalDigits;
+  _piProgress.Value = digitsSoFar;
+}
+void CalcPi(int digits) {
+  StringBuilder pi = new StringBuilder("3", digits + 2);
+  // Show progress
+  ShowProgress(pi.ToString(), digits, 0);
+  if( digits &gt; 0 ) {
+    pi.Append(".");
+    for( int i = 0; i &lt; digits; i += 9 ) {
+      int nineDigits = NineDigitsOfPi.StartingAt(i+1);
+      int digitCount = Math.Min(digits - i, 9);
+      string ds = string.Format("{0:D9}", nineDigits);
+      pi.Append(ds.Substring(0, digitCount));
+      // Show progress
+      ShowProgress(pi.ToString(), digits, i + digitCount);
+    }
+  }
+}
+</pre><p>Alles funktionierte einwandfrei, bis ich - mitten in der Berechnung von Pi auf 1.000 Nachkommastellen genau - zu einer anderen Aufgabe wechselte und im Anschluss daran zu meiner Berechnung zurückkehrte. Was mich dann erwartete, zeigt Abbildung 3.</p><p><img border="0" alt="Bild03" src="images/2.gif" /></p><p><b>Abbildung 3. Hier hat kein "Paint"-Ereignis stattgefunden!</b></p><p><br /></p><p>Die Ursache des Problems liegt auf der Hand: Da es sich bei meinem Programm um eine Singlethread-Anwendung handelt, kann der Thread während der Berechnung von Pi nicht zusätzlich die Benutzeroberfläche darstellen. Vor diesem Problem hatte ich noch nie gestanden. Wenn ich sonst die Eigenschaften <b>TextBox.Text</b> und <b>ProgressBar.Value</b> festlegte, wurden diese Steuerelemente sofort dargestellt (wobei allerdings die Darstellung der Statusanzeige besser war als diejenige des Textfeldes).</p><p>Sobald ich die Anwendung aber in den Hintergrund und danach wieder in den Vordergrund brachte, musste ich den gesamten Clientbereich darstellen - ein <b>Paint</b>-Ereignis für das Formular. Da ein anderes Ereignis erst verarbeitet wird, nachdem die Rückkehr von dem bereits in Verarbeitung befindlichen Ereignis (d. h. dem <b>Click</b>-Ereignis der Schaltfläche <b>Calc</b>) erfolgt ist, besteht keine Möglichkeit, irgendeinen weiteren Fortschritt zu sehen. Deshalb musste ich nun dafür sorgen, dass der UI-Thread für die Ausführung von UI-Aufgaben freigegeben und der Prozess mit langer Laufzeit im Hintergrund verarbeitet wurde. Zu diesem Zweck benötigte ich einen weiteren Thread.</p><p><b>Asynchrone Operationen</b><br />Mein aktueller synchroner <b>Click</b>-Handler sah so aus:</p><pre>
+void _calcButton_Click(object sender, EventArgs e) {
+  CalcPi((int)_digits.Value);
+}
+</pre><p>Das Problem besteht darin, dass der Thread bis zur Rückkehr von <b>CalcPi</b> nicht aus dem <b>Click</b>-Handler zurückkehren kann. Demzufolge kann das Formular das <b>Paint</b>-Ereignis (oder irgendein anderes Ereignis) nicht ausführen. Eine Möglichkeit zur Lösung dieses Problems ist das Starten eines weiteren Threads:</p><pre>
+using System.Threading;
+.
+int _digitsToCalc = 0;
+void CalcPiThreadStart() {
+  CalcPi(_digitsToCalc);
+}
+void _calcButton_Click(object sender, EventArgs e) {
+  _digitsToCalc = (int)_digits.Value;
+  Thread piThread = new Thread(new ThreadStart(CalcPiThreadStart));            
+  piThread.Start();
+}
+</pre><p>Statt auf die Beendigung von <b>CalcPi</b> warten zu müssen, bis die Rückkehr aus dem <b>Click</b>-Ereignis der Schaltfläche erfolgen kann, beginne ich nun einen neuen Thread und starte ihn. Die <b>Thread.Start</b>-Methode setzt den neuen Thread als startbereit in die Warteschleife und kehrt anschließend sofort zurück, damit der UI-Thread seine eigenen Aufgaben wieder aufnehmen kann. Wenn der Benutzer mit der Anwendung interagieren möchte (sie beispielsweise in den Hinter- oder Vordergrund verschieben, ihre Größe ändern oder sie sogar schließen möchte), kann der UI-Thread alle diese Ereignisse ungehindert verarbeiten, während der Arbeitsthread Pi in seinem eigenen Tempo berechnet. Abbildung 4 zeigt die beiden Threads bei der Ausführung der jeweiligen Aufgaben.<br /></p><p><img border="0" alt="Bild04" src="images/3.gif" /></p><p><b>Abbildung 4. Systemeigenes Multithreading</b></p><p><br /></p><p>Möglicherweise ist Ihnen aufgefallen, dass ich keine Argumente an den Einstiegspunkt des Arbeitsthreads <b>CalcPiThreadStart</b> übergebe. Stattdessen bringe ich die Anzahl der zu berechnenden Nachkommastellen im Feld _digitsToCalc unter, wonach der Einstiegspunkt des Threads aufgerufen wird, der seinerseits wiederum CalcPi aufruft. Dies ist ein recht mühsames Verfahren und einer der Gründe, warum ich für asynchrone Aufgaben Delegates bevorzuge. Delegates unterstützen die Verwendung von Argumenten. Deshalb kann ich auf ein zusätzliches temporäres Feld und eine zusätzliche Funktion zwischen den aufzurufenden Funktionen verzichten.</p><p>Zur Erläuterung von Delegates: Es handelt sich hierbei ganz einfach um Objekte, die statische Funktionen oder Instanzfunktionen aufrufen. In C# werden Delegates mithilfe der Syntax zum Deklarieren von Funktionen deklariert. Ein Delegate zum Aufrufen von <b>CalcPi</b> sieht beispielsweise so aus:</p><pre>
+delegate void CalcPiDelegate(int digits);
+</pre><p>Nach dem Einrichten eines Delegates kann eine Instanz programmiert werden, um die <b>CalcPi</b>-Funktion folgendermaßen synchron aufzurufen:</p><pre>
+void _calcButton_Click(object sender, EventArgs e) {
+  CalcPiDelegate  calcPi = new CalcPiDelegate(CalcPi);
+  calcPi((int)_digits.Value);
+}
+</pre><p>Doch <b>CalcPi</b> soll selbstverständlich nicht synchron, sondern asynchron aufgerufen werden. Bevor dieser Schritt programmiert wird, müssen Sie etwas mehr über die Funktionsweise von Delegates wissen. Durch die vorstehende Delegatedeklaration wird eine neue Klasse deklariert, die von <b>MultiCastDelegate</b> abgeleitet ist und drei Funktionen enthält - <b>Invoke</b>, <b>BeginInvoke</b> und <b>EndInvoke</b>:</p><pre>
+class CalcPiDelegate : MulticastDelegate {
+  public void Invoke(int digits);
+  public void BeginInvoke(int digits, AsyncCallback callback,
+                          object asyncState);
+  public void EndInvoke(IAsyncResult result);
+}
+</pre><p>Als ich eine Instanz von <b>CalcPiDelegate</b> programmierte und diese dann wie eine Funktion aufrief, wurde tatsächlich die synchrone <b>Invoke</b>-Funktion aufgerufen, von der wiederum meine eigene <b>CalcPi</b>-Funktion aufgerufen wurde. <b>BeginInvoke</b> und <b>EndInvoke</b> sind jedoch das Funktionenpaar, das es Ihnen ermöglicht, eine Funktion asynchron aufzurufen und die Ergebnisse des Funktionsaufrufs zu nutzen. Damit die <b>CalcPi</b>-Funktion in einem anderen Thread aufgerufen wird, muss <b>BeginInvoke</b> mit diesem Code aufgerufen werden:</p><pre>
+void _calcButton_Click(object sender, EventArgs e) {
+  CalcPiDelegate  calcPi = new CalcPiDelegate(CalcPi);
+  calcPi.BeginInvoke((int)_digits.Value, null, null);
+}
+</pre><p>Beachten Sie, dass für die letzten beiden Argumente von <b>BeginInvoke</b> Nullwerte übergeben werden. Diese sind erforderlich, wenn das Ergebnis der zu einem späteren Zeitpunkt aufgerufenen Funktion genutzt werden soll (wofür auch <b>EndInvoke</b> zuständig ist). Da die <b>CalcPi</b>-Funktion die UI direkt aktualisiert, werden für die beiden Argumente ausschließlich Nullwerte benötigt. Einzelheiten zu synchronen und asynchronen Delegates finden Sie unter <a href="http://www.sellsbrothers.com/writing/#delegates">.NET Delegates: A C# Bedtime Story</a> (englischsprachig).</p><p>An dieser Stelle angekommen, konnte ich rundum zufrieden sein. Meine Anwendung kombinierte nun eine vollständig interaktive UI, die bei einer Operation mit langer Laufzeit den Fortschritt anzeigte. Meine Zufriedenheit war jedoch schlagartig vergessen, als ich erkannte, was ich da eigentlich tat.</p><p><b>Multithreadsicherheit</b><br />Wie sich dann herausstellte, hatte ich ganz einfach Glück gehabt (oder Pech, von einem anderen Standpunkt). Microsoft Windows® XP stellte mir eine sehr stabile Implementierung des zugrunde liegenden Fenstersystems bereit, auf dem Windows Forms aufbaut. Das Fenstersystem ist in der Tat so stabil, dass es sogar meinen Verstoß gegen das erste Gebot der Windows-Programmierung - <i>Eine Operation an einem Fenster immer aus dem ursprünglichen Thread heraus ausführen</i> - problemlos verarbeitete. Leider gibt es aber keine Garantie dafür, dass andere, weniger stabile Implementierungen von Windows auf mein regelwidriges Verhalten ebenso problemlos reagieren.</p><p>Das Problem war unbestritten mein eigenes Werk. Wie Sie in Abbildung 4 sehen konnten, gab es zwei Threads, die gleichzeitig auf dasselbe zugrunde liegende Fenster zugriffen. Da jedoch Operationen mit langer Laufzeit in Windows-Anwendungen sehr häufig vorkommen, besitzt jede UI-Klasse in Windows Forms (d. h. jede letztlich von <b>System.Windows.Forms.Control</b> abgeleitete Klasse) eine Eigenschaft, die von jedem beliebigen Thread aus verwendet werden kann und so einen sicheren Zugriff auf das Fenster ermöglicht.</p><p>Hierbei handelt es sich um die <b>InvokeRequired</b>-Eigenschaft, die <b>True</b> zurückgibt, wenn der aufrufende Thread die Steuerung an den ursprünglichen Thread übergeben muss, bevor er eine Methode für das betreffende Objekt aufruft. Ein einfaches <b>Assert</b> in meiner <b>ShowProgress</b>-Funktion hätte mir den Fehler in meiner Programmierung sofort aufgezeigt:</p><pre>
+using System.Diagnostics;
+void ShowProgress(string pi, int totalDigits, int digitsSoFar) {
+  // Make sure we're on the right thread
+  Debug.Assert(_pi.InvokeRequired == false);
+  ...
+}
+</pre><p>Hier drückt sich auch die .NET-Dokumentation ganz unmissverständlich aus. Sie gibt an: "Für ein Steuerelement gibt es vier Methoden, die aus jedem Thread heraus sicher aufgerufen werden können: <b>Invoke</b>, <b>BeginInvoke</b>, <b>EndInvoke</b> und <b>CreateGraphics</b>. Für alle anderen Methodenaufrufe sollten Sie eine der Aufrufmethoden verwenden, um den Aufruf an den Thread des Steuerelements zu marshallen." </p><p>Wenn ich die Steuerelementeigenschaften festlege, verstoße ich also ganz offensichtlich gegen diese Regel. Und die Namen der ersten drei Funktionen, die sicher aufgerufen werden dürfen (<b>Invoke</b>, <b>BeginInvoke</b> und <b>EndInvoke</b>) lassen deutlich erkennen, dass ein weiterer Delegate entwickelt werden muss, der im UI-Thread ausgeführt wird. Falls ich mir Sorgen um die Blockierung meines Arbeitsthreads machte, so wie es bei der Blockierung meines UI-Threads der Fall war, müsste ich die asynchronen Funktionen <b>BeginInvoke</b> und <b>EndInvoke</b> verwenden. Da der Arbeitsthread aber nur für die Verarbeitung des UI-Threads existiert, kann ich auch die einfachere synchrone <b>Invoke</b>-Methode verwenden, die wie folgt definiert wird:</p><pre>
+public object Invoke(Delegate method);
+public object Invoke(Delegate method, object[] args);
+</pre><p>Die erste Überladung von <b>Invoke</b> verwendet eine Instanz eines Delegates mit der Methode, die im UI-Thread aufgerufen werden soll, setzt aber keine Argumente voraus. Da jedoch die <b>ShowProgress</b>-Funktion, die zum Aktualisieren der UI aufgerufen werden soll, drei Argumente verwendet, wird die zweite Überladung benötigt. Außerdem ist ein weiterer Delegate für die <b>ShowProgress</b>-Methode erforderlich, damit die Argumente ordnungsgemäß übergeben werden können. Das folgende Codebeispiel zeigt, wie mithilfe von <b>Invoke</b> sichergestellt werden kann, dass die Aufrufe von <b>ShowProgress</b> - und damit die Verwendung der Fenster - im richtigen Thread angezeigt wird. (Auf diese Weise wird auch sichergestellt, dass beide Aufrufe von <b>ShowProgress</b> in <b>CalcPi</b> ersetzt werden):</p><pre>
+delegate
+void ShowProgressDelegate(string pi, int totalDigits, int digitsSoFar);
+void CalcPi(int digits) {
+  StringBuilder pi = new StringBuilder("3", digits + 2);
+  // Get ready to show progress asynchronously
+  ShowProgressDelegate showProgress =
+    new ShowProgressDelegate(ShowProgress);
+  // Show progress
+  this.Invoke(showProgress, new object[] { pi.ToString(), digits, 0});
+  if( digits &gt; 0 ) {
+    pi.Append(".");
+    for( int i = 0; i &lt; digits; i += 9 ) {
+      ...
+      // Show progress
+      this.Invoke(showProgress,
+        new object[] { pi.ToString(), digits, i + digitCount});
+    }
+  }
+}
+</pre><p>Die Verwendung von <b>Invoke</b> hat mir endlich einen sicheren Einsatz von Multithreading in meiner Windows Forms-Anwendung ermöglicht. Der UI-Thread erzeugt einen Arbeitsthread für die Ausführung der Operation mit langer Laufzeit, und der Arbeitsthread gibt die Steuerung zurück an den UI-Thread, wenn die UI aktualisiert werden muss. Abbildung 5 zeigt die sichere Multithreadingarchitektur.</p><p><img border="0" alt="Bild05" src="images/4.gif" /></p><p><b>Abbildung 5. Sicheres Multithreading</b></p><p><br /></p><p><b>Vereinfachtes Multithreading</b><br />Der Aufruf von <b>Invoke</b> ist ein wenig mühsam und erfolgt in der <b>CalcPi</b>-Funktion zweimal. Deshalb könnte das Ganze vereinfacht und die <b>ShowProgress</b>-Funktion selbst aktualisiert werden, damit sie den asynchronen Aufruf ausführt. Wenn <b>ShowProgress</b> aus dem richtigen Thread heraus aufgerufen wird, aktualisiert sie die Steuerelemente; wird sie jedoch aus dem falschen Thread heraus aufgerufen, ruft sie sich selbst über <b>Invoke</b> in den richtigen Thread zurück. Damit können wir zu der vorhergehenden, einfacheren <b>CalcPi</b>-Funktion zurückkehren:</p><pre>
+void ShowProgress(string pi, int totalDigits, int digitsSoFar) {
+  // Make sure we're on the right thread
+  if( _pi.InvokeRequired == false ) {
+    _pi.Text = pi;
+    _piProgress.Maximum = totalDigits;
+    _piProgress.Value = digitsSoFar;
+  }
+  else {
+    // Show progress asynchronously
+    ShowProgressDelegate showProgress =
+      new ShowProgressDelegate(ShowProgress);
+    this.Invoke(showProgress,
+      new object[] { pi, totalDigits, digitsSoFar});
+  }
+}
+void CalcPi(int digits) {
+  StringBuilder pi = new StringBuilder("3", digits + 2);
+  // Show progress
+  ShowProgress(pi.ToString(), digits, 0);
+  if( digits &gt; 0 ) {
+    pi.Append(".");
+    for( int i = 0; i &lt; digits; i += 9 ) {
+      ...
+      // Show progress
+      ShowProgress(pi.ToString(), digits, i + digitCount);
+    }
+  }
+}
+</pre><p>Weil es sich bei <b>Invoke</b> um einen synchronen Aufruf handelt und der Rückgabewert nicht genutzt wird (tatsächlich gibt es bei <b>ShowProgress</b> keinen Rückgabewert), sollte in diesem Fall nach Möglichkeit <b>BeginInvoke</b> verwendet werden, damit der Arbeitsthread nicht verzögert wird:</p><pre>
+BeginInvoke(showProgress, new object[] { pi, totalDigits, digitsSoFar});
+</pre><p>Der <b>BeginInvoke</b>-Funktion wird stets der Vorzug gegeben, wenn der Rückgabewert eines Funktionsaufrufs nicht benötigt wird. Sie bewirkt die sofortige Ausführung des Arbeitsthreads und verhindert darüber hinaus das Entstehen eines Deadlocks.</p><p><b>Zusammenfassung</b><br />Anhand dieses kurzen Beispiels wollte ich zeigen, wie Operationen mit langer Laufzeit ausgeführt werden, während gleichzeitig der Fortschritt angezeigt wird und die UI auf Benutzereingaben reagiert. Dazu erzeugte ich einen Arbeitsthread mithilfe eines asynchronen Delegates und verwendete die <b>Invoke</b>-Methode für das Hauptformular zusammen mit einem anderen Delegate, der wieder im UI-Thread ausgeführt werden muss.</p><p>Dabei achtete ich ganz besonders darauf, dass der Zugriff auf einen einzelnen Datenpunkt zwischen dem UI-Thread und dem Arbeitsthread nicht freigegeben wurde. Stattdessen übergab ich eine Kopie der für die Ausführung der Aufgaben benötigten Daten (Anzahl der Nachkommastellen) an den Arbeitsthread und eine Kopie der zum Aktualisieren der UI benötigten Daten (Anzeige der bisher berechneten Nachkommastellen und Fortschritt) an den UI-Thread.</p><p>In der endgültigen Lösung übergab ich niemals Verweise an Objekte, die von den beiden Threads gemeinsam genutzt wurden, wie z. B. einen Verweis auf den aktuellen Zeichenfolgen-Generator (wodurch ich mir bei jeder Rückkehr zum UI-Thread eine Zeichenfolgenkopie hätte sparen können). Hätte ich gemeinsam genutzte Verweise in beide Richtungen übergeben, so hätte ich mithilfe einer einfachen .NET-Synchronisierung sicherstellen müssen, dass jeweils nur ein Thread auf ein Objekt zugreifen konnte. Dies hätte sehr viel zusätzliche Arbeit bedeutet. Es war bereits äußerst aufwendig, die Aufrufe zwischen den beiden Threads erfolgen zu lassen, ohne dass es dadurch zu einer Synchronisierung kam.</p><p>Denn falls Sie mit umfangreichen DataSets arbeiten, möchten Sie sicherlich keine Daten hin- und herkopieren. Nach Möglichkeit empfehle ich jedoch die Kombination aus asynchronen Delegates und dem Weiterleiten von Meldungen zwischen dem Arbeitsthread und dem UI-Thread, um Aufgaben mit langer Laufzeit in Ihre Windows Forms-Anwendungen zu implementieren.</p><p><b>Danksagungen</b><br />An dieser Stelle möchte ich folgenden Personen danken: Simon Robinson für seine Veröffentlichung in der DevelopMentor .NET-Mailingliste, die mich zu diesem Artikel angeregt hat; Ian Griffiths für seine anfänglichen Arbeiten in diesem Bereich; Chris Andersen für seine Ideen zur Weiterleitung von Meldungen und nicht zuletzt Mike Woodring für die tollen Multithreadingbilder, die ich für diesen Artikel schamlos übernommen habe.</p><p><b>Referenzen</b></p><ul><li><p>Der Quellcode zu diesem Artikel</p></li><li><p><a href="http://www.sellsbrothers.com/writing/#delegates">.NET Delegates: A C# Bedtime Story</a> (englischsprachig)</p></li><li><p>Win32 Multithreaded Programming von Mike Woodring und Aaron Cohen</p></li></ul><br /><div style="margin-top: 16px; margin-bottom: 20px; width: 100%"><a href="#mainSection"><img width="7" height="9" border="0" alt="Zum Seitenanfang" src="http://i.msdn.microsoft.com/ms951089.arrow_px_up(de-de,MSDN.10).gif" /></a> <a href="#mainSection">Zum Seitenanfang</a><h5>Links zu verwandten Themen</h5><ul><li><a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dnforms/html/winforms06112002.asp"><img border="0" alt="english" src="images/5.gif" xmlns="http://www.w3.org/1999/xhtml" />Safe Simple Multithreading in Windows Forms</a></li></ul><a href="#mainSection">Zum Seitenanfang</a></div></div></div></div></div></div></div></div><div class="footer"><div id="footer" class="footerContainer cl_footer_slice"><div class="footerLogoContainer"><div class="footerContent"><div><a href="http://go.microsoft.com/?linkid=9659416&amp;lcid=1031">Verwalten Sie Ihr Profil</a><span class="pipe"> | </span><a href="http://www.microsoft.com/germany/siteservices/impressum/default.mspx">Impressum</a><span class="pipe"> | </span><a href="http://www.microsoft.com/germany/msdn/flash/default.mspx">MSDN Flash Newsletter</a><span class="pipe"> | </span><a href="http://go.microsoft.com/?linkid=3110638">Kontaktieren Sie uns</a></div><div>
+                © 2010 Microsoft Corporation. Alle Rechte vorbehalten.  <a href="/de-de/cc300389.aspx">Nutzungsbedingungen</a><span class="pipe"> | </span><a href="http://go.microsoft.com/?linkid=9664536">Markenzeichen</a><span class="pipe"> | </span><a href="http://www.microsoft.com/info/de/privacy.mspx">Informationen zur Datensicherheit</a><span class="pipe"> | </span><a href="http://msdn.microsoft.com/de-de/library#footerLink" onclick="javascript:ShowFeedbackDialog();" title="Feedback" class="FeedbackLink">Feedback</a><a onclick="javascript:ShowFeedbackDialog();" title="Feedback" class="FeedbackLink"><div class="FeedbackButton" id="FeedbackButton"><img class="cl_footer_feedback_icon" src="images/6.png" /></div></a><div id="FeedbackContainer" class="FeedbackContainer"><form method="post" action="/de-de/library/feedback/add/ms951089.aspx"><div class="FeedbackTitleContainer"><div class="FeedbackTitle">
+            Feedback zur kompakten Ansicht</div><div class="FeedbackCancel"><a href="http://msdn.microsoft.com/de-de/libraryjavascript:;" onclick="document.getElementById('FeedbackContainer').style.display = 'none';">x</a></div></div><div class="FeedbackData"><div class="FeedbackInfoText">
+            Die kompakte Umgebung basiert auf ScriptFree (loband), indem Funktionen hinzugefügt werden, die Sie angefordert haben: eine SearchBox- und Standardcodesprachauswahl.
+        </div><div class="QuestionText">
+            Gefällt Ihnen SearchBox?
+        </div><div class="AnswerText"><span>
+                Ja<span><input id="searchBox" name="searchBox" type="radio" value="1" /></span></span><span>
+                Nein<span><input id="searchBox" name="searchBox" type="radio" value="0" /></span></span></div><div class="QuestionText">
+            Gefallen Ihnen die Codeblöcke im Registerkartenformat?
+        </div><div class="AnswerText"><span>
+                Ja<span><input id="tabbedCode" name="tabbedCode" type="radio" value="1" /></span></span><span>
+                Nein<span><input id="tabbedCode" name="tabbedCode" type="radio" value="0" /></span></span></div><div class="QuestionText">
+            Wie hilfreich ist dieses Thema?
+        </div><div class="FeedbackGraphicHolder"><img src="images/7.gif" class="FeedbackSiderGraphic cl_online_scale" /></div><div class="RadioButtonHolder"><span class="RateRadioOne"><input id="topicUseful" name="topicUseful" type="radio" value="1" /></span><span class="RateRadio"><input id="topicUseful" name="topicUseful" type="radio" value="2" /></span><span class="RateRadio"><input id="topicUseful" name="topicUseful" type="radio" value="3" /></span><span class="RateRadio"><input id="topicUseful" name="topicUseful" type="radio" value="4" /></span><span class="RateRadio"><input id="topicUseful" name="topicUseful" type="radio" value="5" /></span></div><div class="QuestionText">
+            Geben Sie uns Feedback.
+        </div><div class="FeedbackTextAreaContainer"><textarea name="feedbackText" cols="25" rows="5" class="FeedbackTextArea" onkeyup="LimitText(this, 4000);" onkeydown="LimitText(this, 4000);"></textarea></div><div><input type="submit" value="Senden" class="FeedbackSubmit" /></div></div></form></div></div></div><div class="footerLogo cl_footer_logo"></div></div></div></div><div class="MetricsContainer"><div class="WebtrendsContainer"><script type="text/javascript" language="javascript">
+//<![CDATA[
+  var literalNormalizedUrl = '/de-de/library/ms951089(l=de-de,v=MSDN.10).aspx';
+  var wt_nvr_ru = 'WT_NVR_RU';
+  var wt_fpcdom = '.microsoft.com';
+  var wt_domlist = 'msdn.microsoft.com';
+  var wt_pathlist = '';
+  var wt_paramlist = 'DCSext.mtps_devcenter';
+  var wt_siteid = 'MSDN';
+  var gDomain = 'm.webtrends.com';
+  var gDcsId = 'dcsmgru7m99k7mqmgrhudo0k8_8c6m';
+  var gFpc = 'WT_FPC';
+  if (document.cookie.indexOf(gFpc + "=") == -1) {
+    document.write("<scr" + "ipt type='text/javascript' src='" + "http" + (window.location.protocol.indexOf('https:') == 0 ? 's' : '') + "://" + gDomain + "/" + gDcsId + "/wtid.js" + "'><\\/scr" + "ipt>");
+  }
+  var detectedLocale = 'de-de';
+  var wtsp = 'msdnlib_hp';
+  var gTrackEvents = '0';
+/*]]>*/
+</script><noscript><div><img alt="DCSIMG" id="Img1" width="1" height="1" src="images/8.gif" /></div></noscript></div><div class="OmnitureContainer"><script type="text/javascript">
+  var omni_guid = '237b1f4d-6fa0-4aab-b026-e56f659a449c'; 
+</script><noscript><a href="http://www.omniture.com" title="Web Analytics"><img src="http://msstonojsmsdn.112.2o7.net/b/ss/msstonojsmsdn/1/H.20.2--NS/0" height="1" width="1" border="0" alt="" /></a></noscript></div><div class="WebMetrixContainer"><div class="MetricsContainer"><img alt="Page view tracker" src="http://c.microsoft.com/trans_pixel.asp?source=msdn&amp;TYPE=PV&amp;uri=%2fde-de%2flibrary%2fms951089(l%3dde-de%2cv%3dMSDN.10).aspx&amp;p=_de-de_library_ms951089(l=de-de,v=MSDN.10).aspx&amp;prd=library" width="0" height="0" border="0" /></div></div></div><script type="text/javascript" src="images/9.js" xml:space="preserve" xmlns="http://www.w3.org/1999/xhtml"></script></body></html>

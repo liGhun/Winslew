@@ -1,0 +1,8 @@
+/*
+ * IE8 Bugfixes for MyDealz
+ * remember: all thesis-settings must begin with .custom!
+ */
+
+#klammer, #foobar1, #foobar2 { font-size: 10px; }
+.custom .more-link { padding: .25em .7em; }
+ .custom .social { position: relative; top: -15px; }

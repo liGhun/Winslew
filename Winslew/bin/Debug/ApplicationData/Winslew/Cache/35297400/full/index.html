@@ -1,0 +1,733 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de" dir="ltr">
+<head>
+<title>Arbeiten mit .NET: Grundlagen: Das Framework/ Multithreading Grundlagen – Wikibooks, Sammlung freier Lehr-, Sach- und Fachbücher</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta name="generator" content="MediaWiki 1.16wmf4" />
+<link rel="alternate" type="application/x-wiki" title="Bearbeiten" href="http://de.wikibooks.org/wiki/w/index.php?title=Arbeiten_mit_.NET:_Grundlagen:_Das_Framework/_Multithreading_Grundlagen&amp;action=edit" />
+<link rel="edit" title="Bearbeiten" href="http://de.wikibooks.org/wiki/w/index.php?title=Arbeiten_mit_.NET:_Grundlagen:_Das_Framework/_Multithreading_Grundlagen&amp;action=edit" />
+<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="search" type="application/opensearchdescription+xml" href="/w/opensearch_desc.php" title="Wikibooks (de)" />
+<link rel="copyright" href="http://creativecommons.org/licenses/by-sa/3.0/" />
+<link rel="alternate" type="application/atom+xml" title="Atom-Feed für Wikibooks" href="/w/index.php?title=Spezial:Letzte_%C3%84nderungen&amp;feed=atom" />
+<link rel="stylesheet" href="css/1/cachedCss.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="css/2/cachedCss.css" type="text/css" media="print" />
+<link rel="stylesheet" href="css/3/cachedCss.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="css/4/cachedCss.css" type="text/css" media="handheld" />
+<!--[if lt IE 5.5000]><link rel="stylesheet" href="css/5/cachedCss.css" type="text/css" media="screen" /><![endif]-->
+<!--[if IE 5.5000]><link rel="stylesheet" href="css/6/cachedCss.css" type="text/css" media="screen" /><![endif]-->
+<!--[if IE 6]><link rel="stylesheet" href="css/7/cachedCss.css" type="text/css" media="screen" /><![endif]-->
+<!--[if IE 7]><link rel="stylesheet" href="css/8/cachedCss.css" type="text/css" media="screen" /><![endif]-->
+<link rel="stylesheet" href="/w/index.php?title=MediaWiki:Common.css&amp;usemsgcache=yes&amp;ctype=text%2Fcss&amp;smaxage=2678400&amp;action=raw&amp;maxage=2678400" type="text/css" media="all" />
+<link rel="stylesheet" href="/w/index.php?title=MediaWiki:Print.css&amp;usemsgcache=yes&amp;ctype=text%2Fcss&amp;smaxage=2678400&amp;action=raw&amp;maxage=2678400" type="text/css" media="print" />
+<link rel="stylesheet" href="/w/index.php?title=MediaWiki:Handheld.css&amp;usemsgcache=yes&amp;ctype=text%2Fcss&amp;smaxage=2678400&amp;action=raw&amp;maxage=2678400" type="text/css" media="handheld" />
+<link rel="stylesheet" href="/w/index.php?title=MediaWiki:Monobook.css&amp;usemsgcache=yes&amp;ctype=text%2Fcss&amp;smaxage=2678400&amp;action=raw&amp;maxage=2678400" type="text/css" media="all" />
+<link rel="stylesheet" href="/w/index.php?title=-&amp;action=raw&amp;maxage=2678400&amp;gen=css" type="text/css" media="all" />
+<script type="text/javascript">
+var skin="monobook",
+stylepath="http://bits.wikimedia.org/skins-1.5",
+wgUrlProtocols="http\\:\\/\\/|https\\:\\/\\/|ftp\\:\\/\\/|irc\\:\\/\\/|gopher\\:\\/\\/|telnet\\:\\/\\/|nntp\\:\\/\\/|worldwind\\:\\/\\/|mailto\\:|news\\:|svn\\:\\/\\/",
+wgArticlePath="/wiki/$1",
+wgScriptPath="/w",
+wgScriptExtension=".php",
+wgScript="/w/index.php",
+wgVariantArticlePath=false,
+wgActionPaths={},
+wgServer="http://de.wikibooks.org",
+wgCanonicalNamespace="",
+wgCanonicalSpecialPageName=false,
+wgNamespaceNumber=0,
+wgPageName="Arbeiten_mit_.NET:_Grundlagen:_Das_Framework/_Multithreading_Grundlagen",
+wgTitle="Arbeiten mit .NET: Grundlagen: Das Framework/ Multithreading Grundlagen",
+wgAction="view",
+wgArticleId=38192,
+wgIsArticle=true,
+wgUserName=null,
+wgUserGroups=null,
+wgUserLanguage="de",
+wgContentLanguage="de",
+wgBreakFrames=false,
+wgCurRevisionId=514872,
+wgVersion="1.16wmf4",
+wgEnableAPI=true,
+wgEnableWriteAPI=true,
+wgSeparatorTransformTable=[",	.", ".	,"],
+wgDigitTransformTable=["", ""],
+wgMainPageTitle="Hauptseite",
+wgFormattedNamespaces={"-2": "Media", "-1": "Spezial", "0": "", "1": "Diskussion", "2": "Benutzer", "3": "Benutzer Diskussion", "4": "Wikibooks", "5": "Wikibooks Diskussion", "6": "Datei", "7": "Datei Diskussion", "8": "MediaWiki", "9": "MediaWiki Diskussion", "10": "Vorlage", "11": "Vorlage Diskussion", "12": "Hilfe", "13": "Hilfe Diskussion", "14": "Kategorie", "15": "Kategorie Diskussion", "102": "Regal", "103": "Regal Diskussion"},
+wgNamespaceIds={"media": -2, "spezial": -1, "": 0, "diskussion": 1, "benutzer": 2, "benutzer_diskussion": 3, "wikibooks": 4, "wikibooks_diskussion": 5, "datei": 6, "datei_diskussion": 7, "mediawiki": 8, "mediawiki_diskussion": 9, "vorlage": 10, "vorlage_diskussion": 11, "hilfe": 12, "hilfe_diskussion": 13, "kategorie": 14, "kategorie_diskussion": 15, "regal": 102, "regal_diskussion": 103, "bild": 6, "bild_diskussion": 7, "image": 6, "image_talk": 7},
+wgSiteName="Wikibooks",
+wgCategories=[],
+wgMWSuggestTemplate="http://de.wikibooks.org/w/api.php?action=opensearch\x26search={searchTerms}\x26namespace={namespaces}\x26suggest",
+wgDBname="dewikibooks",
+wgSearchNamespaces=[0],
+wgMWSuggestMessages=["mit Vorschlägen", "keine Vorschläge"],
+wgRestrictionEdit=[],
+wgRestrictionMove=[],
+wgTrackingToken="59f2f842c8369bdedc2be63d25f2358c",
+wgClickTrackingIsThrottled=true,
+wgNotice="",
+wgNoticeLocal="";
+</script><script src="http://bits.wikimedia.org/skins-1.5/common/wikibits.js?270z54" type="text/javascript"></script>
+<script src="http://bits.wikimedia.org/skins-1.5/common/ajax.js?270z54" type="text/javascript"></script>
+<script src="http://bits.wikimedia.org/skins-1.5/common/mwsuggest.js?270z54" type="text/javascript"></script>
+<script type="text/javascript" src="http://upload.wikimedia.org/centralnotice/wikibooks/de/centralnotice.js?270z54"></script>
+
+<script src="/w/index.php?title=-&amp;action=raw&amp;gen=js&amp;useskin=monobook&amp;270z54" type="text/javascript"></script>
+
+<style type="text/css">/*<![CDATA[*/
+.source-csharp {line-height: normal;}
+.source-csharp li, .source-csharp pre {
+	line-height: normal; border: 0px none white;
+}
+/**
+ * GeSHi Dynamically Generated Stylesheet
+ * --------------------------------------
+ * Dynamically generated stylesheet for csharp
+ * CSS class: source-csharp, CSS id: 
+ * GeSHi (C) 2004 - 2007 Nigel McNie, 2007 - 2008 Benny Baumann
+ * (http://qbnz.com/highlighter/ and http://geshi.org/)
+ * --------------------------------------
+ */
+.csharp.source-csharp .de1, .csharp.source-csharp .de2 {font: normal normal 1em/1.2em monospace; margin:0; padding:0; background:none; vertical-align:top;}
+.csharp.source-csharp  {font-family:monospace;}
+.csharp.source-csharp .imp {font-weight: bold; color: red;}
+.csharp.source-csharp li, .csharp.source-csharp .li1 {font-weight: normal; vertical-align:top;}
+.csharp.source-csharp .ln {width:1px;text-align:right;margin:0;padding:0 2px;vertical-align:top;}
+.csharp.source-csharp .li2 {font-weight: bold; vertical-align:top;}
+.csharp.source-csharp .kw1 {color: #0600FF;}
+.csharp.source-csharp .kw2 {color: #FF8000; font-weight: bold;}
+.csharp.source-csharp .kw3 {color: #008000;}
+.csharp.source-csharp .kw4 {color: #FF0000;}
+.csharp.source-csharp .kw5 {color: #000000;}
+.csharp.source-csharp .co1 {color: #008080; font-style: italic;}
+.csharp.source-csharp .co2 {color: #008080;}
+.csharp.source-csharp .co3 {color: #008080;}
+.csharp.source-csharp .coMULTI {color: #008080; font-style: italic;}
+.csharp.source-csharp .es0 {color: #008080; font-weight: bold;}
+.csharp.source-csharp .es_h {color: #008080; font-weight: bold;}
+.csharp.source-csharp .br0 {color: #000000;}
+.csharp.source-csharp .sy0 {color: #008000;}
+.csharp.source-csharp .st0 {color: #666666;}
+.csharp.source-csharp .st_h {color: #666666;}
+.csharp.source-csharp .nu0 {color: #FF0000;}
+.csharp.source-csharp .me1 {color: #0000FF;}
+.csharp.source-csharp .me2 {color: #0000FF;}
+.csharp.source-csharp .ln-xtra, .csharp.source-csharp li.ln-xtra, .csharp.source-csharp div.ln-xtra {background-color: #ffc;}
+.csharp.source-csharp span.xtra { display:block; }
+
+/*]]>*/
+</style>
+<style type="text/css">/*<![CDATA[*/
+@import "/w/index.php?title=MediaWiki:Geshi.css&usemsgcache=yes&action=raw&ctype=text/css&smaxage=2678400";
+/*]]>*/
+</style><style type="text/css">/*<![CDATA[*/
+.source-text {line-height: normal;}
+.source-text li, .source-text pre {
+	line-height: normal; border: 0px none white;
+}
+/**
+ * GeSHi Dynamically Generated Stylesheet
+ * --------------------------------------
+ * Dynamically generated stylesheet for text
+ * CSS class: source-text, CSS id: 
+ * GeSHi (C) 2004 - 2007 Nigel McNie, 2007 - 2008 Benny Baumann
+ * (http://qbnz.com/highlighter/ and http://geshi.org/)
+ * --------------------------------------
+ */
+.text.source-text .de1, .text.source-text .de2 {font: normal normal 1em/1.2em monospace; margin:0; padding:0; background:none; vertical-align:top;}
+.text.source-text  {font-family:monospace;}
+.text.source-text .imp {font-weight: bold; color: red;}
+.text.source-text li, .text.source-text .li1 {font-weight: normal; vertical-align:top;}
+.text.source-text .ln {width:1px;text-align:right;margin:0;padding:0 2px;vertical-align:top;}
+.text.source-text .li2 {font-weight: bold; vertical-align:top;}
+.text.source-text .ln-xtra, .text.source-text li.ln-xtra, .text.source-text div.ln-xtra {background-color: #ffc;}
+.text.source-text span.xtra { display:block; }
+
+/*]]>*/
+</style>
+<style type="text/css">/*<![CDATA[*/
+@import "/w/index.php?title=MediaWiki:Geshi.css&usemsgcache=yes&action=raw&ctype=text/css&smaxage=2678400";
+/*]]>*/
+</style></head>
+<body class="mediawiki ltr capitalize-all-nouns ns-0 ns-subject page-Arbeiten_mit_NET_Grundlagen_Das_Framework_Multithreading_Grundlagen skin-monobook">
+<div id="globalWrapper">
+<div id="column-content"><div id="content">
+	<a id="top"></a>
+	<div id="siteNotice"><script type='text/javascript'>if (wgNotice != '') document.writeln(wgNotice);</script></div>
+	<h1 id="firstHeading" class="firstHeading">Arbeiten mit .NET: Grundlagen: Das Framework/ Multithreading Grundlagen</h1>
+	<div id="bodyContent">
+		<h3 id="siteSub">Aus Wikibooks</h3>
+		<div id="contentSub"><span class="subpages">&lt; <a href="http://de.wikibooks.org/wiki/wiki/Arbeiten_mit_.NET:_Grundlagen:_Das_Framework" title="Arbeiten mit .NET: Grundlagen: Das Framework">Arbeiten mit .NET: Grundlagen: Das Framework</a></span></div>
+		<div id="jump-to-nav">Wechseln zu: <a href="#column-one">Navigation</a>, <a href="http://de.wikibooks.org/wiki/Arbeiten_mit_.NET:_Grundlagen:_Das_Framework#searchInput">Suche</a></div>
+		<!-- start content -->
+<div class="noprint" style="font-size:80%; border: 1px solid #dfdfdf; background-color:#F8F8FF;"><a href="/wiki/Datei:Nuvola_apps_bookcase.svg" class="image"><img alt="Nuvola apps bookcase.svg" src="http://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Nuvola_apps_bookcase.svg/32px-Nuvola_apps_bookcase.svg.png" width="32" height="32" /></a> <a href="/wiki/Arbeiten_mit_.NET/_Inhaltsverzeichnis" title="Arbeiten mit .NET/ Inhaltsverzeichnis">.NET Inhalt</a> <a href="/wiki/Datei:Nuvola_apps_bookcase_1.svg" class="image"><img alt="Nuvola apps bookcase 1.svg" src="http://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Nuvola_apps_bookcase_1.svg/32px-Nuvola_apps_bookcase_1.svg.png" width="32" height="20" /></a> <a href="http://de.wikibooks.org/wiki/wiki/Arbeiten_mit_.NET:_Grundlagen:_Das_Framework" title="Arbeiten mit .NET: Grundlagen: Das Framework">Das Framework</a> <a href="/wiki/Datei:Go-previous.svg" class="image"><img alt="Go-previous.svg" src="http://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Go-previous.svg/32px-Go-previous.svg.png" width="32" height="32" /></a> <a href="/w/index.php?title=Arbeiten_mit_.NET:_Grundlagen:_Das_Framework/_CS0234_oder_CS0246&amp;action=edit&amp;redlink=1" class="new" title="Arbeiten mit .NET: Grundlagen: Das Framework/ CS0234 oder CS0246 (Seite nicht vorhanden)">CS0234 oder CS0246</a> <a href="/wiki/Datei:Go-up.svg" class="image"><img alt="Go-up.svg" src="http://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Go-up.svg/32px-Go-up.svg.png" width="32" height="32" /></a> <a href="http://de.wikibooks.org/wiki/wiki/Arbeiten_mit_.NET:_Grundlagen:_Das_Framework/_Inhaltsverzeichnis" title="Arbeiten mit .NET: Grundlagen: Das Framework/ Inhaltsverzeichnis">Inhaltsverzeichnis</a> <a href="/wiki/Datei:Go-next.svg" class="image"><img alt="Go-next.svg" src="images/1.png" width="32" height="32" /></a> <a href="http://de.wikibooks.org/wiki/w/index.php?title=Arbeiten_mit_.NET:_Grundlagen:_Das_Framework/_BackgroundWorker&amp;action=edit&amp;redlink=1" class="new" title="Arbeiten mit .NET: Grundlagen: Das Framework/ BackgroundWorker (Seite nicht vorhanden)">BackgroundWorker</a></div>
+<p><br /></p>
+<p>Wer jetzt direkt aus dem Abschnitt <i>Ereignisse</i> hierher gesprungen ist, sei gewarnt: In diesem Abschnitt werden wir zwar das Beispiel der "hinkenden Ereignisse" noch einmal rekapitulieren, gleichzeitig werden aber neue Punkte hinzukommen. Für das erste Verständnis ist es sicher besser, sich eins nach dem anderen anzuschauen.</p>
+<div class="noprint" style="clear: right; border: solid #aaa 1px; margin: 0 0 1em 1em; font-size: 90%; background: #f9f9f9; width: 250px; padding: 4px; text-align: left; float: right;">
+<div style="float: left;">
+<div class="floatnone"><a href="http://de.wikibooks.org/wiki/wiki/Datei:Wikipedia-logo-de.png" class="image" title="Wikipedia"><img alt="Wikipedia" src="images/2.png" width="50" height="61" /></a></div>
+</div>
+<div style="margin-left: 60px;"><a href="http://de.wikipedia.org/wiki/Hauptseite" class="extiw" title="w:Hauptseite">Wikipedia</a> hat einen Artikel zum Thema:
+<div style="margin-left: 10px;"><i><b><a href="http://de.wikipedia.org/wiki/Multithreading" class="extiw" title="w:Multithreading">Multithreading</a></b></i></div>
+</div>
+</div>
+<table id="toc" class="toc">
+<tr>
+<td>
+<div id="toctitle">
+<h2>Inhaltsverzeichnis</h2>
+</div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="http://de.wikibooks.org/wiki/Arbeiten_mit_.NET:_Grundlagen:_Das_Framework#Problem"><span class="tocnumber">1</span> <span class="toctext">Problem</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="http://de.wikibooks.org/wiki/Arbeiten_mit_.NET:_Grundlagen:_Das_Framework#Multithreading"><span class="tocnumber">2</span> <span class="toctext">Multithreading</span></a></li>
+<li class="toclevel-1 tocsection-3"><a href="http://de.wikibooks.org/wiki/Arbeiten_mit_.NET:_Grundlagen:_Das_Framework#Praxisbeispiele"><span class="tocnumber">3</span> <span class="toctext">Praxisbeispiele</span></a>
+<ul>
+<li class="toclevel-2 tocsection-4"><a href="http://de.wikibooks.org/wiki/Arbeiten_mit_.NET:_Grundlagen:_Das_Framework#Fibonacci-Zahlen_berechnen"><span class="tocnumber">3.1</span> <span class="toctext">Fibonacci-Zahlen berechnen</span></a></li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+</table>
+<script type="text/javascript">
+//<![CDATA[
+if (window.showTocToggle) { var tocShowText = "Anzeigen"; var tocHideText = "Verbergen"; showTocToggle(); } 
+//]]>
+</script>
+<h2><span class="editsection">[<a href="http://de.wikibooks.org/wiki/w/index.php?title=Arbeiten_mit_.NET:_Grundlagen:_Das_Framework/_Multithreading_Grundlagen&amp;action=edit&amp;section=1" title="Abschnitt bearbeiten: Problem">Bearbeiten</a>]</span> <span class="mw-headline" id="Problem">Problem</span></h2>
+<p>Schauen wir uns noch einmal das Beispiel aus dem Abschnitt <a href="http://de.wikibooks.org/wiki/wiki/Programmierkurs_C-Sharp:_Ereignisse" title="Programmierkurs C-Sharp: Ereignisse" class="mw-redirect"><i>Ereignisse</i></a> genauer an. Wir hatten eine Klasse <tt>Rechner</tt>, die eine komplizierte Berechnung durchführen soll und das Ergebnis als <i>Ereignis</i> <tt>OnBerechnungBeendet</tt> bekannt gibt. Und wir hatten eine Klasse <tt>Client</tt>, die dieses Ereignis abonniert und das Ergebnis nach dem Ende der Berechnung anzeigt.</p>
+<div style="text-align: left; padding:5px; margin:6px 0px; clear: both; border: #7777FF solid 1px; background-color: #DDDDFF;">
+<div class="NavFrame" style="margin-top: 1em; clear: both; text-align: left; border: none; background-color: #DDDDFF">
+<div class="NavHead" style="background-color: #DDDDFF"><a href="http://de.wikibooks.org/wiki/wiki/Datei:Crystal_Clear_app_terminal.png" class="image"><img alt="Crystal Clear app terminal.png" src="images/3.png" width="20" height="20" /></a> <b>C#-Code</b></div>
+<div class="NavContent" style="padding:1em; border:1px dashed #2f6fab; color:black; background-color:#f9f9f9; line-height:1.1em;">
+<div dir="ltr" class="mw-geshi" style="text-align: left;">
+<div class="csharp source-csharp" style="font-family:monospace;">
+<pre class="de1">
+<span class="kw4">class</span> Rechner 
+ <span class="br0">{</span>
+   <span class="kw1">public</span> <span class="kw4">delegate</span> <span class="kw1">void</span> BerechnungBeendet<span class="br0">(</span><span class="kw4">decimal</span> ergebnis<span class="br0">)</span><span class="sy0">;</span>
+   <span class="kw1">public</span> <span class="kw1">event</span> BerechnungBeendet OnBerechnungBeendet<span class="sy0">;</span>
+ 
+   <span class="kw1">public</span> <span class="kw1">void</span> Berechne<span class="br0">(</span><span class="br0">)</span>
+   <span class="br0">{</span>
+     <span class="kw4">decimal</span> zahl1 <span class="sy0">=</span> 164m<span class="sy0">;</span>
+     <span class="kw4">decimal</span> zahl2 <span class="sy0">=</span>  26m<span class="sy0">;</span>
+     <span class="co1">//</span>
+     <span class="co1">// Hier findet eine sehr komplexe Berechnung statt...</span>
+     <span class="co1">//</span>
+ 
+     <span class="co1">// Am Ende der Berechnung lösen wir das Ereignis aus</span>
+     <span class="co1">// Symbolisch addieren wir nur.</span>
+     <span class="kw1">if</span> <span class="br0">(</span> OnBerechnungBeendet <span class="sy0">!=</span> <span class="kw1">null</span> <span class="br0">)</span>
+     <span class="br0">{</span>
+       OnBerechnungBeendet<span class="br0">(</span> zahl1 <span class="sy0">+</span> zahl2 <span class="br0">)</span><span class="sy0">;</span>
+     <span class="br0">}</span>
+   <span class="br0">}</span>
+ <span class="br0">}</span>
+ 
+ <span class="kw4">class</span> Client
+ <span class="br0">{</span>
+   <span class="kw1">public</span> <span class="kw1">void</span> Berechne<span class="br0">(</span><span class="br0">)</span>
+   <span class="br0">{</span>
+     <span class="co1">// Wir holen uns ein Objekt des Rechners</span>
+     Rechner rechner <span class="sy0">=</span> <span class="kw3">new</span> Rechner<span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span>
+ 
+     <span class="co1">// Wir abonnieren das Ereignis</span>
+     <span class="co1">// Dazu erstellen wir ein neues Objekt </span>
+     <span class="co1">// des Delegaten "BerechnungBeendet" und </span>
+     <span class="co1">// fügen dieses dem Ereignis hinzu.</span>
+     rechner.<span class="me1">OnBerechnungBeendet</span> <span class="sy0">+=</span> <span class="kw3">new</span> Rechner.<span class="me1">BerechnungBeendet</span><span class="br0">(</span>rechner_OnBerechnungBeendet<span class="br0">)</span><span class="sy0">;</span>
+ 
+     <span class="co1">// Wir beginnen die komplizierte Berechnung</span>
+     <span class="co1">// der Addition zweier Zahlen.</span>
+     rechner.<span class="me1">Berechne</span><span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span>
+ 
+   <span class="br0">}</span>
+ 
+   <span class="kw1">private</span> <span class="kw1">void</span> rechner_OnBerechnungBeendet<span class="br0">(</span><span class="kw4">decimal</span> ergebnis<span class="br0">)</span>
+   <span class="br0">{</span>
+     Console.<span class="me1">WriteLine</span><span class="br0">(</span> ergebnis <span class="br0">)</span><span class="sy0">;</span> 
+   <span class="br0">}</span>
+ <span class="br0">}</span>
+</pre></div>
+</div>
+</div>
+<div style="margin:0;padding:0;line-height:0px;clear:both;">&#160;</div>
+</div>
+</div>
+<p>Unser Beispiel im Abschnitt <i>Ereignisse</i> war allerdings aus Gründen der einfacheren Erklärung etwas praxisfern. Dieser Praxisferne wollen wir jetzt abhelfen. <span class="noprint"><span>&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;<span style="position:absolute; right:12px;">[<a href="http://de.wikibooks.org/wiki/Arbeiten_mit_.NET:_Grundlagen:_Das_Framework#top">Nach oben</a>]</span></span></span></p>
+<h2><span class="editsection">[<a href="http://de.wikibooks.org/wiki/w/index.php?title=Arbeiten_mit_.NET:_Grundlagen:_Das_Framework/_Multithreading_Grundlagen&amp;action=edit&amp;section=2" title="Abschnitt bearbeiten: Multithreading">Bearbeiten</a>]</span> <span class="mw-headline" id="Multithreading">Multithreading</span></h2>
+<p>Bisher haben wir unsere Programme praktisch "linear" ausgeführt: Eine Zeile wurde stur nach der anderen abgearbeitet, und erst, wenn eine fertig bearbeitet war, durfte die nächste begonnen werden. Für unser Beispiel bedeutete das im Grunde: <i>"Danke für das tolle Ereignis. Gebracht hat's uns aber nicht wirklich viel, weil wir bei unserer linearen Abarbeitung sowieso auf das Ende der Berechnung warten mussten."</i></p>
+<p>Doch das können wir ganz leicht beheben, indem wir einfach die Berechnung in einem anderen Thread (dt. <i>Faden</i>, <i>Ausführungsstrang</i>) des Betriebssystems ausführen lassen. So haben wir unseren eigenen Thread wieder frei für andere Aufgaben, während wir auf das Ergebnis der Berechnungen warten. ... Klingt kompliziert, oder? Aber wer würde jetzt noch glauben, dass es wirklich kompliziert ist?! Schauen wir es uns in Ruhe an.</p>
+<p>Wie zu erwarten war, müssen wir zunächst unsere Klasse <tt>Rechner</tt> ein wenig umbauen. Dazu benennen wir die Methode <tt>Berechne</tt> in <tt>BerechneAsynchron</tt> um und ändern den Zugriffsmodifizierer in <tt>private</tt>. Außerdem fügen wir einen Übergabeparameter vom Typ <tt>object</tt> hinzu. Und weil wir nun keine öffentliche Methode mehr haben, könnte unser <tt>Client</tt> nicht mehr auf die Berechnung zugreifen. Also fügen wir auch noch eine neue <tt>public</tt>-Methode ein, die wir <tt>Berechne</tt> nennen.</p>
+<div style="text-align: left; padding:5px; margin:6px 0px; clear: both; border: #7777FF solid 1px; background-color: #DDDDFF;">
+<div class="NavFrame" style="margin-top: 1em; clear: both; text-align: left; border: none; background-color: #DDDDFF">
+<div class="NavHead" style="background-color: #DDDDFF"><a href="http://de.wikibooks.org/wiki/wiki/Datei:Crystal_Clear_app_terminal.png" class="image"><img alt="Crystal Clear app terminal.png" src="images/3.png" width="20" height="20" /></a> <b>C#-Code</b></div>
+<div class="NavContent" style="padding:1em; border:1px dashed #2f6fab; color:black; background-color:#f9f9f9; line-height:1.1em;">
+<div dir="ltr" class="mw-geshi" style="text-align: left;">
+<div class="csharp source-csharp" style="font-family:monospace;">
+<pre class="de1">
+<span class="kw4">class</span> Rechner 
+ <span class="br0">{</span>
+   <span class="kw1">public</span> <span class="kw4">delegate</span> <span class="kw1">void</span> BerechnungBeendet<span class="br0">(</span><span class="kw4">decimal</span> ergebnis<span class="br0">)</span><span class="sy0">;</span>
+   <span class="kw1">public</span> <span class="kw1">event</span> BerechnungBeendet OnBerechnungBeendet<span class="sy0">;</span>
+ 
+   <span class="kw1">private</span> <span class="kw1">void</span> BerechneAsynchron<span class="br0">(</span><span class="kw4">object</span> state<span class="br0">)</span>
+   <span class="br0">{</span>
+     <span class="kw4">decimal</span> zahl1 <span class="sy0">=</span> 164m<span class="sy0">;</span>
+     <span class="kw4">decimal</span> zahl2 <span class="sy0">=</span>  26m<span class="sy0">;</span>
+     <span class="co1">//</span>
+     <span class="co1">// Hier findet eine sehr komplexe Berechnung statt...</span>
+     <span class="co1">//</span>
+ 
+     <span class="co1">// Und weil das sonst so rasend schnell geht,</span>
+     <span class="co1">// veranstalten wir hier einen sinnlosen Loop.</span>
+     <span class="co1">// Weil aber der Compiler merkt, dass wir hier Unfug schreiben,</span>
+     <span class="co1">// würde er es einfach wegoptimieren.</span>
+     <span class="co1">// Um das zu verhindern, täuschen wir eine Berechnung vor.</span>
+     <span class="co1">// Dabei machen wir in jedem Durchlauf nichts anderes, </span>
+     <span class="co1">// als x auf 0 zu setzen und anschließend das Ergebnis von "0 * zahl1 / 4"</span>
+     <span class="co1">// in x zu speichern, nur um es beim nächsten Durchlauf wieder zu löschen.</span>
+     <span class="co1">// Die 100.000.000 Durchläufe hängen damit zusammen,</span>
+     <span class="co1">// dass die Computer heute einfach so schnell sind.</span>
+     <span class="co1">// Wem das Warten zu lange dauert, der sollte eine kleinere Zahl nehmen.</span>
+     <span class="kw4">decimal</span> x <span class="sy0">=</span> <span class="nu0">10</span><span class="sy0">;</span>
+     <span class="kw1">for</span> <span class="br0">(</span><span class="kw4">long</span> i <span class="sy0">=</span> <span class="nu0">1</span><span class="sy0">;</span> i <span class="sy0">&lt;=</span> <span class="nu0">100000000</span><span class="sy0">;</span> i<span class="sy0">++</span><span class="br0">)</span> x <span class="sy0">=</span> <span class="nu0">0</span><span class="sy0">;</span> x <span class="sy0">*=</span> zahl1 <span class="sy0">/</span> <span class="nu0">4</span><span class="sy0">;</span>
+ 
+     <span class="co1">// Am Ende der Berechnung lösen wir das Ereignis aus</span>
+     <span class="co1">// Symbolisch addieren wir nur.</span>
+     <span class="kw1">if</span> <span class="br0">(</span> OnBerechnungBeendet <span class="sy0">!=</span> <span class="kw1">null</span> <span class="br0">)</span>
+     <span class="br0">{</span>
+       OnBerechnungBeendet<span class="br0">(</span> zahl1 <span class="sy0">+</span> zahl2 <span class="br0">)</span><span class="sy0">;</span>
+     <span class="br0">}</span>
+   <span class="br0">}</span>
+ 
+   <span class="co1">// ************</span>
+   <span class="co1">// Neue Methode</span>
+   <span class="co1">// ************</span>
+   <span class="kw1">public</span> <span class="kw1">void</span> Berechne<span class="br0">(</span><span class="br0">)</span>
+   <span class="br0">{</span>
+     <span class="co1">// Wir sagen dem Betriebssytem,</span>
+     <span class="co1">// dass wir gern noch einen zusätzlichen Thread hätten.</span>
+     <span class="co1">// Dazu stellen wir unsere Methode "BerechneAsynchron" </span>
+     <span class="co1">// in die Warteschlange des Thread-Verteilers.</span>
+     <span class="kw5">System.<span class="me1">Threading</span></span>.<span class="me1">ThreadPool</span>.<span class="me1">QueueUserWorkItem</span><span class="br0">(</span><span class="kw3">new</span> <span class="kw5">System.<span class="me1">Threading</span></span>.<span class="me1">WaitCallback</span><span class="br0">(</span>BerechneAsynchron<span class="br0">)</span><span class="br0">)</span><span class="sy0">;</span>
+   <span class="br0">}</span>
+ <span class="br0">}</span>
+</pre></div>
+</div>
+</div>
+<div style="margin:0;padding:0;line-height:0px;clear:both;">&#160;</div>
+</div>
+</div>
+<p>Und schließlich erweitern wir unseren Client noch um die eigentlich wichtigen Zeilen:</p>
+<div style="text-align: left; padding:5px; margin:6px 0px; clear: both; border: #7777FF solid 1px; background-color: #DDDDFF;">
+<div class="NavFrame" style="margin-top: 1em; clear: both; text-align: left; border: none; background-color: #DDDDFF">
+<div class="NavHead" style="background-color: #DDDDFF"><a href="http://de.wikibooks.org/wiki/wiki/Datei:Crystal_Clear_app_terminal.png" class="image"><img alt="Crystal Clear app terminal.png" src="images/3.png" width="20" height="20" /></a> <b>C#-Code</b></div>
+<div class="NavContent" style="padding:1em; border:1px dashed #2f6fab; color:black; background-color:#f9f9f9; line-height:1.1em;">
+<div dir="ltr" class="mw-geshi" style="text-align: left;">
+<div class="csharp source-csharp" style="font-family:monospace;">
+<pre class="de1">
+<span class="kw4">class</span> Client
+ <span class="br0">{</span>
+   <span class="kw1">public</span> <span class="kw1">void</span> Berechne<span class="br0">(</span><span class="br0">)</span>
+   <span class="br0">{</span>
+     <span class="co1">// Wir holen uns ein Objekt des Rechners</span>
+     Rechner rechner <span class="sy0">=</span> <span class="kw3">new</span> Rechner<span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span>
+ 
+     <span class="co1">// Wir abonnieren das Ereignis</span>
+     <span class="co1">// Dazu erstellen wir ein neues Objekt </span>
+     <span class="co1">// des Delegaten "BerechnungBeendet" und </span>
+     <span class="co1">// fügen dieses dem Ereignis hinzu.</span>
+     rechner.<span class="me1">OnBerechnungBeendet</span> <span class="sy0">+=</span> <span class="kw3">new</span> Rechner.<span class="me1">BerechnungBeendet</span><span class="br0">(</span>rechner_OnBerechnungBeendet<span class="br0">)</span><span class="sy0">;</span>
+ 
+     <span class="co1">// Wir beginnen die komplizierte Berechnung</span>
+     <span class="co1">// der Addition zweier Zahlen.</span>
+     rechner.<span class="me1">Berechne</span><span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span>
+ 
+     <span class="co1">// **********************</span>
+     <span class="co1">// Neue Zeilen hinzufügen</span>
+     <span class="co1">// Während wir auf das Ergebnis warten,</span>
+     <span class="co1">// können wir in unserem eigenen Thread </span>
+     <span class="co1">// schon fleißig weiterarbeiten.</span>
+     <span class="kw1">for</span> <span class="br0">(</span><span class="kw4">int</span> i <span class="sy0">=</span> <span class="nu0">1</span><span class="sy0">;</span> i <span class="sy0">&lt;=</span> <span class="nu0">100</span><span class="sy0">;</span> i<span class="sy0">++</span><span class="br0">)</span>
+     <span class="br0">{</span>
+       Console.<span class="me1">WriteLine</span><span class="br0">(</span><span class="st0">"Wir erledigen andere Aufgaben nebenbei ..."</span><span class="br0">)</span><span class="sy0">;</span>
+     <span class="br0">}</span>
+     <span class="co1">// **********************</span>
+   <span class="br0">}</span>
+ 
+   <span class="kw1">private</span> <span class="kw1">void</span> rechner_OnBerechnungBeendet<span class="br0">(</span><span class="kw4">decimal</span> ergebnis<span class="br0">)</span>
+   <span class="br0">{</span>
+     Console.<span class="me1">WriteLine</span><span class="br0">(</span> ergebnis <span class="br0">)</span><span class="sy0">;</span> 
+   <span class="br0">}</span>
+ <span class="br0">}</span>
+</pre></div>
+</div>
+</div>
+<div style="margin:0;padding:0;line-height:0px;clear:both;">&#160;</div>
+</div>
+</div>
+<p>Jetzt haben wir ganze Arbeit geleistet. Wenn wir das Programm nun starten, werden wir etwa folgende Ausgabe sehen:</p>
+<div style="text-align: left; padding:5px; margin:6px 0px; clear: both; border: black solid 1px; background-color: #DDDDFF;">
+<div style="margin-top: 1em; clear: both; text-align: left; border: none; background-color:">
+<div class="NavHead" style="background-color:"><a href="http://de.wikibooks.org/wiki/wiki/Datei:Crystal_Clear_app_terminal.png" class="image"><img alt="Crystal Clear app terminal.png" src="images/3.png" width="20" height="20" /></a> <b>Ausgabe</b></div>
+<div class="NavContent" style="padding:1em; border:1px dashed #2f6fab; color:black; background-color:#f9f9f9; line-height:1.1em;">
+<div dir="ltr" class="mw-geshi" style="text-align: left;">
+<div class="text source-text" style="font-family:monospace;">
+<pre class="de1">
+Wir erledigen andere Aufgaben nebenbei ...
+ Wir erledigen andere Aufgaben nebenbei ...
+ Wir erledigen andere Aufgaben nebenbei ...
+ Wir erledigen andere Aufgaben nebenbei ...
+ Wir erledigen andere Aufgaben nebenbei ...
+ 190
+ Wir erledigen andere Aufgaben nebenbei ...
+ Wir erledigen andere Aufgaben nebenbei ...
+ Wir erledigen andere Aufgaben nebenbei ...
+ Wir erledigen andere Aufgaben nebenbei ...
+ ...
+</pre></div>
+</div>
+</div>
+<div style="margin:0;padding:0;line-height:0px;clear:both;">&#160;</div>
+</div>
+</div>
+<p>Perfekt. Wir haben zunächst die Berechnung ausgelöst und konnten uns dann um andere Dinge kümmern. Irgendwann hat uns der <tt>Rechner</tt> über das Ereignis <tt>OnBerechnungBeendet</tt> informiert, dass er fertig ist. Trotzdem mussten wir unsere "anderen Aufgaben" nicht unterbrechen, sondern haben fleißig daran weitergearbeitet.</p>
+<p>Das Beste an der ganzen Sache ist wohl, dass wir den größten Teil dieses Beispiels damit verbracht haben, uns Möglichkeiten auszudenken, wie wir den Computer ausbremsen können, damit wir überhaupt ein Ergebnis sehen.</p>
+<p>Und damit uns die eigentlich wichtige Zeile hier nicht untergeht, holen wir sie noch einmal heraus:</p>
+<pre>
+System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(BerechneAsynchron));
+</pre>
+<p>So einfach geht Multithreading in .NET. Alles was wir machen müssen, ist uns im <tt>ThreadPool</tt> hinten anzustellen und zu warten, bis uns das Betriebssystem ein Zeitsegment und einen Thread zuteilt. Um all die kleinen Details kümmern sich also .NET und das Betriebssytem. Wir brauchen nichts anderes zu tun, als die Arbeit zu verteilen und auf die Ergebnisse zu warten... <span class="noprint"><span>&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;<span style="position:absolute; right:12px;">[<a href="http://de.wikibooks.org/wiki/Arbeiten_mit_.NET:_Grundlagen:_Das_Framework#top">Nach oben</a>]</span></span></span></p>
+<h2><span class="editsection">[<a href="http://de.wikibooks.org/wiki/w/index.php?title=Arbeiten_mit_.NET:_Grundlagen:_Das_Framework/_Multithreading_Grundlagen&amp;action=edit&amp;section=3" title="Abschnitt bearbeiten: Praxisbeispiele">Bearbeiten</a>]</span> <span class="mw-headline" id="Praxisbeispiele">Praxisbeispiele</span></h2>
+<p>Nicht immer ist es uns vergönnt, unsere Zeit mit Warten verbringen zu können. Manche - eigentlich die meisten - Anwendungsfälle von multiplen Threads sollen die ansonsten sehr langwierige und aufwändige Arbeit verteilen, um die Ergebnisse schneller zu bekommen.</p>
+<div class="noprint" style="clear: right; border: solid #aaa 1px; margin: 0 0 1em 1em; font-size: 90%; background: #f9f9f9; width: 250px; padding: 4px; text-align: left; float: right;">
+<div style="float: left;">
+<div class="floatnone"><a href="http://de.wikibooks.org/wiki/wiki/Datei:Wikipedia-logo-de.png" class="image" title="Wikipedia"><img alt="Wikipedia" src="images/2.png" width="50" height="61" /></a></div>
+</div>
+<div style="margin-left: 60px;"><a href="http://de.wikipedia.org/wiki/Hauptseite" class="extiw" title="w:Hauptseite">Wikipedia</a> hat einen Artikel zum Thema:
+<div style="margin-left: 10px;"><i><b><a href="http://de.wikipedia.org/wiki/Fibonacci-Folge" class="extiw" title="w:Fibonacci-Folge">Fibonacci-Folge</a></b></i></div>
+</div>
+</div>
+<h3><span class="editsection">[<a href="http://de.wikibooks.org/wiki/w/index.php?title=Arbeiten_mit_.NET:_Grundlagen:_Das_Framework/_Multithreading_Grundlagen&amp;action=edit&amp;section=4" title="Abschnitt bearbeiten: Fibonacci-Zahlen berechnen">Bearbeiten</a>]</span> <span class="mw-headline" id="Fibonacci-Zahlen_berechnen">Fibonacci-Zahlen berechnen</span></h3>
+<p>Zu den Klassikern sehr aufwändiger Berechnungen gehört ohne Zweifel die <a href="http://de.wikibooks.org/wiki/wiki/Fibonacci-Folgen_und_Lucas-Folgen:_Die_Fibonacci-Folge_im_Speziellen" title="Fibonacci-Folgen und Lucas-Folgen: Die Fibonacci-Folge im Speziellen">Fibonacci-Folge</a>. Was uns der gute Herr Fibonacci da eingebrockt hat, ist wirklich vom Feinsten: Er dachte sich ein Modell einer "unendlich wachsenden Kaninchenpopulation" aus, wobei jede Zahl in der Reihe die Summe der beiden vorangehenden Zahlen darstellt; also (0, 1,) 1, 2, 3, 5, 8, ...<br />
+Und weil diese Aufgabe geradezu nach <tt>Threads</tt> und <tt>Rekursion</tt> schreit, kommt sie uns wie gerufen.<br /></p>
+<div style="text-align: left; padding:5px; margin:6px 0px; clear: both; border: #7777FF solid 1px; background-color: #DDDDFF;">
+<div class="NavFrame" style="margin-top: 1em; clear: both; text-align: left; border: none; background-color: #DDDDFF">
+<div class="NavHead" style="background-color: #DDDDFF"><a href="http://de.wikibooks.org/wiki/wiki/Datei:Crystal_Clear_app_terminal.png" class="image"><img alt="Crystal Clear app terminal.png" src="images/3.png" width="20" height="20" /></a> <b>C#-Code</b></div>
+<div class="NavContent" style="padding:1em; border:1px dashed #2f6fab; color:black; background-color:#f9f9f9; line-height:1.1em;">
+<div dir="ltr" class="mw-geshi" style="text-align: left;">
+<div class="csharp source-csharp" style="font-family:monospace;">
+<pre class="de1">
+<span class="kw1">using</span> <span class="co3">System</span><span class="sy0">;</span>
+ 
+ <span class="kw1">namespace</span> Org.<span class="me1">Wikibooks</span>.<span class="me1">De</span>.<span class="me1">CSharp</span>.<span class="me1">MultiThreading</span>
+ <span class="br0">{</span> 
+   <span class="kw4">class</span> Program
+   <span class="br0">{</span>
+     <span class="kw1">static</span> <span class="kw1">void</span> Main<span class="br0">(</span><span class="kw4">string</span><span class="br0">[</span><span class="br0">]</span> args<span class="br0">)</span>
+     <span class="br0">{</span>
+       <span class="co1">//</span>
+       <span class="co1">// Test OHNE zusätzliche Threads.</span>
+       <span class="co1">//</span>
+ 
+       Fibonacci fibonacci <span class="sy0">=</span> <span class="kw3">new</span> Fibonacci<span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span>
+ 
+       <span class="co1">// Wir wählen 10 verschiedene Zahlen aus,</span>
+       <span class="co1">// die die Position innerhalb der Reihe darstellen.</span>
+       <span class="co1">// Von diesen Zahlen lassen wir uns die Fibonacci-Zahl geben.</span>
+       <span class="co1">// ACHTUNG: Zu große Zahlen können die Büchse</span>
+       <span class="co1">// heftig ins Schwitzen bringen!</span>
+       <span class="co1">//     Wer eine langsame Büchse, wenig RAM oder wenig Geduld hat,</span>
+       <span class="co1">//     sollte hier kleinere Zahlen wählen!</span>
+       <span class="co1">// Fangen wir also vorsichtig an und steigern uns langsam:</span>
+       <span class="kw4">int</span><span class="br0">[</span><span class="br0">]</span> fibonacciFolge_PositionsListe <span class="sy0">=</span> <span class="kw3">new</span> <span class="kw4">int</span><span class="br0">[</span><span class="br0">]</span> <span class="br0">{</span> 5, 9, 11, 16, 20, 25, 30, 35, 40, 45 <span class="br0">}</span><span class="sy0">;</span>
+       <span class="kw4">long</span> ergebnis <span class="sy0">=</span> <span class="nu0">0</span><span class="sy0">;</span>
+       DateTime startGesamt <span class="sy0">=</span> DateTime.<span class="me1">Now</span><span class="sy0">;</span>
+ 
+       <span class="kw1">foreach</span><span class="br0">(</span> <span class="kw4">int</span> position <span class="kw1">in</span> fibonacciFolge_PositionsListe<span class="br0">)</span>
+       <span class="br0">{</span>
+         ergebnis <span class="sy0">=</span> fibonacci.<span class="me1">Berechne</span><span class="br0">(</span> position <span class="br0">)</span><span class="sy0">;</span>
+         Console.<span class="me1">WriteLine</span><span class="br0">(</span> <span class="st0">"Die Zahl an Position {0} lautet: {1}"</span>, position, ergebnis <span class="br0">)</span><span class="sy0">;</span>
+       <span class="br0">}</span>
+       DateTime endeGesamt <span class="sy0">=</span> DateTime.<span class="me1">Now</span><span class="sy0">;</span>
+       TimeSpan spanneGesamt <span class="sy0">=</span> endeGesamt <span class="sy0">-</span> startGesamt<span class="sy0">;</span>
+       Console.<span class="me1">WriteLine</span><span class="br0">(</span><span class="st0">"Die Berechnung aller Zahlen hat {0} Sekunden gedauert."</span>, spanneGesamt.<span class="me1">Seconds</span><span class="br0">)</span><span class="sy0">;</span>
+       Console.<span class="me1">ReadLine</span><span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span>
+     <span class="br0">}</span>
+   <span class="br0">}</span>
+ 
+   <span class="kw4">class</span> Fibonacci
+   <span class="br0">{</span>
+     <span class="kw1">public</span> <span class="kw4">long</span> Berechne<span class="br0">(</span><span class="kw4">int</span> zahl<span class="br0">)</span>
+     <span class="br0">{</span>
+       <span class="kw1">if</span> <span class="br0">(</span>zahl <span class="sy0">&lt;=</span> 1<span class="br0">)</span>
+         <span class="kw1">return</span> zahl<span class="sy0">;</span>
+ 
+       <span class="kw1">return</span> Berechne<span class="br0">(</span>zahl <span class="sy0">-</span> 1<span class="br0">)</span> <span class="sy0">+</span> Berechne<span class="br0">(</span>zahl <span class="sy0">-</span> 2<span class="br0">)</span><span class="sy0">;</span>
+     <span class="br0">}</span>
+   <span class="br0">}</span>
+ <span class="br0">}</span>
+</pre></div>
+</div>
+</div>
+<div style="margin:0;padding:0;line-height:0px;clear:both;">&#160;</div>
+</div>
+</div>
+<div class="noprint" style="clear: right; border: solid #aaa 1px; margin: 0 0 1em 1em; font-size: 90%; background: #f9f9f9; width: 250px; padding: 4px; text-align: left; float: right;">
+<div style="float: left;">
+<div class="floatnone"><a href="http://de.wikibooks.org/wiki/wiki/Datei:Wikipedia-logo-de.png" class="image" title="Wikipedia"><img alt="Wikipedia" src="images/2.png" width="50" height="61" /></a></div>
+</div>
+<div style="margin-left: 60px;"><a href="http://de.wikipedia.org/wiki/Hauptseite" class="extiw" title="w:Hauptseite">Wikipedia</a> hat einen Artikel zum Thema:
+<div style="margin-left: 10px;"><i><b><a href="http://de.wikipedia.org/wiki/Rekursion" class="extiw" title="w:Rekursion">Rekursion</a></b></i></div>
+</div>
+</div>
+<p>Wir haben hier ganz beiläufig einen neuen Programmier-Mechanismus eingesetzt, der sich <i>Rekursion</i> nennt. Dabei handelt es sich um eine kreuzgefährliche - aber sehr spannende - Technik, sich die Arbeit zu erleichtern und <i>eleganten Programmcode</i> zu schreiben. Dummerweise gibt es aber zwei gewaltige Haken:</p>
+<ul>
+<li>Es belastet den Speicher bis ins Unermessliche und</li>
+<li>es ist langsam.</li>
+</ul>
+<p>Wie wir sehr leicht feststellen können, "verschachteln" die Selbstaufrufe der Methode <tt>Berechne</tt> in der Klasse <tt>Fibonacci</tt> so lange ineinander, bis die <tt>Zahl</tt> auf 1 runtergerechnet wurde. Da aber bis dahin kein einziger der Methoden-Aufrufe zurückkehrt, also beendet wird, bleiben sie alle im Speicher. Erst wenn wir die magische 1 erreicht haben, lösen sich diese verschachtelten Aufrufe von innen auf und kommen mit ihren Ergebnissen zurück. Logisch also, dass die Speicherverwaltung mit Rekursionen einen enormen Aufwand verursacht, nicht wahr?</p>
+<p>Kommen wir zu unserem Problem zurück: Wie wir gesehen haben, dauert die Berechnung der einfachen Zahlen schon einige Zeit. Um wieviel mehr Zeit würde es brauchen, wollten wir höhere Positionen der Fibonacci-Folge berechnen?! ... Und hier kommen nun unsere Threads zum Einsatz:</p>
+<div style="text-align: left; padding:5px; margin:6px 0px; clear: both; border: #7777FF solid 1px; background-color: #DDDDFF;">
+<div class="NavFrame" style="margin-top: 1em; clear: both; text-align: left; border: none; background-color: #DDDDFF">
+<div class="NavHead" style="background-color: #DDDDFF"><a href="http://de.wikibooks.org/wiki/wiki/Datei:Crystal_Clear_app_terminal.png" class="image"><img alt="Crystal Clear app terminal.png" src="images/3.png" width="20" height="20" /></a> <b>C#-Code</b></div>
+<div class="NavContent" style="padding:1em; border:1px dashed #2f6fab; color:black; background-color:#f9f9f9; line-height:1.1em;">
+<div dir="ltr" class="mw-geshi" style="text-align: left;">
+<div class="csharp source-csharp" style="font-family:monospace;">
+<pre class="de1">
+<span class="kw1">using</span> <span class="co3">System</span><span class="sy0">;</span>
+<span class="kw1">using</span> <span class="co3">System.Collections</span><span class="sy0">;</span>
+<span class="kw1">using</span> <span class="co3">System.ComponentModel</span><span class="sy0">;</span>
+ 
+<span class="kw1">namespace</span> Org.<span class="me1">Wikibooks</span>.<span class="me1">De</span>.<span class="me1">CSharp</span>.<span class="me1">MultiThreading</span>
+ <span class="br0">{</span> 
+   <span class="kw4">class</span> Program
+   <span class="br0">{</span>
+     <span class="kw1">static</span> <span class="kw1">void</span> Main<span class="br0">(</span><span class="kw4">string</span><span class="br0">[</span><span class="br0">]</span> args<span class="br0">)</span>
+     <span class="br0">{</span>
+       <span class="co1">//</span>
+       <span class="co1">// Test MIT zusätzlichen Threads.</span>
+       <span class="co1">// Und zwar nehmen wir für jede Zahl einen eigenen,</span>
+       <span class="co1">// so dass jeder dann anfangen kann, sobald das Betriebssystem</span>
+       <span class="co1">// es ihm erlaubt.</span>
+       <span class="co1">//</span>
+ 
+       <span class="co1">// Wir wählen 10 verschiedene Zahlen aus,</span>
+       <span class="co1">// die die Position innerhalb der Reihe darstellen.</span>
+       <span class="co1">// Von diesen Zahlen lassen wir uns die Fibonacci-Zahl geben.</span>
+       <span class="kw4">int</span><span class="br0">[</span><span class="br0">]</span> fibonacciFolge_PositionsListe <span class="sy0">=</span> <span class="kw3">new</span> <span class="kw4">int</span><span class="br0">[</span><span class="br0">]</span> <span class="br0">{</span> 5, 9, 11, 16, 20, 25, 30, 35, 40, 45 <span class="br0">}</span><span class="sy0">;</span>
+       ArrayList workerList <span class="sy0">=</span> <span class="kw3">new</span> ArrayList<span class="br0">(</span> fibonacciFolge_PositionsListe.<span class="me1">Length</span> <span class="br0">)</span><span class="sy0">;</span>
+       DateTime startGesamt <span class="sy0">=</span> DateTime.<span class="me1">Now</span><span class="sy0">;</span>
+ 
+       <span class="kw1">foreach</span><span class="br0">(</span> <span class="kw4">int</span> position <span class="kw1">in</span> fibonacciFolge_PositionsListe <span class="br0">)</span>
+       <span class="br0">{</span>
+         <span class="co1">// Wir schicken für jede Aufgabe einen "Backgroundworker" ins Rennen.</span>
+         BackgroundWorker worker <span class="sy0">=</span> <span class="kw3">new</span> BackgroundWorker<span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span>
+         <span class="co1">// Um sie kontrollieren zu können,</span>
+         <span class="co1">// schreiben wir sie auf unsere "Lohnliste".</span>
+         workerList.<span class="me1">Add</span><span class="br0">(</span> worker <span class="br0">)</span><span class="sy0">;</span>
+ 
+         <span class="co1">// Jetzt geben wir dem neuen Thread noch Arbeitsanweisungen ...</span>
+         <span class="co1">//</span>
+         <span class="co1">// Lieber "BackgroundWorker", bitte erledige diesen Job.</span>
+         worker.<span class="me1">DoWork</span> <span class="sy0">+=</span> <span class="kw3">new</span> DoWorkEventHandler<span class="br0">(</span> worker_DoWork <span class="br0">)</span><span class="sy0">;</span>
+         <span class="co1">// Und wenn du fertig bist, sage bitte hier Bescheid.</span>
+         worker.<span class="me1">RunWorkerCompleted</span> <span class="sy0">+=</span> <span class="kw3">new</span> RunWorkerCompletedEventHandler<span class="br0">(</span> worker_RunWorkerCompleted <span class="br0">)</span><span class="sy0">;</span>
+ 
+         <span class="co1">// ... alles erledigt, Belehrung erfolgt: Lasst die Spiele beginnen!</span>
+         <span class="co1">// Fange jetzt bitte an zu arbeiten!</span>
+         worker.<span class="me1">RunWorkerAsync</span><span class="br0">(</span> position <span class="br0">)</span><span class="sy0">;</span>
+       <span class="br0">}</span>
+ 
+       <span class="co1">// Wir haben alle an die Arbeit geschickt.</span>
+       <span class="co1">// Jetzt warten wir auf das Ende.</span>
+       Console.<span class="me1">WriteLine</span><span class="br0">(</span> <span class="st0">"... Warte auf Ende der Berechnungen..."</span> <span class="br0">)</span><span class="sy0">;</span>
+       <span class="kw4">bool</span> istBeschaeftigt <span class="sy0">=</span> true<span class="sy0">;</span>
+       <span class="co1">// ... Mindestens einmal müssen wir alle worker fragen...</span>
+       <span class="kw1">do</span>
+       <span class="br0">{</span>
+         <span class="kw1">foreach</span> <span class="br0">(</span> BackgroundWorker worker <span class="kw1">in</span> workerList<span class="br0">)</span>
+         <span class="br0">{</span>
+           istBeschaeftigt <span class="sy0">=</span> worker.<span class="me1">IsBusy</span><span class="sy0">;</span>
+           <span class="co1">// Wenn wenigstens einer noch beschäftigt ist,</span>
+           <span class="co1">// brauchen wir gar nicht weiter prüfen.</span>
+           <span class="kw1">if</span> <span class="br0">(</span>istBeschaeftigt<span class="br0">)</span>
+             break<span class="sy0">;</span>
+         <span class="br0">}</span>
+       <span class="br0">}</span>
+       <span class="kw1">while</span> <span class="br0">(</span> istBeschaeftigt <span class="br0">)</span><span class="sy0">;</span>
+       DateTime endeGesamt <span class="sy0">=</span> DateTime.<span class="me1">Now</span><span class="sy0">;</span>
+       TimeSpan spanneGesamt <span class="sy0">=</span> endeGesamt <span class="sy0">-</span> startGesamt<span class="sy0">;</span>
+       Console.<span class="me1">WriteLine</span><span class="br0">(</span> <span class="st0">"Die Berechnung aller Zahlen hat {0} Sekunden gedauert."</span>
+                          ,spanneGesamt.<span class="me1">Seconds</span> <span class="br0">)</span><span class="sy0">;</span>
+       Console.<span class="me1">ReadLine</span><span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span>
+     <span class="br0">}</span>
+ 
+     <span class="kw1">static</span> <span class="kw1">void</span> worker_RunWorkerCompleted<span class="br0">(</span><span class="kw4">object</span> sender, RunWorkerCompletedEventArgs e<span class="br0">)</span>
+     <span class="br0">{</span>
+       <span class="co1">// Würdest du bitte das Ergebnis deiner Berechnungen </span>
+       <span class="co1">// auf der Konsole ausgeben?!</span>
+       Console.<span class="me1">WriteLine</span><span class="br0">(</span> <span class="st0">"Die Zahl an Position {0} lautet: {1}"</span>
+                          ,<span class="br0">(</span><span class="kw4">int</span><span class="br0">)</span> <span class="br0">(</span><span class="br0">(</span><span class="kw4">object</span><span class="br0">[</span><span class="br0">]</span><span class="br0">)</span>e.<span class="me1">Result</span><span class="br0">)</span><span class="br0">[</span>0<span class="br0">]</span> 
+                          ,<span class="br0">(</span><span class="kw4">long</span><span class="br0">)</span><span class="br0">(</span><span class="br0">(</span><span class="kw4">object</span><span class="br0">[</span><span class="br0">]</span><span class="br0">)</span>e.<span class="me1">Result</span><span class="br0">)</span><span class="br0">[</span>1<span class="br0">]</span> <span class="br0">)</span><span class="sy0">;</span>
+     <span class="br0">}</span>
+ 
+     <span class="kw1">static</span> <span class="kw1">void</span> worker_DoWork<span class="br0">(</span><span class="kw4">object</span> sender, DoWorkEventArgs e<span class="br0">)</span>
+     <span class="br0">{</span>
+       <span class="kw4">long</span> fibonacciZahl <span class="sy0">=</span> <span class="nu0">0</span><span class="sy0">;</span>
+       <span class="kw4">int</span> position <span class="sy0">=</span> <span class="br0">(</span><span class="kw4">int</span><span class="br0">)</span>e.<span class="me1">Argument</span><span class="sy0">;</span>
+ 
+       <span class="co1">// Wir holen uns ein neues Objekt</span>
+       Fibonacci fibonacci <span class="sy0">=</span> <span class="kw3">new</span> Fibonacci<span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span>
+       fibonacciZahl <span class="sy0">=</span> fibonacci.<span class="me1">Berechne</span><span class="br0">(</span> position <span class="br0">)</span><span class="sy0">;</span>
+ 
+       <span class="co1">// Wir speichern das Ergebnis in einem object-Array...</span>
+       <span class="kw4">object</span><span class="br0">[</span><span class="br0">]</span> ergebnis <span class="sy0">=</span> <span class="kw3">new</span> <span class="kw4">object</span><span class="br0">[</span><span class="br0">]</span> <span class="br0">{</span> position, fibonacciZahl <span class="br0">}</span><span class="sy0">;</span>
+       <span class="co1">// ... und legen dieses object-Array in das "Result".</span>
+       e.<span class="me1">Result</span> <span class="sy0">=</span> ergebnis<span class="sy0">;</span> 
+     <span class="br0">}</span>
+   <span class="br0">}</span>
+ 
+   <span class="kw4">class</span> Fibonacci
+   <span class="br0">{</span>
+     <span class="kw1">public</span> <span class="kw4">long</span> Berechne<span class="br0">(</span><span class="kw4">int</span> zahl<span class="br0">)</span>
+     <span class="br0">{</span>
+       <span class="kw1">if</span> <span class="br0">(</span>zahl <span class="sy0">&lt;=</span> 1<span class="br0">)</span>
+         <span class="kw1">return</span> zahl<span class="sy0">;</span>
+ 
+       <span class="kw1">return</span> Berechne<span class="br0">(</span>zahl <span class="sy0">-</span> 1<span class="br0">)</span> <span class="sy0">+</span> Berechne<span class="br0">(</span>zahl <span class="sy0">-</span> 2<span class="br0">)</span><span class="sy0">;</span>
+     <span class="br0">}</span>
+   <span class="br0">}</span>
+ <span class="br0">}</span>
+</pre></div>
+</div>
+</div>
+<div style="margin:0;padding:0;line-height:0px;clear:both;">&#160;</div>
+</div>
+</div>
+<p>Dieser Versuch lehrt uns eine ganze Menge interessante Dinge:</p>
+<p>Wer jetzt aufmerksam die Prozessorlast beobachtet hat, wird festgestellt haben, dass sich zum oberen Beispiel, also dem ohne zusätzliche Threads, nichts geändert hat: Wir haben nach wie vor 100% Prozessorlast.</p>
+<p>Listigerweise ist die Ursache im ersten Beispiel aber eine andere, als die im zweiten Beispiel. Während wir im ersten Fall die Last allein durch die Berechnungen verursacht haben, wurde uns im zweiten Fall die "Warteschleife" zum Verhängnis. Pausenlos, also wirklich alle paar Millisekunden, wurden die Threads <tt>worker</tt> abgefragt (Fachleute nennen diesen Vorgang <i>"pollen"</i>), ob sie bereits fertig sind.</p>
+<p>Aber auch die zweite Frage, die hier auftaucht: <i>"Und warum hat jeder Durchlauf nun insgesamt länger als der Versuch ohne zusätzliche Threads und zugleich auch noch bei jedem Testdurchlauf selbst unterschiedlich lange gedauert?"</i> ist einen oder zwei Gedanken wert.</p>
+<p>Wie wir bereits gelernt haben, sind wir beim Multithreading nicht allmächtig. Es gibt neben unserer Anwendung, so fantastisch sie auch sein mag, noch andere, die ebenfalls Ansprüche besitzen - oder sich anmaßen zu glauben, solche zu besitzen - Prozessorzeit zu bekommen. Deshalb führt der Einsatz vieler Threads gleichzeitig nicht zwingend (tatsächlich sogar fast nie) zu einer linearen Beschleunigung der Bearbeitung. Meist ist sogar eher das Gegenteil zu beobachten: Es wird eine Spur langsamer.</p>
+<p>Und dennoch gewinnen wir jede Menge Zeit...paradox, oder?!</p>
+<p>Nein, für uns nicht mehr, denn wir haben beide Beispiele aufmerksam studiert und dabei festgestellt, dass im zweiten Beispiel eine lange Warteschleife existiert, in der wir den größten Teil der Zeit verbracht haben. Und anstatt faul rumzustehen und auf das Ende der Arbeit der <tt>worker</tt> zu warten, hätten wir auch schon andere Dinge erledigen können. ... Und das werden wir in Zukunft auch machen.</p>
+<p>Bleibt als letzte große Lehre noch eines: Die ominösen <tt>EventArgs</tt>. Sehen wir einmal von den <i>Framework-Bauanleitungs-Vorschriften</i> ab, die uns im Abschnitt <a href="/wiki/Programmierkurs_C-Sharp:_Bibliothekenbau" title="Programmierkurs C-Sharp: Bibliothekenbau" class="mw-redirect"><i>Bibliothekenbau</i></a> noch einmal auf die Füße fallen werden, erfüllen sie einen weiteren interessanten Zweck: Sie sind vollständige Klassen, die eine Menge Eigenschaften besitzen, zu denen auch eine namens <tt>Result</tt> vom "Universal-Datentyp" <tt>object</tt> gehört. Da wir aber aus den Abschnitten <a href="/wiki/Programmierkurs_C-Sharp:_Datentypen" title="Programmierkurs C-Sharp: Datentypen" class="mw-redirect"><i>Datentypen</i></a> und <a href="/wiki/Programmierkurs_C-Sharp:_Objekte_und_Klassen" title="Programmierkurs C-Sharp: Objekte und Klassen" class="mw-redirect"><i>Objekte und Klassen, der erste Kontakt</i></a> noch wissen, dass man einem <tt>object</tt> auch ganze Listen von Objekten übergeben kann, wenn diese innerhalb eines einzigen Objektes existieren, nutzen wir das schamlos aus, um unsere "Ergebnisanzeige-Werte" durchzureichen, so dass wir sie in der Methode <tt>worker_RunWorkerCompleted</tt> nur noch wieder auseinander klauben müssen. Und wie das geht, haben wir im Abschnitt <a href="/wiki/Programmierkurs_C-Sharp:_Typumwandlungen" title="Programmierkurs C-Sharp: Typumwandlungen" class="mw-redirect"><i>Typumwandlungen</i></a> gelernt. <span class="noprint"><span>&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;<span style="position:absolute; right:12px;">[<a href="http://de.wikibooks.org/wiki/Arbeiten_mit_.NET:_Grundlagen:_Das_Framework#top">Nach oben</a>]</span></span></span></p>
+<p><br /></p>
+<div class="noprint" style="font-size:80%; border: 1px solid #dfdfdf; background-color:#F8F8FF;"><a href="/wiki/Datei:Nuvola_apps_bookcase.svg" class="image"><img alt="Nuvola apps bookcase.svg" src="http://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Nuvola_apps_bookcase.svg/32px-Nuvola_apps_bookcase.svg.png" width="32" height="32" /></a> <a href="/wiki/Arbeiten_mit_.NET/_Inhaltsverzeichnis" title="Arbeiten mit .NET/ Inhaltsverzeichnis">.NET Inhalt</a> <a href="/wiki/Datei:Nuvola_apps_bookcase_1.svg" class="image"><img alt="Nuvola apps bookcase 1.svg" src="http://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Nuvola_apps_bookcase_1.svg/32px-Nuvola_apps_bookcase_1.svg.png" width="32" height="20" /></a> <a href="http://de.wikibooks.org/wiki/wiki/Arbeiten_mit_.NET:_Grundlagen:_Das_Framework" title="Arbeiten mit .NET: Grundlagen: Das Framework">Das Framework</a> <a href="/wiki/Datei:Go-previous.svg" class="image"><img alt="Go-previous.svg" src="http://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Go-previous.svg/32px-Go-previous.svg.png" width="32" height="32" /></a> <a href="/w/index.php?title=Arbeiten_mit_.NET:_Grundlagen:_Das_Framework/_CS0234_oder_CS0246&amp;action=edit&amp;redlink=1" class="new" title="Arbeiten mit .NET: Grundlagen: Das Framework/ CS0234 oder CS0246 (Seite nicht vorhanden)">CS0234 oder CS0246</a> <a href="/wiki/Datei:Go-up.svg" class="image"><img alt="Go-up.svg" src="http://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Go-up.svg/32px-Go-up.svg.png" width="32" height="32" /></a> <a href="http://de.wikibooks.org/wiki/wiki/Arbeiten_mit_.NET:_Grundlagen:_Das_Framework/_Inhaltsverzeichnis" title="Arbeiten mit .NET: Grundlagen: Das Framework/ Inhaltsverzeichnis">Inhaltsverzeichnis</a> <a href="/wiki/Datei:Go-next.svg" class="image"><img alt="Go-next.svg" src="images/1.png" width="32" height="32" /></a> <a href="http://de.wikibooks.org/wiki/w/index.php?title=Arbeiten_mit_.NET:_Grundlagen:_Das_Framework/_BackgroundWorker&amp;action=edit&amp;redlink=1" class="new" title="Arbeiten mit .NET: Grundlagen: Das Framework/ BackgroundWorker (Seite nicht vorhanden)">BackgroundWorker</a></div>
+
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 1273/1000000
+Post-expand include size: 29653/2048000 bytes
+Template argument size: 19994/2048000 bytes
+Expensive parser function count: 0/500
+-->
+
+<!-- Saved in parser cache with key dewikibooks:pcache:idhash:38192-0!1!0!!de!2 and timestamp 20100425155157 -->
+<div class="printfooter">
+Von „<a href="http://de.wikibooks.org/wiki/Arbeiten_mit_.NET:_Grundlagen:_Das_Framework/_Multithreading_Grundlagen">http://de.wikibooks.org/wiki/Arbeiten_mit_.NET:_Grundlagen:_Das_Framework/_Multithreading_Grundlagen</a>“</div>
+		<div id='catlinks' class='catlinks catlinks-allhidden'></div>		<!-- end content -->
+				<div class="visualClear"></div>
+	</div>
+</div></div>
+<div id="column-one">
+	<div id="p-cactions" class="portlet">
+		<h5>Ansichten</h5>
+		<div class="pBody">
+			<ul>
+				 <li id="ca-nstab-main" class="selected"><a href="http://de.wikibooks.org/wiki/wiki/Arbeiten_mit_.NET:_Grundlagen:_Das_Framework/_Multithreading_Grundlagen" title="Seiteninhalt anzeigen [c]" accesskey="c">Kapitel</a></li>
+				 <li id="ca-talk" class="new"><a href="http://de.wikibooks.org/wiki/w/index.php?title=Diskussion:Arbeiten_mit_.NET:_Grundlagen:_Das_Framework/_Multithreading_Grundlagen&amp;action=edit&amp;redlink=1" title="Diskussion zum Seiteninhalt [t]" accesskey="t">Diskussion</a></li>
+				 <li id="ca-edit"><a href="http://de.wikibooks.org/wiki/w/index.php?title=Arbeiten_mit_.NET:_Grundlagen:_Das_Framework/_Multithreading_Grundlagen&amp;action=edit" title="Seite bearbeiten. Bitte vor dem Speichern die Vorschaufunktion benutzen. [e]" accesskey="e">Bearbeiten</a></li>
+				 <li id="ca-history"><a href="http://de.wikibooks.org/wiki/w/index.php?title=Arbeiten_mit_.NET:_Grundlagen:_Das_Framework/_Multithreading_Grundlagen&amp;action=history" title="Frühere Versionen dieser Seite [h]" accesskey="h">Versionen/Autoren</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="portlet" id="p-personal">
+		<h5>Persönliche Werkzeuge</h5>
+		<div class="pBody">
+			<ul>
+				<li id="pt-optin-try"><a href="http://de.wikibooks.org/w/index.php?title=Spezial:UsabilityInitiativeOptIn&amp;from=Arbeiten_mit_.NET%3A_Grundlagen%3A_Das_Framework%2F_Multithreading_Grundlagen" title="Neue Features ausprobieren" class="no-text-transform">Beta ausprobieren</a></li>
+				<li id="pt-login"><a href="http://de.wikibooks.org/wiki/w/index.php?title=Spezial:Anmelden&amp;returnto=Arbeiten_mit_.NET:_Grundlagen:_Das_Framework/_Multithreading_Grundlagen" title="Sich anzumelden wird zwar gerne gesehen, ist aber keine Pflicht. [o]" accesskey="o">Anmelden</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="portlet" id="p-logo">
+		<a style="background-image: url(http://upload.wikimedia.org/wikibooks/de/b/bc/Wiki.png);" href="http://de.wikibooks.org/wiki/wiki/Hauptseite" title="Hauptseite"></a>
+	</div>
+	<script type="text/javascript"> if (window.isMSIE55) fixalpha(); </script>
+	<div class='generated-sidebar portlet' id='p-navigation'>
+		<h5>Navigation</h5>
+		<div class='pBody'>
+			<ul>
+				<li id="n-mainpage"><a href="http://de.wikibooks.org/wiki/wiki/Hauptseite" title="Hauptseite anzeigen [z]" accesskey="z">Hauptseite</a></li>
+				<li id="n-currentevents"><a href="http://de.wikibooks.org/wiki/wiki/Wikibooks:Rundschau" title="Hintergrundinformationen zu aktuellen Ereignissen">Aktuelles</a></li>
+				<li id="n-finishedbooks"><a href="http://de.wikibooks.org/wiki/wiki/Wikibooks:Buchkatalog">Buchkatalog</a></li>
+				<li id="n-allbooks"><a href="http://de.wikibooks.org/wiki/wiki/Kategorie:Buch">Alle Bücher</a></li>
+				<li id="n-boards"><a href="http://de.wikibooks.org/wiki/wiki/Wikibooks:B%C3%BCcherregale">Bücherregale</a></li>
+				<li id="n-randompage"><a href="http://de.wikibooks.org/wiki/wiki/Spezial:Zuf%C3%A4llige_Seite" title="Zufällige Seite [x]" accesskey="x">Zufälliges Kapitel</a></li>
+				<li id="n-admins"><a href="http://de.wikibooks.org/wiki/wiki/Wikibooks:Administratoren">Administratoren</a></li>
+				<li id="n-logs"><a href="http://de.wikibooks.org/wiki/wiki/Spezial:Logbuch">Logbücher</a></li>
+			</ul>
+		</div>
+	</div>
+	<div id="p-search" class="portlet">
+		<h5><label for="searchInput">Suche</label></h5>
+		<div id="searchBody" class="pBody">
+			<form action="/w/index.php" id="searchform">
+				<input type='hidden' name="title" value="Spezial:Suche"/>
+				<input id="searchInput" title="Wikibooks durchsuchen" accesskey="f" value="" name="search" />
+				<input type='submit' name="go" class="searchButton" id="searchGoButton"	value="Seite" title="Gehe direkt zu der Seite, die exakt dem eingegebenen Namen entspricht." />&nbsp;
+				<input type='submit' name="fulltext" class="searchButton" id="mw-searchButton" value="Suchen" title="Suche nach Seiten, die diesen Text enthalten" />
+			</form>
+		</div>
+	</div>
+	<div class='generated-sidebar portlet' id='p-Mitmachen'>
+		<h5>Mitmachen</h5>
+		<div class='pBody'>
+			<ul>
+				<li id="n-portal"><a href="http://de.wikibooks.org/wiki/wiki/Wikibooks:Portal" title="Über das Portal, was du tun kannst, wo was zu finden ist">Wikibooks-Portal</a></li>
+				<li id="n-recentchanges"><a href="http://de.wikibooks.org/wiki/wiki/Spezial:Letzte_%C3%84nderungen" title="Liste der letzten Änderungen in Wikibooks [r]" accesskey="r">Letzte Änderungen</a></li>
+				<li id="n-help"><a href="http://de.wikibooks.org/wiki/wiki/Wikibooks:Hilfe" title="Hilfeseite anzeigen">Hilfe</a></li>
+				<li id="n-Spenden"><a href="http://wikimediafoundation.org/wiki/Spenden">Spenden</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="portlet" id="p-tb">
+		<h5>Werkzeuge</h5>
+		<div class="pBody">
+			<ul>
+				<li id="t-whatlinkshere"><a href="http://de.wikibooks.org/wiki/wiki/Spezial:Linkliste/Arbeiten_mit_.NET:_Grundlagen:_Das_Framework/_Multithreading_Grundlagen" title="Liste aller Seiten, die hierher zeigen [j]" accesskey="j">Links auf diese Seite</a></li>
+				<li id="t-recentchangeslinked"><a href="http://de.wikibooks.org/wiki/wiki/Spezial:%C3%84nderungen_an_verlinkten_Seiten/Arbeiten_mit_.NET:_Grundlagen:_Das_Framework/_Multithreading_Grundlagen" title="Letzte Änderungen an Seiten, die von hier verlinkt sind [k]" accesskey="k">Änderungen an verlinkten Seiten</a></li>
+<li id="t-specialpages"><a href="http://de.wikibooks.org/wiki/wiki/Spezial:Spezialseiten" title="Liste aller Spezialseiten [q]" accesskey="q">Spezialseiten</a></li>
+				<li id="t-permalink"><a href="http://de.wikibooks.org/wiki/w/index.php?title=Arbeiten_mit_.NET:_Grundlagen:_Das_Framework/_Multithreading_Grundlagen&amp;oldid=514872" title="Dauerhafter Link zu dieser Seitenversion">Permanenter Link</a></li>			</ul>
+		</div>
+	</div>
+	<div class='generated-sidebar portlet' id='p-coll-print_export'>
+		<h5>Drucken/exportieren</h5>
+		<div class='pBody'>
+<ul id="collectionPortletList"><li id="coll-create_a_book"><a href="/w/index.php?title=Spezial:Buch&amp;bookcmd=book_creator&amp;referer=Arbeiten+mit+.NET%3A+Grundlagen%3A+Das+Framework%2F+Multithreading+Grundlagen" title="Ein Buch oder eine Artikelsammlung erstellen" rel="nofollow">Buch erstellen</a></li><li id="coll-download-as-rl"><a href="/w/index.php?title=Spezial:Buch&amp;bookcmd=render_article&amp;arttitle=Arbeiten+mit+.NET%3A+Grundlagen%3A+Das+Framework%2F+Multithreading+Grundlagen&amp;oldid=514872&amp;writer=rl" title="Eine PDF-Version dieser Wikiseite herunterladen" rel="nofollow">Als PDF herunterladen</a></li><li id="t-print"><a href="http://de.wikibooks.org/wiki/w/index.php?title=Arbeiten_mit_.NET:_Grundlagen:_Das_Framework/_Multithreading_Grundlagen&amp;printable=yes" title="Druckansicht dieser Seite [p]" accesskey="p">Druckversion</a></li></ul>		</div>
+	</div>
+</div><!-- end of the left (by default at least) column -->
+<div class="visualClear"></div>
+<div id="footer">
+	<div id="f-poweredbyico"><a href="http://www.mediawiki.org/"><img src="images/4.png" height="31" width="88" alt="Powered by MediaWiki" /></a></div>
+	<div id="f-copyrightico"><a href="http://wikimediafoundation.org/"><img src="images/5.png" width="88" height="31" alt="Wikimedia Foundation"/></a></div>
+	<ul id="f-list">
+		<li id="lastmod"> Diese Seite wurde zuletzt am 21. März 2010 um 12:52 Uhr geändert.</li>
+		<li id="copyright">Der Text ist unter der Lizenz <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.de">„Creative Commons Attribution/Share-Alike“</a> verfügbar; zusätzliche Bedingungen können anwendbar sein.
+Einzelheiten sind in den <a href="http://wikimediafoundation.org/wiki/Nutzungsbedingungen">Nutzungsbedingungen</a> beschrieben.</li>
+		<li id="privacy"><a href="http://de.wikibooks.org/wiki/wiki/Wikibooks:Datenschutz" title="Wikibooks:Datenschutz">Datenschutz</a></li>
+		<li id="about"><a href="http://de.wikibooks.org/wiki/wiki/Wikibooks:%C3%9Cber" title="Wikibooks:Über">Über Wikibooks</a></li>
+		<li id="disclaimer"><a href="http://de.wikibooks.org/wiki/wiki/Wikibooks:Impressum" title="Wikibooks:Impressum">Impressum</a></li>
+	</ul>
+</div>
+</div>
+
+<script type="text/javascript">if (window.runOnloadHook) runOnloadHook();</script>
+<!-- Served by srv205 in 0.045 secs. --></body></html>
