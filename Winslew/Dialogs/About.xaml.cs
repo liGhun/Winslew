@@ -19,10 +19,14 @@ namespace Winslew
     /// </summary>
     public partial class About : Window
     {
+        public static RoutedCommand EscapePressed = new RoutedCommand();
+
         public About()
         {
             InitializeComponent();
             this.label_Winslew_version.Content = "Winslew " + Formatter.prettyVersion.getNiceVersionString(System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
+
+            EscapePressed.InputGestures.Add(new KeyGesture(Key.Escape));
         }
 
         private void button_visitHomepage_Click(object sender, RoutedEventArgs e)
@@ -60,6 +64,14 @@ namespace Winslew
             Process.Start("http://www.li-ghun.de/Winslew/Documentation/");
         }
 
+        private void buttonWebkitDotNet_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start("http://webkitdotnet.sourceforge.net/");
+        }
 
+        private void EscapePressed_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }

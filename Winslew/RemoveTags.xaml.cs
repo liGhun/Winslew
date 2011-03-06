@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.ComponentModel;
 
 namespace Winslew
 {
@@ -19,6 +20,8 @@ namespace Winslew
     /// </summary>
     public partial class RemoveTags : Window
     {
+        public static RoutedCommand EscapePressed = new RoutedCommand();
+
         List<Item> items;
         ObservableCollection<TagValue> AvailableTags;
 
@@ -35,6 +38,7 @@ namespace Winslew
             List<string> alreadyStoredTags = new List<string>();
             char[] delimiters = new char[] { ',' };
             
+            int checkboxId = 0;
             foreach(Item item in itemsToEdit) {
                 foreach (string tag in item.tags.Split(delimiters, StringSplitOptions.RemoveEmptyEntries))
                 {
@@ -45,7 +49,8 @@ namespace Winslew
                     else
                     {
                         alreadyStoredTags.Add(tag);
-                        AvailableTags.Add(new TagValue(tag));
+                        AvailableTags.Add(new TagValue(tag,checkboxId));
+                        checkboxId ++;
                     }
                 }
             }
@@ -53,6 +58,11 @@ namespace Winslew
             listViewTags.ItemsSource = AvailableTags;
 
             items = itemsToEdit;
+
+            listViewTags.Focus();
+            listViewTags.PreviewKeyDown += CheckBox_KeyDown;
+
+            EscapePressed.InputGestures.Add(new KeyGesture(Key.Escape));
         }
 
         private void button_cancel_Click(object sender, RoutedEventArgs e)
@@ -92,16 +102,49 @@ namespace Winslew
             this.Close();
         }
 
-        public class TagValue
+        public class TagValue : INotifyPropertyChanged
         {
             public bool ShallBeDeleted { get; set; }
             public string tag { get; set; }
+            public string Id {get; set; }
 
-            public TagValue(string text)
+            public TagValue(string text, int id)
             {
                 this.tag = text;
                 this.ShallBeDeleted = false;
+                Id = "ch_" + id.ToString();
+                
             }
+
+            public event PropertyChangedEventHandler PropertyChanged;
+        }
+
+        private void CheckBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return || e.Key == Key.Enter)
+            {
+                buttonRemove_Click(null, null);
+            } 
+            else if (e.Key == Key.Space)
+            {
+                ListView listView = sender as ListView;
+                if (listView != null)
+                {
+                    TagValue listViewItem = listView.SelectedItem as TagValue;
+                    if (listViewItem != null)
+                    {
+                        int selectedIndex = listView.SelectedIndex;
+                        listViewItem.ShallBeDeleted = !listViewItem.ShallBeDeleted;
+                        listView.Items.Refresh();
+                        listView.SelectedIndex = selectedIndex;
+                    }
+                }
+            }
+        }
+
+        private void EscapePressed_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            button_cancel_Click(null, null);
         }
     }
 }

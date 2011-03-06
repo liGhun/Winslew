@@ -11,29 +11,43 @@
         Style="{StaticResource DefaultWindowStyle}"
         xmlns:WinForms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
         xmlns:Prefs="clr-namespace:Winslew.Properties"
+        xmlns:local="clr-namespace:Winslew"
         >
-    
-<Window.Resources>
+    <Window.Resources>
         
             <Prefs:Settings x:Key="settings" />
         
-        <!--<Style x:Key="CustomListViewItemStyle" TargetType="{x:Type ListViewItem}">
-            <Style.Triggers>
-                <Trigger Property="ItemsControl.AlternationIndex" Value="0">
-                    <Setter Property="Background" Value="#2C2C2C"></Setter>
-                </Trigger>
-                <Trigger Property="ItemsControl.AlternationIndex" Value="1">
-                    <Setter Property="Background" Value="#262626"></Setter>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
--->
         <DataTemplate x:Key="Image">
             <StackPanel Orientation="Horizontal">
                 <Image Source="{Binding Path=contentCache.FavIconPath}" Width="16" Height="16" />
             </StackPanel>
         </DataTemplate>
     </Window.Resources>
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static local:MainWindow.OnRefreshRiL}" Executed="RefreshRiLExecuted" />
+        <CommandBinding Command="{x:Static local:MainWindow.OnToggleReadUnreadView}" Executed="ToggleReadUnreadViewExecuted" />
+        <CommandBinding Command="{x:Static local:MainWindow.OnChangeTitle}" Executed="ChangeTitleExecuted" />
+        <CommandBinding Command="{x:Static local:MainWindow.OnEditTags}" Executed="EditTagsExecuted" />
+        <CommandBinding Command="{x:Static local:MainWindow.OnAddTags}" Executed="AddTagsExecuted" />
+        <CommandBinding Command="{x:Static local:MainWindow.OnRemoveTags}" Executed="RemoveTagsExecuted" />
+        <CommandBinding Command="{x:Static local:MainWindow.OnNewItem}" Executed="NewItemExecuted" />
+        <CommandBinding Command="{x:Static local:MainWindow.OnUploadImage}" Executed="UploadImageExecuted" />
+        <CommandBinding Command="{x:Static local:MainWindow.OnNewPastebin}" Executed="NewPastebinExecuted" />
+        <CommandBinding Command="{x:Static local:MainWindow.OnUploadPastebin}" Executed="UploadPastebinExecuted" />
+        <CommandBinding Command="{x:Static local:MainWindow.OnDelete}" Executed="DeleteExecuted" />
+        <CommandBinding Command="{x:Static local:MainWindow.OnFilter}" Executed="FilterExecuted" />
+        <CommandBinding Command="{x:Static local:MainWindow.OnPreferences}" Executed="PreferencesExecuted" />
+        <CommandBinding Command="{x:Static local:MainWindow.OnHelp}" Executed="HelpExecuted" />
+        <CommandBinding Command="{x:Static local:MainWindow.OnToggleReadUnreadState}" Executed="ToggleReadUnreadStateExecuted" />
+        <CommandBinding Command="{x:Static local:MainWindow.OnAddCurrentPage}" Executed="AddCurrentPageExecuted" />
+        <CommandBinding Command="{x:Static local:MainWindow.OnCopyUrl}" Executed="CopyUrlExecuted" />
+        <CommandBinding Command="{x:Static local:MainWindow.OnOpenInBrowser}" Executed="OpenInBrowserExecuted" />
+        <CommandBinding Command="{x:Static local:MainWindow.OnRefreshCache}" Executed="RefreshCacheExecuted" />
+        <CommandBinding Command="{x:Static local:MainWindow.OnChangeStyle}" Executed="ChangeStyleExecuted" />
+        <CommandBinding Command="{x:Static local:MainWindow.OnChangeViewType}" Executed="ChangeViewTypeExecuted" />
+        <CommandBinding Command="{x:Static local:MainWindow.OnSelectListView}" Executed="SelectListViewExecuted" />
+        <CommandBinding Command="{x:Static local:MainWindow.OnSelectBrowser}" Executed="SelectBrowserExecuted" />
+    </Window.CommandBindings>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Name="MainToolbar" MinHeight="30" Height="30" />
@@ -42,65 +56,65 @@
         </Grid.RowDefinitions>
             <ToolBarTray Name="MainToolbarTray" Grid.Row="0" VerticalAlignment="Top" Background="#9caac1">
                 <ToolBar Height="30" Name="toolBar_Main" VerticalAlignment="Top" HorizontalAlignment="Left" VerticalContentAlignment="Center" >
-                    <Button Height="24" HorizontalAlignment="Left" Name="button_refresh" VerticalAlignment="Top" Width="24" Click="button_refresh_Click">
+                    <Button Height="24" HorizontalAlignment="Left" Name="button_refresh" VerticalAlignment="Top" Width="24" Click="button_refresh_Click" ToolTip="Refresh items from RiL (Ctrl-r or F5)">
                         <Image Source="/Winslew;component/Images/refresh.png" ToolTip="Refresh"></Image>
                     </Button>
 
                     <Separator />
 
-                    <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_toggleView" Width="24" Click="button_toggleView_Click">
+                    <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_toggleView" Width="24" Click="button_toggleView_Click" ToolTip="Change shown items (Ctrl-Tab)">
                         <Image Name="ToggleView" ToolTip="Toggle current view" Source="/Winslew;component/Images/toggleView.png"></Image>
                     </Button>
-                    <Button Height="24" HorizontalAlignment="Left" Margin="-3,0,0,0" Name="button_toggleViewText" Click="button_toggleView_Click">
+                <Button Height="24" HorizontalAlignment="Left" Margin="-3,0,0,0" Name="button_toggleViewText" Click="button_toggleView_Click" ToolTip="Change shown items (Ctrl-Tab)">
                         <Label Name="CurrentView" Height="24" VerticalAlignment="Center" Width="80" FontWeight="Bold">Unread view</Label>
                     </Button>
 
                     <Separator />
-                    <Button Height="24" Name="button_changeTitle"  Width="24" Click="button_changeTitle_Click">
-                        <Image Name="ImageChangeTitle" Source="/Winslew;component/Images/changeTitle.png" ToolTip="Change title"></Image>
+                    <Button Height="24" Name="button_changeTitle"  Width="24" Click="button_changeTitle_Click" ToolTip="Change title (Ctrl-t)">
+                        <Image Name="ImageChangeTitle" Source="/Winslew;component/Images/changeTitle.png"></Image>
                     </Button>
-                    <Button Height="24" Name="button_editTags" VerticalAlignment="Top" Width="24" Click="button_editTags_Click">
-                        <Image Name="ImageEditTags" Source="/Winslew;component/Images/tags.png" ToolTip="Edit tags of current item"></Image>
+                <Button Height="24" Name="button_editTags" VerticalAlignment="Top" Width="24" Click="button_editTags_Click"  ToolTip="Edit tags of current item (Ctrl-e)">
+                        <Image Name="ImageEditTags" Source="/Winslew;component/Images/tags.png"></Image>
                     </Button>
-                    <Button Height="24" Name="button_addTags"  Width="24" Click="button_addTags_Click">
-                        <Image Name="ImageAddTags" Source="/Winslew;component/Images/addTags.png" ToolTip="Add tags to multiple items"></Image>
+                <Button Height="24" Name="button_addTags"  Width="24" Click="button_addTags_Click" ToolTip="Add tags to multiple items (Ctrl-w)">
+                        <Image Name="ImageAddTags" Source="/Winslew;component/Images/addTags.png"></Image>
                     </Button>
-                    <Button Height="24" Name="button_removeTags" VerticalAlignment="Top" Width="24" Click="button_removeTags_Click">
-                        <Image Name="ImageRemoveTags" Source="/Winslew;component/Images/removeTags.png" ToolTip="Remove tags from multiple items"></Image>
+                <Button Height="24" Name="button_removeTags" VerticalAlignment="Top" Width="24" Click="button_removeTags_Click"  ToolTip="Remove tags from multiple items (Ctrl-q)">
+                        <Image Name="ImageRemoveTags" Source="/Winslew;component/Images/removeTags.png"></Image>
                     </Button>
-                    <Button Height="24" Name="button_markRead" VerticalAlignment="Top" Width="24" Click="button_markRead_Click">
+                    <Button Height="24" Name="button_markRead" VerticalAlignment="Top" Width="24" Click="button_markRead_Click" ToolTip="Toggle read state (Ctrl-s)">
                         <Image Name="ImageReadState" Source="/Winslew;component/Images/unread.png"></Image>
                     </Button>
 
                 </ToolBar>
 
                 <ToolBar Height="30" Name="toolBar_addNewItems" VerticalAlignment="Top" HorizontalAlignment="Left" Background="#bcc7d8">
-                    <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_addNew" VerticalAlignment="Top" Width="24" Click="button_addNew_Click">
-                        <Image Name="ImageAddNew" Source="/Winslew;component/Images/add.png" ToolTip="Add new item"></Image>
+                <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_addNew" VerticalAlignment="Top" Width="24" Click="button_addNew_Click"  ToolTip="Add new item (Ctrl-n)">
+                        <Image Name="ImageAddNew" Source="/Winslew;component/Images/add.png"></Image>
                     </Button>
-                    <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_uploadImage" VerticalAlignment="Top" Width="24" Click="button_uploadImage_Click">
-                        <Image Name="ImageUpload" Source="/Winslew;component/Images/imageUpload.png" ToolTip="Upload an image and add it to RiL"></Image>
+                <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_uploadImage" VerticalAlignment="Top" Width="24" Click="button_uploadImage_Click"  ToolTip="Upload an image and add it to RiL (Ctrl-i)">
+                        <Image Name="ImageUpload" Source="/Winslew;component/Images/imageUpload.png"></Image>
                     </Button>
-                    <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_newPastebin" VerticalAlignment="Top" Width="24" Click="button_newPastebin_Click">
-                        <Image Name="PastebinNew" Source="/Winslew;component/Images/text.png" ToolTip="Write a text and upload it to Pastebin"></Image>
+                <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_newPastebin" VerticalAlignment="Top" Width="24" Click="button_newPastebin_Click" ToolTip="Write a text and upload it to Pastebin (Ctrl-j)">
+                        <Image Name="PastebinNew" Source="/Winslew;component/Images/text.png" ></Image>
                     </Button>
-                    <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_uploadPastebin" VerticalAlignment="Top" Width="24" Click="button_uploadPastebin_Click">
-                        <Image Name="PastebinUpload" Source="/Winslew;component/Images/uploadText.png" ToolTip="Upload a local textfile to Pastebin"></Image>
+                <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_uploadPastebin" VerticalAlignment="Top" Width="24" Click="button_uploadPastebin_Click" ToolTip="Upload a local textfile to Pastebin (Ctrl-k)">
+                        <Image Name="PastebinUpload" Source="/Winslew;component/Images/uploadText.png" ></Image>
                     </Button>
-                    <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0"  Name="button_delete" VerticalAlignment="Top" Width="24" Click="button_delete_Click">
-                        <Image Name="ImageDelete" Source="/Winslew;component/Images/trashcan.png" ToolTip="Delete item"></Image>
+                <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0"  Name="button_delete" VerticalAlignment="Top" Width="24" Click="button_delete_Click" ToolTip="Delete item (Ctrl-d)">
+                        <Image Name="ImageDelete" Source="/Winslew;component/Images/trashcan.png"></Image>
                     </Button>
 
                 </ToolBar>
                 <ToolBar Height="30" Name="toolBar_filter" VerticalAlignment="Top" HorizontalAlignment="Left" Background="#bcc7d8">
                     <Image Name="ImageFilter" Source="/Winslew;component/Images/filter.png" Margin="5,0,5,0" ToolTip="Filter" Width="21" Height="21" HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
-                    <TextBox Height="23" HorizontalAlignment="Right" Name="textBox_filterTitle" VerticalAlignment="Center" Width="70" ToolTip="Filter title" TextChanged="textBox_filterTitle_TextChanged" BorderBrush="#FF454545" FontSize="14" FontWeight="Bold">
+                    <TextBox Height="23" HorizontalAlignment="Right" Name="textBox_filterTitle" VerticalAlignment="Center" Width="70" ToolTip="Filter title (Ctrl-f)" TextChanged="textBox_filterTitle_TextChanged" BorderBrush="#FF454545" FontSize="14" FontWeight="Bold">
                     <TextBox.Background>
                         <ImageBrush ImageSource="/Winslew;component/Images/changeTitle.png" Stretch="Uniform" TileMode="None" Opacity="0.5" />
                     </TextBox.Background>
                 </TextBox>
                     <Separator />
-                    <TextBox Height="23" HorizontalAlignment="Right" Name="textBox_filterTags" VerticalAlignment="Center" Width="70" ToolTip="Filter tags" TextChanged="textBox_filterTags_TextChanged" BorderBrush="#FF454545" FontSize="14" FontWeight="Bold">
+                <TextBox Height="23" HorizontalAlignment="Right" Name="textBox_filterTags" VerticalAlignment="Center" Width="70" ToolTip="Filter tags (Ctrl-f)" TextChanged="textBox_filterTags_TextChanged" BorderBrush="#FF454545" FontSize="14" FontWeight="Bold">
                     <TextBox.Background>
                         <ImageBrush ImageSource="/Winslew;component/Images/tags.png" Stretch="Uniform" TileMode="None" Opacity="0.5" />
                     </TextBox.Background>
@@ -109,11 +123,11 @@
 
                 <ToolBar Height="30" Name="toolBar_about" VerticalAlignment="Top" HorizontalAlignment="Right" Background="#bcc7d8">
 
-                    <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_preferences" VerticalAlignment="Top" Width="24" Click="button_preferences_Click">
-                        <Image Name="ImagePreferenes" Source="/Winslew;component/Images/preferences.png" ToolTip="Preferences"></Image>
+                <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_preferences" VerticalAlignment="Top" Width="24" Click="button_preferences_Click" ToolTip="Preferences (F1)">
+                        <Image Name="ImagePreferenes" Source="/Winslew;component/Images/preferences.png" ></Image>
                     </Button>
-                    <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_help" VerticalAlignment="Top" Width="24" Click="button_help_Click" >
-                        <Image Name="ImageHelp" Source="/Winslew;component/Images/help.png" ToolTip="Help / About"></Image>
+                <Button Height="24" HorizontalAlignment="Left" Margin="0,0,0,0" Name="button_help" VerticalAlignment="Top" Width="24" Click="button_help_Click"  ToolTip="Help / About (Ctrl-h)">
+                        <Image Name="ImageHelp" Source="/Winslew;component/Images/help.png"></Image>
                     </Button>
 
                 </ToolBar>
@@ -155,12 +169,12 @@
 
                 <ListView.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Name="ContextToggleReadState" Click="ContextToggleReadState_Click"  Header="Toggle read state">
+                        <MenuItem Name="ContextToggleReadState" Click="ContextToggleReadState_Click"  Header="Toggle read state (Ctrl-s)">
                             <MenuItem.Icon>
                                 <Image Source="/Winslew;component/Images/markedRead.png" Width="14" Height="14" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Name="ContextChangeTitle" Click="ContextChangeTitle_Click"  Header="Change title">
+                        <MenuItem Name="ContextChangeTitle" Click="ContextChangeTitle_Click"  Header="Change title (Ctrl-t)">
                             <MenuItem.Icon>
                                 <Image Source="/Winslew;component/Images/changeTitle.png" Width="14" Height="14" />
                             </MenuItem.Icon>
@@ -169,17 +183,17 @@
                             <MenuItem.Icon>
                                 <Image Source="/Winslew;component/Images/tags.png" Width="14" Height="14" />
                             </MenuItem.Icon>
-                            <MenuItem Name="ContextEditTags" Click="ContextEditTags_Click"  Header="Edit tags of current item">
+                            <MenuItem Name="ContextEditTags" Click="ContextEditTags_Click"  Header="Edit tags of current item (Ctrl-e)">
                                 <MenuItem.Icon>
                                     <Image Source="/Winslew;component/Images/tags.png" Width="14" Height="14" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem Name="ContextAddTags" Click="ContextAddTags_Click"  Header="Add tags to multiple items">
+                            <MenuItem Name="ContextAddTags" Click="ContextAddTags_Click"  Header="Add tags to multiple items (Ctrl-w)">
                                 <MenuItem.Icon>
                                     <Image Source="/Winslew;component/Images/addTags.png" Width="14" Height="14" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem Name="ContextRemoveTags" Click="ContextRemoveTags_Click"  Header="Remove tags from multiple items">
+                            <MenuItem Name="ContextRemoveTags" Click="ContextRemoveTags_Click"  Header="Remove tags from multiple items (Ctrl-q)">
                                 <MenuItem.Icon>
                                     <Image Source="/Winslew;component/Images/removeTags.png" Width="14" Height="14" />
                                 </MenuItem.Icon>
@@ -189,28 +203,28 @@
                             <MenuItem.Icon>
                                 <Image Source="/Winslew;component/Images/externalApps.png" Width="14" Height="14" />
                             </MenuItem.Icon>
-                            <MenuItem Name="ContextUploadImage" Click="ContextUploadImage_Click"  Header="Upload image to Imgur">
+                            <MenuItem Name="ContextUploadImage" Click="ContextUploadImage_Click"  Header="Upload image to Imgur (Ctrl-i)">
                                 <MenuItem.Icon>
                                     <Image Source="/Winslew;component/Images/imageUpload.png" Width="14" Height="14" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem Name="ContextNewPastebin" Click="ContextNewPastebin_Click"  Header="Create new text online using Pastebin">
+                            <MenuItem Name="ContextNewPastebin" Click="ContextNewPastebin_Click"  Header="Create new text online using Pastebin (Ctrl-j)">
                                 <MenuItem.Icon>
                                     <Image Source="/Winslew;component/Images/text.png" Width="14" Height="14" />
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem Name="ContextUploadPastebin" Click="ContextUploadPastebin_Click"  Header="Upload text to Pastebin">
+                            <MenuItem Name="ContextUploadPastebin" Click="ContextUploadPastebin_Click"  Header="Upload text to Pastebin (Ctrl-k)">
                                 <MenuItem.Icon>
                                     <Image Source="/Winslew;component/Images/uploadText.png" Width="14" Height="14" />
                                 </MenuItem.Icon>
                             </MenuItem>
                         </MenuItem>
-                        <MenuItem Name="ContextOpenInBrower" Click="ContextOpenInBrower_Click" Header="Open item in external browser">
+                        <MenuItem Name="ContextOpenInBrower" Click="ContextOpenInBrower_Click" Header="Open item in external browser (Ctrl-Enter)">
                             <MenuItem.Icon>
                                 <Image Source="/Winslew;component/Images/browser.png" Width="14" Height="14" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Name="ContextCopyUrl" Click="ContextCopyUrl_Click" Header="Copy url to clipboard">
+                        <MenuItem Name="ContextCopyUrl" Click="ContextCopyUrl_Click" Header="Copy url to clipboard (F3)">
                             <MenuItem.Icon>
                                 <Image Source="/Winslew;component/Images/copyClipboard.png" Width="14" Height="14" />
                             </MenuItem.Icon>
@@ -220,12 +234,12 @@
                                 <Image Source="/Winslew;component/Images/print.png" Width="14" Height="14" />
                             </MenuItem.Icon>
                         </MenuItem> -->
-                        <MenuItem Name="ContextUpdateCache" Click="ContextUpdateCache_Click"  Header="Update cache for this item">
+                        <MenuItem Name="ContextUpdateCache" Click="ContextUpdateCache_Click"  Header="Update cache for this item (F4)">
                             <MenuItem.Icon>
                                 <Image Source="/Winslew;component/Images/update.png" Width="14" Height="14" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Name="ContextDelete" Click="ContextDelete_Click"  Header="Delete this item">
+                        <MenuItem Name="ContextDelete" Click="ContextDelete_Click"  Header="Delete this item (Ctrl-d)">
                             <MenuItem.Icon>
                                 <Image Source="/Winslew;component/Images/trashcan.png" Width="14" Height="14" />
                             </MenuItem.Icon>
@@ -316,15 +330,15 @@
                 </ToolBar>
 
                 <ToolBar Name="PageButtons" Width="Auto" HorizontalContentAlignment="Right" HorizontalAlignment="Stretch">
-                    <Button Height="23" Name="button_addCurrentViewedPage" VerticalAlignment="Top" Width="23" Click="button_addCurrentViewedPage_Click"  Visibility="Hidden" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
-                        <Image Name="Image_AddCurrentlyViewPage" Source="/Winslew;component/Images/add.png" ToolTip="Add the currently shown webpage to Read It Later"  Visibility="Hidden"></Image>
+                    <Button Height="23" Name="button_addCurrentViewedPage" VerticalAlignment="Top" Width="23" Click="button_addCurrentViewedPage_Click"  Visibility="Hidden" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" ToolTip="Add the currently shown webpage to Read It Later (F2)">
+                        <Image Name="Image_AddCurrentlyViewPage" Source="/Winslew;component/Images/add.png"   Visibility="Hidden"></Image>
                     </Button>
-                    <Button Height="23" Name="button_openInBrowser" VerticalAlignment="Top" Width="23" Click="button_openInBrowser_Click" Background="Transparent" BorderBrush="Transparent">
-                        <Image Source="/Winslew;component/Images/browser.png" ToolTip="Open page in external browser"></Image>
+                    <Button Height="23" Name="button_openInBrowser" VerticalAlignment="Top" Width="23" Click="button_openInBrowser_Click" Background="Transparent" BorderBrush="Transparent" ToolTip="Open page in external browser (Ctrl-Return)">
+                        <Image Source="/Winslew;component/Images/browser.png" ></Image>
                     </Button>
 
-                    <Button Height="23" Name="button_copyUrlToClipboard" VerticalAlignment="Top" Width="23" Click="button_copyUrlToClipboard_Click" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
-                        <Image Source="/Winslew;component/Images/copyClipboard.png" ToolTip="Copy current selected item url to clipboard"></Image>
+                    <Button Height="23" Name="button_copyUrlToClipboard" VerticalAlignment="Top" Width="23" Click="button_copyUrlToClipboard_Click" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" ToolTip="Copy current selected item url to clipboard (F3)">
+                        <Image Source="/Winslew;component/Images/copyClipboard.png" ></Image>
                     </Button>
 
 
@@ -333,15 +347,15 @@
                 <Image Source="/Winslew;component/Images/print.png" ToolTip="Print the currently displayed webpage"></Image>
             </Button>
             -->
-                    <Button Height="23" Name="button_updateCache" VerticalAlignment="Top" Width="23" Click="button_updateCache_Click" Background="Transparent">
-                        <Image Source="/Winslew;component/Images/refresh.png" ToolTip="Update cache for this webpage"></Image>
+                    <Button Height="23" Name="button_updateCache" VerticalAlignment="Top" Width="23" Click="button_updateCache_Click" Background="Transparent"  ToolTip="Update cache for this webpage (F4)">
+                        <Image Source="/Winslew;component/Images/refresh.png"></Image>
                     </Button>
 
-                    <ComboBox SelectionChanged="comboBox_chooseStyle_SelectionChanged" Height="23" HorizontalAlignment="Right" Name="comboBox_chooseStyle" VerticalAlignment="Top" Width="100" ToolTip="Style for more and less display" BorderBrush="Transparent">
+                    <ComboBox SelectionChanged="comboBox_chooseStyle_SelectionChanged" Height="23" HorizontalAlignment="Right" Name="comboBox_chooseStyle" VerticalAlignment="Top" Width="100" ToolTip="Style for more and less display (F6)" BorderBrush="Transparent">
 
                     </ComboBox>
 
-                    <ComboBox Height="23" HorizontalAlignment="Right" SelectionChanged="comboBox_browserView_SelectionChanged" Name="comboBox_browserView" VerticalAlignment="Top" Width="100" ToolTip="Cache to be displayed">
+                    <ComboBox Height="23" HorizontalAlignment="Right" SelectionChanged="comboBox_browserView_SelectionChanged" Name="comboBox_browserView" VerticalAlignment="Top" Width="100" ToolTip="Cache to be displayed (F7)">
                         <ComboBoxItem Content="Online" Tag="online" />
                         <ComboBoxItem Content="Full" Tag="full" />
                         <ComboBoxItem Content="More" Tag="more" />

@@ -18,6 +18,8 @@ namespace Winslew
     /// </summary>
     public partial class Preferences : Window
     {
+        public static RoutedCommand EscapePressed = new RoutedCommand();
+
         bool isInit = true;
         bool unlicensed = false;
 
@@ -57,8 +59,8 @@ namespace Winslew
             {
 
             }
-            
-        
+
+            EscapePressed.InputGestures.Add(new KeyGesture(Key.Escape));
         }
 
         private void passwordBox_RILpassword_PasswordChanged(object sender, RoutedEventArgs e)
@@ -249,6 +251,11 @@ namespace Winslew
             {
                 AppController.Current.toggleListViewColors(checkBoxWhiteList.IsChecked.Value);
             }
+        }
+
+        private void EscapePressed_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

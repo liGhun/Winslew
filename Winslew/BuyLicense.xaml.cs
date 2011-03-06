@@ -18,14 +18,23 @@ namespace Winslew
     /// </summary>
     public partial class BuyLicense : Window
     {
+        public static RoutedCommand EscapePressed = new RoutedCommand();
+
         public BuyLicense()
         {
             InitializeComponent();
+
+            EscapePressed.InputGestures.Add(new KeyGesture(Key.Escape));
         }
 
         private void button_buyit_Click(object sender, RoutedEventArgs e)
         {
             System.Diagnostics.Process.Start("http://www.li-ghun.de/Winslew/Download/");
+            this.Close();
+        }
+
+        private void EscapePressed_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
             this.Close();
         }
     }

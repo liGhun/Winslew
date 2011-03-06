@@ -7,6 +7,7 @@ using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Drawing;
+using System.Text.RegularExpressions;
 
 namespace Winslew.Api
 {
@@ -44,6 +45,7 @@ namespace Winslew.Api
                 return empty;
             }
         }
+
 
          public Response addToList(string newUrl)
          {
@@ -547,14 +549,7 @@ namespace Winslew.Api
             {
                 return null;
             }
-            /*
- 
-                            yield return new Item()
-                            {
-                               id  = "111"
-                            };
 
-            }*/
         }
 
          private string getPassword()
@@ -564,6 +559,21 @@ namespace Winslew.Api
 
         private void updateGuiApiLimits(Response respone) {
             AppController.Current.updateApiStatusBar(respone.LimitUserRemanining, respone.LimitUserLimit, respone.LimitUserReset, respone.LimitKeyRemaining, respone.LimitKeyLimit, respone.LimitKeyReset);
+        }
+
+        public static string getTitleForUrl(string url)
+        {
+            string title = "";
+            try
+            {
+                WebClient cl = new WebClient();
+                string page = cl.DownloadString(url);
+                title = Regex.Match(page, @"\<title\b[^>]*\>\s*(?<Title>[\s\S]*?)\</title\>", RegexOptions.IgnoreCase).Groups["Title"].Value;
+            }
+            catch (Exception)
+            {
+            }
+            return title;
         }
     }
 }

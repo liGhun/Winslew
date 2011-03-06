@@ -18,6 +18,8 @@ namespace Winslew
     /// </summary>
     public partial class AddTags : Window
     {
+        public static RoutedCommand EscapePressed = new RoutedCommand();
+
         List<Item> items;
 
         public AddTags(List<Item> itemsToEdit)
@@ -29,6 +31,10 @@ namespace Winslew
             }
             items = itemsToEdit;
             label_itemTitle.Content = "You have seleceted " + itemsToEdit.Count.ToString() + " items";
+
+            textBox_itemTags.Focus();
+
+            EscapePressed.InputGestures.Add(new KeyGesture(Key.Escape));
         }
 
         private void button_cancel_Click(object sender, RoutedEventArgs e)
@@ -54,6 +60,22 @@ namespace Winslew
             AppController.Current.addTags(toBeUpdatedItems);
 
             this.Close();
+        }
+
+        private void textBox_itemTags_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return || e.Key == Key.Enter)
+            {
+                if (textBox_itemTags.Text.Length > 0)
+                {
+                    button_save_Click(null, null);
+                }
+            }
+        }
+
+        private void EscapePressed_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            button_cancel_Click(null, null);
         }
     }
 }

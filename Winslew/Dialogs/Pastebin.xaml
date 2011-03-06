@@ -3,22 +3,26 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:Winslew.Properties"
         Title="Pastebin" Height="410" Width="878"
-        Style="{StaticResource DefaultWindowStyle}" Icon="/Winslew;component/Images/text.png">
+        Style="{StaticResource DefaultWindowStyle}" Icon="/Winslew;component/Images/text.png"
+          xmlns:localWnd="clr-namespace:Winslew.Dialogs">
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static localWnd:Pastebin.EscapePressed}" Executed="EscapePressed_Executed" />
+    </Window.CommandBindings>
     <Window.Resources>
         <local:Settings x:Key="settings" />
     </Window.Resources>
     <Grid DataContext="{StaticResource settings}">
-        <TextBox Margin="12,46,252,12" Name="textBox_text" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" TextWrapping="Wrap" AcceptsReturn="True" TextChanged="textBox_text_TextChanged" />
-        <TextBox Height="23" Margin="63,17,252,0" Name="textBox_title" VerticalAlignment="Top" TextChanged="textBox_text_TextChanged" />
+        <TextBox Margin="12,46,252,12" Name="textBox_text" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" KeyDown="textBox_text_KeyDown" TextWrapping="Wrap" AcceptsReturn="True" TextChanged="textBox_text_TextChanged" TabIndex="2" />
+        <TextBox Height="23" Margin="63,17,252,0" Name="textBox_title" VerticalAlignment="Top" TextChanged="textBox_text_TextChanged" TabIndex="1" />
         <Label Content="Title" Height="28" HorizontalAlignment="Left" Margin="12,15,0,0" Name="label1" VerticalAlignment="Top" Width="45" HorizontalContentAlignment="Right" />
-        <TextBox Text="{Binding Path=Default.PastebinEmail,Mode=TwoWay}" Height="23" HorizontalAlignment="Right" Margin="0,46,13,0" Name="textBox_email" VerticalAlignment="Top" Width="151" />
+        <TextBox Text="{Binding Path=Default.PastebinEmail,Mode=TwoWay}" Height="23" HorizontalAlignment="Right" Margin="0,46,13,0" Name="textBox_email" VerticalAlignment="Top" Width="151" TabIndex="3" />
         <Label Content="Email" Height="28" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Margin="0,44,170,0" Name="label2" VerticalAlignment="Top" Width="77" />
         <Label Content="Optional parameters" Height="28" HorizontalAlignment="Right" Margin="0,17,38,0" Name="label3" VerticalAlignment="Top" FontWeight="Bold" />
         <Label Content="Subdomain" Height="28" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Margin="0,74,170,0" Name="label4" VerticalAlignment="Top" Width="77" />
-        <TextBox Text="{Binding Path=Default.PastebinSubdomain,Mode=TwoWay}" Height="23" HorizontalAlignment="Right" Margin="0,76,13,0" Name="textBox_subdomain" VerticalAlignment="Top" Width="151" />
-        <ComboBox Height="23" HorizontalAlignment="Right" Margin="0,105,13,0" Name="comboBox_syntaxHighlighting" VerticalAlignment="Top" Width="108" />
+        <TextBox Text="{Binding Path=Default.PastebinSubdomain,Mode=TwoWay}" Height="23" HorizontalAlignment="Right" Margin="0,76,13,0" Name="textBox_subdomain" VerticalAlignment="Top" Width="151" TabIndex="4" />
+        <ComboBox Height="23" HorizontalAlignment="Right" Margin="0,105,13,0" Name="comboBox_syntaxHighlighting" VerticalAlignment="Top" Width="108" TabIndex="5" />
         <Label Content="Syntax highlighting" Height="28" HorizontalAlignment="Right" Margin="0,105,127,0" Name="label5" VerticalAlignment="Top" HorizontalContentAlignment="Right" Width="120" />
-        <ComboBox Height="23" HorizontalAlignment="Right" Margin="0,134,13,0" Name="comboBox_expiration" VerticalAlignment="Top" Width="108"  >
+        <ComboBox Height="23" HorizontalAlignment="Right" Margin="0,134,13,0" Name="comboBox_expiration" VerticalAlignment="Top" Width="108" TabIndex="6">
             <ComboBoxItem Content="Never" IsSelected="True" />
             <ComboBoxItem Content="10 Minutes" />
             <ComboBoxItem Content="1 Hour" />
@@ -26,14 +30,14 @@
             <ComboBoxItem Content="1 Month" />
         </ComboBox>
         <Label Content="Expiration" Height="28" HorizontalAlignment="Right" Margin="0,134,127,0" Name="label6" VerticalAlignment="Top" Width="120" HorizontalContentAlignment="Right" />
-        <ComboBox Height="23" HorizontalAlignment="Right" Margin="0,163,13,0" Name="comboBox_exposure" VerticalAlignment="Top" Width="108">
+        <ComboBox Height="23" HorizontalAlignment="Right" Margin="0,163,13,0" Name="comboBox_exposure" VerticalAlignment="Top" Width="108" TabIndex="7">
             <ComboBoxItem Content="Private" IsSelected="True" />
             <ComboBoxItem Content="Public" IsSelected="False" />
         </ComboBox>
         <Label Content="Post exposure" Height="28" HorizontalAlignment="Right" Margin="0,163,127,0" Name="label7" VerticalAlignment="Top" Width="120" HorizontalContentAlignment="Right" />
-        <Button Content="Send to Pastebin" Height="23" HorizontalAlignment="Right" Margin="0,0,12,12" Name="button_sendToPastebin" VerticalAlignment="Bottom" Width="108" Click="button_sendToPastebin_Click" IsEnabled="False" />
-        <Button Content="Cancel" Height="23" HorizontalAlignment="Right" Margin="0,0,147,12" Name="button_cancel" VerticalAlignment="Bottom" Width="75" Click="button_cancel_Click" />
-        <TextBox Height="23" HorizontalAlignment="Right" Margin="0,197,13,0" Name="textBox_RiLTags" VerticalAlignment="Top" Width="151" />
+        <Button Content="Send to Pastebin" Height="23" HorizontalAlignment="Right" Margin="0,0,12,12" Name="button_sendToPastebin" VerticalAlignment="Bottom" Width="108" Click="button_sendToPastebin_Click" IsEnabled="False" TabIndex="10" />
+        <Button Content="Cancel" Height="23" HorizontalAlignment="Right" Margin="0,0,147,12" Name="button_cancel" VerticalAlignment="Bottom" Width="75" Click="button_cancel_Click" TabIndex="9" />
+        <TextBox Height="23" HorizontalAlignment="Right" Margin="0,197,13,0" Name="textBox_RiLTags" VerticalAlignment="Top" Width="151" TabIndex="8" />
         <Label Content="RiL Tags" Height="28" HorizontalAlignment="Right" HorizontalContentAlignment="Right" Margin="0,195,170,0" Name="label8" VerticalAlignment="Top" Width="77" />
         <TextBlock Height="75" HorizontalAlignment="Right" Margin="0,229,13,0" Name="textBlock_pasgtebinWarnin" Text="When sending text to Pastebin be aware that this is a public viewable service. Please don't upload private or secret content." VerticalAlignment="Top" Width="210" DataContext="{Binding}" TextWrapping="Wrap" />
     </Grid>

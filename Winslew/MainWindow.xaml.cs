@@ -23,7 +23,31 @@ namespace Winslew
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
-    {        
+    {
+
+        public static RoutedCommand OnRefreshRiL = new RoutedCommand();
+        public static RoutedCommand OnToggleReadUnreadView = new RoutedCommand();
+        public static RoutedCommand OnChangeTitle = new RoutedCommand();
+        public static RoutedCommand OnEditTags = new RoutedCommand();
+        public static RoutedCommand OnAddTags = new RoutedCommand();
+        public static RoutedCommand OnRemoveTags = new RoutedCommand();
+        public static RoutedCommand OnNewItem = new RoutedCommand();
+        public static RoutedCommand OnUploadImage = new RoutedCommand();
+        public static RoutedCommand OnNewPastebin = new RoutedCommand();
+        public static RoutedCommand OnUploadPastebin = new RoutedCommand();
+        public static RoutedCommand OnDelete = new RoutedCommand();
+        public static RoutedCommand OnFilter = new RoutedCommand();
+        public static RoutedCommand OnPreferences = new RoutedCommand();
+        public static RoutedCommand OnHelp = new RoutedCommand();
+        public static RoutedCommand OnToggleReadUnreadState = new RoutedCommand();
+        public static RoutedCommand OnAddCurrentPage = new RoutedCommand();
+        public static RoutedCommand OnCopyUrl = new RoutedCommand();
+        public static RoutedCommand OnOpenInBrowser = new RoutedCommand();
+        public static RoutedCommand OnRefreshCache = new RoutedCommand();
+        public static RoutedCommand OnChangeStyle = new RoutedCommand();
+        public static RoutedCommand OnChangeViewType = new RoutedCommand();
+        public static RoutedCommand OnSelectListView = new RoutedCommand();
+        public static RoutedCommand OnSelectBrowser = new RoutedCommand();
 
         public Api.Api apiAccess = new Api.Api();
         private GridViewColumnHeader _CurSortCol = null;
@@ -106,9 +130,32 @@ namespace Winslew
 
             webKitBrowser.Navigated += new System.Windows.Forms.WebBrowserNavigatedEventHandler(webKitBrowser_Navigated);
 
-           //frame_content.LoadCompleted += BrowserOnLoadCompleted;
+            OnRefreshRiL.InputGestures.Add(new KeyGesture(Key.R, ModifierKeys.Control));
+            OnRefreshRiL.InputGestures.Add(new KeyGesture(Key.F5));
+            OnToggleReadUnreadView.InputGestures.Add(new KeyGesture(Key.Tab, ModifierKeys.Control));
+            OnChangeTitle.InputGestures.Add(new KeyGesture(Key.T, ModifierKeys.Control));
+            OnEditTags.InputGestures.Add(new KeyGesture(Key.E, ModifierKeys.Control));
+            OnAddTags.InputGestures.Add(new KeyGesture(Key.W, ModifierKeys.Control));
+            OnRemoveTags.InputGestures.Add(new KeyGesture(Key.Q, ModifierKeys.Control));
+            OnNewItem.InputGestures.Add(new KeyGesture(Key.N, ModifierKeys.Control));
+            OnUploadImage.InputGestures.Add(new KeyGesture(Key.I, ModifierKeys.Control));
+            OnNewPastebin.InputGestures.Add(new KeyGesture(Key.J, ModifierKeys.Control));
+            OnUploadPastebin.InputGestures.Add(new KeyGesture(Key.K, ModifierKeys.Control));
+            OnDelete.InputGestures.Add(new KeyGesture(Key.D, ModifierKeys.Control));
+            OnFilter.InputGestures.Add(new KeyGesture(Key.F, ModifierKeys.Control));
+            OnPreferences.InputGestures.Add(new KeyGesture(Key.F1));
+            OnHelp.InputGestures.Add(new KeyGesture(Key.H, ModifierKeys.Control));
+            OnToggleReadUnreadState.InputGestures.Add(new KeyGesture(Key.S, ModifierKeys.Control));
+            OnAddCurrentPage.InputGestures.Add(new KeyGesture(Key.F2));
+            OnCopyUrl.InputGestures.Add(new KeyGesture(Key.F3));
+            OnOpenInBrowser.InputGestures.Add(new KeyGesture(Key.Return, ModifierKeys.Control));
+            OnRefreshCache.InputGestures.Add(new KeyGesture(Key.F4));
+            OnChangeStyle.InputGestures.Add(new KeyGesture(Key.F6));
+            OnChangeViewType.InputGestures.Add(new KeyGesture(Key.F7));
+            OnSelectListView.InputGestures.Add(new KeyGesture(Key.F8));
+            OnSelectBrowser.InputGestures.Add(new KeyGesture(Key.F9));
 
-           isInRunningMode = true;
+            isInRunningMode = true;
         }
 
         void webKitBrowser_Navigated(object sender, System.Windows.Forms.WebBrowserNavigatedEventArgs e)
@@ -237,13 +284,13 @@ namespace Winslew
                 {
                     if (currentItem.contentCache.Updated != null)
                     {
-                        comboBox_browserView.ToolTip = "Select to be displayed cache version\r\nCache updated: " + currentItem.contentCache.UpdatedHumanReadable;
+                        comboBox_browserView.ToolTip = "Select to be displayed cache version (F7)\r\nCache updated: " + currentItem.contentCache.UpdatedHumanReadable;
                     }
                 }
             }
             else
             {
-                comboBox_browserView.ToolTip = "Select to be displayed cache version";
+                comboBox_browserView.ToolTip = "Select to be displayed cache version (F7)";
             }
         }
 
@@ -254,14 +301,14 @@ namespace Winslew
                     Uri src = new Uri(@"/Winslew;component/Images/markedRead.png", UriKind.Relative);
                     BitmapImage img = new BitmapImage(src);
                     ImageReadState.Source = img;
-                    ImageReadState.ToolTip = "This item is marked as read - click to toggle state";
+                    ImageReadState.ToolTip = "This item is marked as read - click to toggle state (Ctrl-s)";
                 }
                 else
                 {
                     Uri src = new Uri(@"/Winslew;component/Images/unread.png", UriKind.Relative);
                     BitmapImage img = new BitmapImage(src);
                     ImageReadState.Source = img;
-                    ImageReadState.ToolTip = "This item is marked as unread - click to toggle state";
+                    ImageReadState.ToolTip = "This item is marked as unread - click to toggle state (Ctrl-s)";
                 }
         }
 
@@ -846,7 +893,145 @@ namespace Winslew
             button_uploadPastebin_Click(null, null);
         }
 
+        #region Keyboard shortcuts
 
+        private void RefreshRiLExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            button_refresh_Click(null, null);
+        }
+
+        private void ToggleReadUnreadViewExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            button_toggleView_Click(null, null);
+        }
+
+        private void ChangeTitleExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            button_changeTitle_Click(null, null);
+        }
+
+   
+
+        private void EditTagsExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            button_editTags_Click(null, null);
+        }
+
+        private void AddTagsExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            button_addTags_Click(null, null);
+        }
+
+        private void RemoveTagsExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            button_removeTags_Click(null, null);
+        }
+
+        private void NewItemExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            button_addNew_Click(null, null);
+        }
+
+        private void UploadImageExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            button_uploadImage_Click(null, null);
+        }
+
+        private void NewPastebinExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            button_newPastebin_Click(null, null);
+        }
+
+        private void UploadPastebinExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            button_uploadPastebin_Click(null, null);
+        }
+
+        private void DeleteExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            button_delete_Click(null, null);
+        }
+
+        private void FilterExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (this.textBox_filterTags != null && this.textBox_filterTitle != null)
+            {
+                if (this.textBox_filterTitle.IsFocused)
+                {
+                    this.textBox_filterTags.Focus();
+                }
+                else
+                {
+                    this.textBox_filterTitle.Focus();
+                }
+            }
+        }
+
+        private void PreferencesExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            button_preferences_Click(null, null);
+        }
+
+        private void HelpExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            button_help_Click(null, null);
+        }
+
+        private void ToggleReadUnreadStateExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            button_markRead_Click(null, null);
+        }
+
+        private void AddCurrentPageExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            button_addCurrentViewedPage_Click(null, null);
+        }
+
+        private void CopyUrlExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            button_copyUrlToClipboard_Click(null, null);
+        }
+
+        private void RefreshCacheExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            button_updateCache_Click(null, null);
+        }
+
+        private void ChangeStyleExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (this.comboBox_chooseStyle != null)
+            {
+                this.comboBox_chooseStyle.Focus();
+            }
+        }
+
+        private void ChangeViewTypeExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (this.comboBox_browserView != null)
+            {
+                this.comboBox_browserView.Focus();
+            }
+        }
+
+
+
+        private void OpenInBrowserExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            button_openInBrowser_Click(null, null);
+        }
+
+
+        private void SelectListViewExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            listView_Items.Focus();
+        }
+
+        private void SelectBrowserExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            webKitBrowser.Focus();
+        }
+
+        #endregion
     }
 
 }

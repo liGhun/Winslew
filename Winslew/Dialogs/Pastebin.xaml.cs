@@ -18,6 +18,8 @@ namespace Winslew.Dialogs
     /// </summary>
     public partial class Pastebin : Window
     {
+        public static RoutedCommand EscapePressed = new RoutedCommand();
+
         Api.Pastebin api;
         Dictionary<string, string> translatorSuffixToHighlighter;
 
@@ -34,6 +36,10 @@ namespace Winslew.Dialogs
             comboBox_syntaxHighlighting.SelectedValuePath = "Key";
             comboBox_syntaxHighlighting.SelectedValue = "";
             comboBox_syntaxHighlighting.UpdateLayout();
+
+            textBox_title.Focus();
+
+            EscapePressed.InputGestures.Add(new KeyGesture(Key.Escape));
         }
 
 
@@ -118,6 +124,15 @@ namespace Winslew.Dialogs
             translatorSuffixToHighlighter.Add("e", "eiffel");
             translatorSuffixToHighlighter.Add("rb", "ruby");
         }
-        
+
+        private void textBox_text_KeyDown(object sender, KeyEventArgs e)
+        {
+            textBox_text.Focus();
+        }
+
+        private void EscapePressed_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            button_cancel_Click(null, null);
+        }
     }
 }

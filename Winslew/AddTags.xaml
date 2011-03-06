@@ -2,9 +2,13 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Title="Edit tags" Height="185" Width="300" Icon="/Winslew;component/Images/addTags.png"
-        Style="{StaticResource DefaultWindowStyle}">
+        Style="{StaticResource DefaultWindowStyle}"
+                xmlns:local="clr-namespace:Winslew">
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static local:AddTags.EscapePressed}" Executed="EscapePressed_Executed" />
+    </Window.CommandBindings>
     <Grid>
-        <TextBox Height="23" Margin="12,83,12,0" Name="textBox_itemTags" VerticalAlignment="Top" />
+        <TextBox Height="23" Margin="12,83,12,0" Name="textBox_itemTags" VerticalAlignment="Top" KeyDown="textBox_itemTags_KeyDown" />
         <Button Margin="190,112,0,0" Name="button_save" HorizontalAlignment="Left" Width="76" Height="23" VerticalAlignment="Top" Click="button_save_Click">Save</Button>
         <Button HorizontalAlignment="Left" Margin="12,112,0,0" Name="button_cancel" Width="75" Height="23" VerticalAlignment="Top" Click="button_cancel_Click">Cancel</Button>
         <Label Margin="12,12,12,0" Name="label1" HorizontalContentAlignment="Center" Height="28" VerticalAlignment="Top">Enter your tags you want to add</Label>

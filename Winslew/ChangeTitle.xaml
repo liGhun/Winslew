@@ -2,8 +2,11 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Title="Change title" Height="148" Width="300" Icon="/Winslew;component/Images/changeTitle.png"
-        Style="{StaticResource DefaultWindowStyle}">
-
+        Style="{StaticResource DefaultWindowStyle}"
+        xmlns:local="clr-namespace:Winslew">
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static local:ChangeTitle.EscapePressed}" Executed="EscapePressed_Executed" />
+    </Window.CommandBindings>
     <Grid>
         <TextBox Height="23" Margin="12,46,12,0" Name="textBox_itemTitle" VerticalAlignment="Top" />
         <Button Margin="190,75,0,0" Name="button_save" HorizontalAlignment="Left" Width="76" Height="23" VerticalAlignment="Top" Click="button_save_Click">Save</Button>

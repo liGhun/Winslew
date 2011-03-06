@@ -1,11 +1,15 @@
 ﻿<Window x:Class="Winslew.BuyLicense"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Title="Please purchase a license" Height="234" Width="300" WindowStartupLocation="CenterScreen" Visibility="Visible" ResizeMode="NoResize" Icon="/Winslew;component/Images/Winslew.ico" Topmost="True">
+    Title="Please purchase a license" Height="234" Width="300" WindowStartupLocation="CenterScreen" Visibility="Visible" ResizeMode="NoResize" Icon="/Winslew;component/Images/Winslew.ico" Topmost="True"
+    xmlns:local="clr-namespace:Winslew">
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static local:BuyLicense.EscapePressed}" Executed="EscapePressed_Executed" />
+    </Window.CommandBindings>
     <Window.Background>
-        <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.2">
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,0.3">
             <LinearGradientBrush.GradientStops>
-                <GradientStop Offset="0" Color="White" />
+                <GradientStop Offset="0" Color="Orange" />
                 <GradientStop Offset="1" Color="Red" />
             </LinearGradientBrush.GradientStops>
         </LinearGradientBrush>

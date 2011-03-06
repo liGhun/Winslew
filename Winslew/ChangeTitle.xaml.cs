@@ -18,6 +18,8 @@ namespace Winslew
     /// </summary>
     public partial class ChangeTitle : Window
     {
+        public static RoutedCommand EscapePressed = new RoutedCommand();
+
         private Item oldItem;
         private Item newItem;
 
@@ -30,6 +32,8 @@ namespace Winslew
             }
             oldItem = itemToEdit;
             textBox_itemTitle.Text = itemToEdit.title;
+
+            EscapePressed.InputGestures.Add(new KeyGesture(Key.Escape));
         }
 
         private void button_cancel_Click(object sender, RoutedEventArgs e)
@@ -49,6 +53,11 @@ namespace Winslew
             AppController.Current.updateItem(oldItem, newItem);
 
             this.Close();
+        }
+
+        private void EscapePressed_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            button_cancel_Click(null, null);
         }
     }
 }
