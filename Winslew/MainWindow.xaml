@@ -1,7 +1,7 @@
 ﻿<Window x:Class="Winslew.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Title="Winslew" Height="853" Width="849"
+    Title="Winslew" Height="853" Width="1000"
         Foreground="Black" 
         Icon="/Winslew;component/Winslew.ico" 
         Background="LightGray"
@@ -319,17 +319,17 @@
 
         <Grid Grid.Row="2">
             <Grid.RowDefinitions>
-                <RowDefinition Name="PageToolbar" Height="30" MinHeight="30" />
-                <RowDefinition Name="Browser" MinHeight="30" />
+                <RowDefinition Name="PageToolbar" Height="{Binding ElementName=PageToolbarTray, Path=ActualHeight}" />
+                <RowDefinition Name="Browser" MinHeight="30" Height="*" />
                 <RowDefinition Name="Status" Height="20" MinHeight="20" />
             </Grid.RowDefinitions>
-            <ToolBarTray Name="PageToolbarTray" Grid.Row="0" Background="#9caac1">
+            <ToolBarTray Name="PageToolbarTray" Grid.Row="0"  Height="Auto" Background="#9caac1">
                 <ToolBar Name="PageTitle" Width="Auto">
-                    <TextBlock MinWidth="477" Background="#bcc7d8" Name="label_TitleOfItem" Foreground="Black" FontSize="18" FontWeight="Bold" 
+                    <TextBlock MinWidth="150" Background="#bcc7d8" Name="label_TitleOfItem" Foreground="Black" FontSize="18" FontWeight="Bold" 
                     HorizontalAlignment="Left" VerticalAlignment="Stretch" Padding="5,0,5,0">Winslew</TextBlock>
                 </ToolBar>
 
-                <ToolBar Name="PageButtons" Width="Auto" HorizontalContentAlignment="Right" HorizontalAlignment="Stretch">
+                <ToolBar Name="PageButtons" Width="340" HorizontalContentAlignment="Left" HorizontalAlignment="Stretch">
                     <Button Height="23" Name="button_addCurrentViewedPage" VerticalAlignment="Top" Width="23" Click="button_addCurrentViewedPage_Click"  Visibility="Hidden" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" ToolTip="Add the currently shown webpage to Read It Later (F2)">
                         <Image Name="Image_AddCurrentlyViewPage" Source="/Winslew;component/Images/add.png"   Visibility="Hidden"></Image>
                     </Button>
@@ -343,10 +343,10 @@
 
 
 
-                    <!--<Button Height="23" HorizontalAlignment="Right" Margin="0,5,259,0" Name="button_printPage" VerticalAlignment="Top" Width="23" Click="button_printPage_Click">
-                <Image Source="/Winslew;component/Images/print.png" ToolTip="Print the currently displayed webpage"></Image>
-            </Button>
-            -->
+                    <Button Height="23" HorizontalAlignment="Right"  Name="button_printPage" VerticalAlignment="Top" Width="23" Click="button_printPage_Click">
+                        <Image Source="/Winslew;component/Images/print.png" ToolTip="Print the currently displayed webpage"></Image>
+                  </Button>
+            
                     <Button Height="23" Name="button_updateCache" VerticalAlignment="Top" Width="23" Click="button_updateCache_Click" Background="Transparent"  ToolTip="Update cache for this webpage (F4)">
                         <Image Source="/Winslew;component/Images/refresh.png"></Image>
                     </Button>
@@ -362,13 +362,27 @@
                         <ComboBoxItem Content="Less" Tag="less" />
                     </ComboBox>
                 </ToolBar>
+                
+                <ToolBar Name="ToolbarNavigationControls" Width="Auto">
+                    <Button Height="23" Name="buttonBrowserReload" Click="buttonBrowserReload_Click" VerticalAlignment="Top" Width="23" Background="Transparent"  ToolTip="Reload browser">
+                        <Image Source="/Winslew;component/Images/browserReload.png"></Image>
+                    </Button>
+                    <Button Height="23" Name="buttonBrowserBack" Click="buttonBrowserBack_Click" VerticalAlignment="Top" Width="23" Background="Transparent"  ToolTip="Back in browser">
+                        <Image Source="/Winslew;component/Images/browserBack.png"></Image>
+                    </Button>
+                    <Button Height="23" Name="buttonBrowserNext" Click="buttonBrowserNext_Click"  VerticalAlignment="Top" Width="23" Background="Transparent"  ToolTip="Forward in browser">
+                        <Image Source="/Winslew;component/Images/browserForward.png"></Image>
+                    </Button>
+                    <Button Height="23" Name="buttonBrowserStop" Click="buttonBrowserStop_Click" VerticalAlignment="Top" Width="23" Background="Transparent"  ToolTip="Stop browser">
+                        <Image Source="/Winslew;component/Images/browserStop.png"></Image>
+                    </Button>
+                    <TextBox  Name="textboxCurrentUrl" Foreground="Black"
+                    HorizontalAlignment="Left" VerticalAlignment="Stretch" Padding="5,0,5,0" MinWidth="100" MaxWidth="300"></TextBox>
+                </ToolBar>
             </ToolBarTray>
 
             
-            <Grid Grid.Row="1" Name="WebkitBrowserGrid" />
-            
-          <!--  <WebBrowser Grid.Row="1" Name="frame_content">
-            </WebBrowser> -->
+            <Grid Grid.Row="1" Name="WebkitBrowserGrid" Height="Auto"/>
 
 
             <StatusBar Grid.Row="2" Height="23" Margin="1,0,0,-1" Name="statusBar_mainWindow" VerticalAlignment="Bottom" Padding="0,0,0,0" HorizontalAlignment="Stretch" HorizontalContentAlignment="Right" FlowDirection="LeftToRight" Background="#bcc7d8">
@@ -386,6 +400,8 @@
                     Click="button_openSnarl_Click" Background="{x:Null}" BorderBrush="{x:Null}" Padding="0" HorizontalAlignment="Right">
                     <Label  Content="Snarl not running" Padding="0,0,0,0" FontSize="10" Margin="0,0,0,0" Name="label_snarlNotRunning" HorizontalAlignment="Right" FontWeight="Normal" HorizontalContentAlignment="Right" />
                 </Button>
+                <ProgressBar Visibility="Collapsed" Name="progressBarLoadingPage" ToolTip="Loading..." IsIndeterminate="True"  Width="80" Margin="0" Padding="0" Height="10" />
+                <Label Visibility="Collapsed" Name="labelLoadingPage" Content="Loading page..." FontSize="10" Margin="0" Padding="0" />
             </StatusBar>
             
         </Grid>

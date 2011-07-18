@@ -1,3 +1,9 @@
+1.7
+Print button is back (one of the many things Webkit does better :))
+Navigation bar with back/forward/reload/stop and URL added
+Progress indicator for website loading added
+Fix: Setup did not install startmenu entries on Windows Vista/7 if run by a non privileged user and stored settings in wrong place on initial start
+
 1.6
 Uses now Webkit for page rendering instead of Internet Explorer
  - faster

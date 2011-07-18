@@ -1,5 +1,9 @@
+!addplugindir ".\"
+
 !include "MUI2.nsh"
 !include "checkDotNet3.nsh"
+!include LogicLib.nsh
+!include UAC.nsh
 
 !define MIN_FRA_MAJOR "3"
 !define MIN_FRA_MINOR "5"
@@ -24,9 +28,31 @@ InstallDir "$PROGRAMFILES\lI Ghun\Winslew\"
 InstallDirRegKey HKLM "Software\lI Ghun\Winslew" "Install_Dir"
 
 ; Request application privileges for Windows Vista
-RequestExecutionLevel admin
+RequestExecutionLevel user
 
-
+Function .onInit
+uac_tryagain:
+!insertmacro UAC_RunElevated
+#MessageBox mb_TopMost "0=$0 1=$1 2=$2 3=$3"
+${Switch} $0
+${Case} 0
+	${IfThen} $1 = 1 ${|} Quit ${|} ;we are the outer process, the inner process has done its work, we are done
+	${IfThen} $3 <> 0 ${|} ${Break} ${|} ;we are admin, let the show go on
+	${If} $1 = 3 ;RunAs completed successfully, but with a non-admin user
+		MessageBox mb_IconExclamation|mb_TopMost|mb_SetForeground "This installer requires admin access, try again" /SD IDNO IDOK uac_tryagain IDNO 0
+	${EndIf}
+	;fall-through and die
+${Case} 1223
+	MessageBox mb_IconStop|mb_TopMost|mb_SetForeground "This installer requires admin privileges, aborting!"
+	Quit
+${Case} 1062
+	MessageBox mb_IconStop|mb_TopMost|mb_SetForeground "Logon service not running, aborting!"
+	Quit
+${Default}
+	MessageBox mb_IconStop|mb_TopMost|mb_SetForeground "Unable to elevate , error $0"
+	Quit
+${EndSwitch}
+FunctionEnd
  
 
 
@@ -60,18 +86,18 @@ Var StartMenuFolder
   !insertmacro MUI_PAGE_STARTMENU Application $StartMenuFolder
 
   !insertmacro MUI_PAGE_INSTFILES
-  !define MUI_FINISHPAGE_RUN "Winslew.exe"
+  ; !define MUI_FINISHPAGE_RUN "Winslew.exe"
+    !define MUI_FINISHPAGE_RUN
+  !define MUI_FINISHPAGE_RUN_FUNCTION FinishRun   
   !insertmacro MUI_PAGE_FINISH
-
-
-
-
   !insertmacro MUI_UNPAGE_WELCOME
   !insertmacro MUI_UNPAGE_CONFIRM
   !insertmacro MUI_UNPAGE_INSTFILES
   !insertmacro MUI_UNPAGE_FINISH
 
-
+  Function FinishRun
+!insertmacro UAC_AsUser_ExecShell "" "Winslew.exe" "" "" ""
+FunctionEnd
 
 
 
@@ -197,11 +223,13 @@ Section "Start Menu Shortcuts"
 
 !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
 
+SetShellVarContext all
   CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\\Winslew.lnk" "$INSTDIR\Winslew.exe" "" "$INSTDIR\WinslewSetup.ico" 0
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\\Documentation.lnk" "$INSTDIR\Documentation.URL" "" $INSTDIR\Documentation.ico" 0
   CreateShortCut "$SMPROGRAMS\$StartMenuFolder\\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
-  
+    SetShellVarContext current
+
 !insertmacro MUI_STARTMENU_WRITE_END
 
   
@@ -224,8 +252,9 @@ Section "Uninstall"
   ; Remove shortcuts, if any
   !insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuFolder
     
+	SetShellVarContext all
   Delete "$SMPROGRAMS\$StartMenuFolder\\*.*"
-  
+  SetShellVarContext current
 
 
   DeleteRegKey HKCU "Software\li ghun\Winslew"

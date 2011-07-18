@@ -238,12 +238,23 @@
     <Resource Include="Images\tags.png" />
     <Resource Include="Images\browser.png" />
     <Resource Include="Images\extermalApps.png" />
+    <Resource Include="Images\Reload.png" />
+    <Resource Include="Images\browserReload.png" />
+    <Resource Include="Images\browserStop.png" />
+    <Resource Include="Images\browserBack.png" />
+    <Resource Include="Images\browserForward.png" />
+    <Content Include="Setup\UAC.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Styles\BlackOnWhite.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Styles\WhiteOnBlack.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Setup\UAC.nsh">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Styles\Khaki.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

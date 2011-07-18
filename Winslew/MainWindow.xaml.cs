@@ -110,7 +110,7 @@ namespace Winslew
             System.Windows.Forms.MenuItem showMainMenu = new System.Windows.Forms.MenuItem("Show main window", new System.EventHandler(trayContextShow));
 
             m_notifyMenu = new System.Windows.Forms.ContextMenu();
-            m_notifyMenu.MenuItems.Add("Winslew");
+            m_notifyMenu.MenuItems.Add("Winslew"); 
             m_notifyMenu.MenuItems.Add("-");
             m_notifyMenu.MenuItems.Add(showMainMenu);
             m_notifyMenu.MenuItems.Add(new System.Windows.Forms.MenuItem("Refresh now", new System.EventHandler(trayContextRefresh)));
@@ -129,6 +129,11 @@ namespace Winslew
             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
 
             webKitBrowser.Navigated += new System.Windows.Forms.WebBrowserNavigatedEventHandler(webKitBrowser_Navigated);
+            webKitBrowser.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(webKitBrowser_Navigating);
+            webKitBrowser.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(webKitBrowser_DocumentCompleted);
+            webKitBrowser.UserAgent = "Winslew " + Formatter.prettyVersion.getNiceVersionString(System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()) + " (http://www.li-ghun.de/Winslew/)";
+            webKitBrowser.AllowDownloads = false;
+            webKitBrowser.AllowNewWindows = false;
 
             OnRefreshRiL.InputGestures.Add(new KeyGesture(Key.R, ModifierKeys.Control));
             OnRefreshRiL.InputGestures.Add(new KeyGesture(Key.F5));
@@ -155,7 +160,43 @@ namespace Winslew
             OnSelectListView.InputGestures.Add(new KeyGesture(Key.F8));
             OnSelectBrowser.InputGestures.Add(new KeyGesture(Key.F9));
 
+            textboxCurrentUrl.KeyDown += new KeyEventHandler(textboxCurrentUrl_KeyDown);
+
             isInRunningMode = true;
+        }
+
+        void textboxCurrentUrl_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e != null)
+            {
+                if (e.Key == Key.Return || e.Key == Key.Enter)
+                {
+                    webKitBrowser.Navigate(textboxCurrentUrl.Text);
+                }
+            }
+        }
+
+        void webKitBrowser_DocumentCompleted(object sender, System.Windows.Forms.WebBrowserDocumentCompletedEventArgs e)
+        {
+            progressBarLoadingPage.Visibility = Visibility.Collapsed;
+            labelLoadingPage.Visibility = Visibility.Collapsed;
+            label_TitleOfItem.Text = webKitBrowser.DocumentTitle;
+            //textboxCurrentUrl.Text = webKitBrowser.Url.AbsoluteUri;
+            buttonBrowserStop.IsEnabled = false;
+        }
+
+        void webKitBrowser_Navigating(object sender, System.Windows.Forms.WebBrowserNavigatingEventArgs e)
+        {
+            progressBarLoadingPage.Visibility = Visibility.Visible;
+            labelLoadingPage.Visibility = Visibility.Visible;
+            buttonBrowserStop.IsEnabled = true;
+            if (e != null)
+            {
+                if (e.Url != null)
+                {
+                    textboxCurrentUrl.Text = e.Url.AbsoluteUri;
+                }
+            }
         }
 
         void webKitBrowser_Navigated(object sender, System.Windows.Forms.WebBrowserNavigatedEventArgs e)
@@ -655,15 +696,7 @@ namespace Winslew
             {
                 try
                 {
-                    var currentItem = listView_Items.SelectedItem as Item;
-                    
-             //       System.Windows.Forms.HtmlDocument doc = frame_content.Document as System.Windows.Forms.HtmlDocument;
-              //      doc.ExecCommand("Print",true,null);
-
-                    
-                    //Printing not working anymore
-                 //   mshtml.IHTMLDocument2 doc = frame_content.Document as mshtml.IHTMLDocument2;
-                   // doc.execCommand("Print", true, null); 
+                    webKitBrowser.ShowPrintDialog();
                 }
                 catch (Exception exp)
                 {
@@ -1032,6 +1065,27 @@ namespace Winslew
         }
 
         #endregion
+
+        private void buttonBrowserReload_Click(object sender, RoutedEventArgs e)
+        {
+            webKitBrowser.Reload();
+        }
+
+        private void buttonBrowserBack_Click(object sender, RoutedEventArgs e)
+        {
+            webKitBrowser.GoBack();
+        }
+
+        private void buttonBrowserNext_Click(object sender, RoutedEventArgs e)
+        {
+            webKitBrowser.GoForward();
+        }
+
+        private void buttonBrowserStop_Click(object sender, RoutedEventArgs e)
+        {
+            webKitBrowser.Stop();
+            progressBarLoadingPage.Visibility = Visibility.Collapsed;
+        }
     }
 
 }
