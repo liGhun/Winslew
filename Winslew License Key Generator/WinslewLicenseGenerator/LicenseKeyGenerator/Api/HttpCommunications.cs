@@ -33,7 +33,7 @@ namespace LicenseKeyGenerator
                 request.Method = "POST";
                 request.AllowAutoRedirect = allowAutoRedirect;
                 request.Accept = "*/*";
-                request.UserAgent = "Winslew (http://www.li-ghun.de/)";
+                request.UserAgent = "Winslew license key generator (http://www.li-ghun.de/)";
                 request.ContentType = "application/x-www-form-urlencoded";
 
                 byte[] encodedData = new UTF8Encoding().GetBytes(formData);

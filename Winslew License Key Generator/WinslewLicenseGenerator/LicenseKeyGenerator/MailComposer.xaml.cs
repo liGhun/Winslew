@@ -25,15 +25,15 @@ namespace LicenseKeyGenerator
         private string Lastname;
         private string LicenseCode;
         private string UsernameHash;
-
- 
+        private string Email;
 
         public MailComposer(string username, string usernamehash, string email, string firstname, string lastname, string licenseCode) {
             InitializeComponent();
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
             this.textBox_to.Text = string.Format("{0} {1} <{2}>",firstname,lastname,email);
             this.Username = username;
-            UsernameHash = username;
+            this.UsernameHash = usernamehash;
+            this.Email = email;
             this.Firstname = firstname;
             this.Lastname = lastname;
             this.LicenseCode = licenseCode;
@@ -48,46 +48,44 @@ namespace LicenseKeyGenerator
 
         private bool storeInDatabase()
         {
-            Api.Response response = HttpCommunications.SendPostRequest("http://www.li-ghun.de/Winslew/api/checkLicense/admin/storeLicense",
-                       new
+            Api.Response response = HttpCommunications.SendPostRequest("http://www.li-ghun.de/Winslew/api/checkLicense/admin/storeLicense.php",
+                             new
                        {
-                           userhash = UsernameHash,
-                           data = "weg6z623"
+                           userhash = this.UsernameHash,
+                           data = "weg547",
+                           username = this.Username,
+                           firstname = this.Firstname,
+                           lastname = this.Lastname,
+                           email = this.Email,
+                           licenseCode = this.LicenseCode,
                        }, true);
             if (response.Content != null)
             {
                 if (response.Content != "")
                 {
-                    if (response.Content == "OK")
+                    if (response.Content.StartsWith("Storage successfull"))
                     {
-                        // all fine
+                        MessageBox.Show(response.Content, "Storing successfull");
+                        return true;
                     }
                     else
                     {
                         MessageBox.Show(response.Content, "Store failed");
                     }
                 }
+                else
+                {
+                    MessageBox.Show("Empty response", "Store failed");
+                }
+            }
+            else
+            {
+                MessageBox.Show("NULL response", "Store failed");
             }
             return false;
 
-            /*
-             
-             INSERT INTO  `winslewLicenses`.`licenses` (
-`username` ,
-`userhash` ,
-`license` ,
-`email` ,
-`firstname` ,
-`lastname`
-)
-VALUES (
-'mokociemba',  'd0e1bc3bb31cbe26c5f6ab52eaf2eeb4',  '44c355fd4b',  'mokociemba@gmail.com',  'Marc-Oliver',  'Kociemba'
-);
-
-             
-              
-             */
         }
+        
 
         private bool sendEmail()
         {
