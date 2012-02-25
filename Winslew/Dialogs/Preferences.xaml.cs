@@ -257,5 +257,21 @@ namespace Winslew
         {
             this.Close();
         }
+
+        private void checkBox_cachFull_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (IsInitialized)
+            {
+                AppController.Current.hideFullViewComboBox();
+            }
+        }
+
+        private void checkBox_cachFull_Checked(object sender, RoutedEventArgs e)
+        {
+            if (IsInitialized)
+            {
+                AppController.Current.showFullViewComboBox();
+            }
+        }
     }
 }

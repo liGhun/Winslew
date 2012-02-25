@@ -134,6 +134,7 @@ namespace Winslew
             webKitBrowser.UserAgent = "Winslew " + Formatter.prettyVersion.getNiceVersionString(System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()) + " (http://www.li-ghun.de/Winslew/)";
             webKitBrowser.AllowDownloads = false;
             webKitBrowser.AllowNewWindows = false;
+            webKitBrowser.Error += new WebKit.WebKitBrowserErrorEventHandler(webKitBrowser_Error);
 
             OnRefreshRiL.InputGestures.Add(new KeyGesture(Key.R, ModifierKeys.Control));
             OnRefreshRiL.InputGestures.Add(new KeyGesture(Key.F5));
@@ -162,7 +163,51 @@ namespace Winslew
 
             textboxCurrentUrl.KeyDown += new KeyEventHandler(textboxCurrentUrl_KeyDown);
 
+            if (!Properties.Settings.Default.CacheFull)
+            {
+                if (comboBox_browserView != null)
+                {
+                    if (comboBox_browserView.Items.Contains("Full"))
+                    {
+                        comboBox_browserView.Items.Remove("Full");
+                    }
+                }
+            }
+
             isInRunningMode = true;
+        }
+
+        void webKitBrowser_Error(object sender, WebKit.WebKitBrowserErrorEventArgs e)
+        {
+            var currentItem = listView_Items.SelectedItem as Item;
+            if (currentItem != null)
+            {
+                if (Properties.Settings.Default.CurrentView.ToLower().EndsWith("more") && System.IO.File.Exists(currentItem.contentCache.MoreVersion))
+                {
+                    progressBarLoadingPage.Visibility = Visibility.Visible;
+                    labelLoadingPage.Visibility = Visibility.Visible;
+                    webKitBrowser.DocumentText = Api.ContentCacheStore.generateMoreContent(currentItem.url);
+                }
+                else if (Properties.Settings.Default.CurrentView.ToLower().EndsWith("less") && System.IO.File.Exists(currentItem.contentCache.LessVersion))
+                {
+                    progressBarLoadingPage.Visibility = Visibility.Visible;
+                    labelLoadingPage.Visibility = Visibility.Visible;
+                    webKitBrowser.DocumentText = Api.ContentCacheStore.generateLessContent(currentItem.url);
+                }
+                else
+                {
+                    progressBarLoadingPage.Visibility = Visibility.Visible;
+                    labelLoadingPage.Visibility = Visibility.Visible;
+                    if (e.Description != null)
+                    {
+                        webKitBrowser.DocumentText = "<h1>Sorry, I am unable to load this page</h1><p> + " + e.Description + "</p>";
+                    }
+                    else
+                    {
+                        webKitBrowser.DocumentText = "<h1>Sorry, I am unable to load this page</h1>";
+                    }
+                }
+            }
         }
 
         void textboxCurrentUrl_KeyDown(object sender, KeyEventArgs e)
@@ -203,16 +248,25 @@ namespace Winslew
         {
             button_addCurrentViewedPage.Visibility = Visibility.Collapsed;
             Image_AddCurrentlyViewPage.Visibility = Visibility.Collapsed;
-            // Snarl.SnarlConnector.ShowMessage("Site lodaded", "fine", 10, "", IntPtr.Zero, 0);    
-            if (e.Url.AbsoluteUri.ToString().StartsWith("http"))
+            // Snarl.SnarlConnector.ShowMessage("Site lodaded", "fine", 10, "", IntPtr.Zero, 0); 
+            try
             {
-                if (AppController.Current.itemsCollection.Where(i => i.url == e.Url.AbsoluteUri).Count() == 0)
+                if (e != null)
                 {
-                    button_addCurrentViewedPage.Visibility = Visibility.Visible;
-                    Image_AddCurrentlyViewPage.Visibility = Visibility.Visible;
+                    if (e.Url != null)
+                    {
+                        if (e.Url.AbsoluteUri.ToString().StartsWith("http"))
+                        {
+                            if (AppController.Current.itemsCollection.Where(i => i.url == e.Url.AbsoluteUri).Count() == 0)
+                            {
+                                button_addCurrentViewedPage.Visibility = Visibility.Visible;
+                                Image_AddCurrentlyViewPage.Visibility = Visibility.Visible;
+                            }
+                        }
+                    }
                 }
             }
-
+            catch { }
         }
 
         void dispatcherTimer_Tick(object sender, EventArgs e)
@@ -473,7 +527,21 @@ namespace Winslew
             if (listView_Items.SelectedItem != null && webKitBrowser != null)
             {
                 var currentItem = listView_Items.SelectedItem as Item;
-                if (currentItem.contentCache != null || Properties.Settings.Default.CurrentView.ToLower().EndsWith("online"))
+                if (currentItem == null) { return; }
+
+                if (!Properties.Settings.Default.CacheMoreLess && Properties.Settings.Default.CurrentView.ToLower().EndsWith("less"))
+                {
+                    progressBarLoadingPage.Visibility = Visibility.Visible;
+                    labelLoadingPage.Visibility = Visibility.Visible;
+                    webKitBrowser.DocumentText = Api.ContentCacheStore.generateLessContent(currentItem.url);
+                }
+                else if (!Properties.Settings.Default.CacheMoreLess && Properties.Settings.Default.CurrentView.ToLower().EndsWith("more"))
+                {
+                    progressBarLoadingPage.Visibility = Visibility.Visible;
+                    labelLoadingPage.Visibility = Visibility.Visible;
+                    webKitBrowser.DocumentText = Api.ContentCacheStore.generateMoreContent(currentItem.url);
+                }
+                else if (currentItem.contentCache != null || Properties.Settings.Default.CurrentView.ToLower().EndsWith("online"))
                 {
 
                     if (Properties.Settings.Default.CurrentView.ToLower().EndsWith("online") && apiAccess.checkIfOnline())

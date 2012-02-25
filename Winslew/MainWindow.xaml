@@ -201,7 +201,7 @@
                         </MenuItem>
                         <MenuItem Name="Externalsubmenu" Header="External services">
                             <MenuItem.Icon>
-                                <Image Source="/Winslew;component/Images/externalApps.png" Width="14" Height="14" />
+                            <Image Source="/Winslew;component/Images/extermalApps.png" Width="14" Height="14" />
                             </MenuItem.Icon>
                             <MenuItem Name="ContextUploadImage" Click="ContextUploadImage_Click"  Header="Upload image to Imgur (Ctrl-i)">
                                 <MenuItem.Icon>
@@ -319,11 +319,11 @@
 
         <Grid Grid.Row="2">
             <Grid.RowDefinitions>
-                <RowDefinition Name="PageToolbar" Height="{Binding ElementName=PageToolbarTray, Path=ActualHeight}" />
+                <RowDefinition Name="PageToolbar" Height="28" />
                 <RowDefinition Name="Browser" MinHeight="30" Height="*" />
                 <RowDefinition Name="Status" Height="20" MinHeight="20" />
             </Grid.RowDefinitions>
-            <ToolBarTray Name="PageToolbarTray" Grid.Row="0"  Height="Auto" Background="#9caac1">
+            <ToolBarTray Name="PageToolbarTray" Background="#9caac1" Grid.Row="0"  Height="Auto">
                 <ToolBar Name="PageTitle" Width="Auto">
                     <TextBlock MinWidth="150" Background="#bcc7d8" Name="label_TitleOfItem" Foreground="Black" FontSize="18" FontWeight="Bold" 
                     HorizontalAlignment="Left" VerticalAlignment="Stretch" Padding="5,0,5,0">Winslew</TextBlock>
@@ -377,7 +377,7 @@
                         <Image Source="/Winslew;component/Images/browserStop.png"></Image>
                     </Button>
                     <TextBox  Name="textboxCurrentUrl" Foreground="Black"
-                    HorizontalAlignment="Left" VerticalAlignment="Stretch" Padding="5,0,5,0" MinWidth="100" MaxWidth="300"></TextBox>
+                    HorizontalAlignment="Left" VerticalAlignment="Stretch" Padding="5,0,5,0" MinWidth="100" MaxWidth="300" PreviewKeyDown="textboxCurrentUrl_KeyDown"></TextBox>
                 </ToolBar>
             </ToolBarTray>
 
@@ -402,6 +402,7 @@
                 </Button>
                 <ProgressBar Visibility="Collapsed" Name="progressBarLoadingPage" ToolTip="Loading..." IsIndeterminate="True"  Width="80" Margin="0" Padding="0" Height="10" />
                 <Label Visibility="Collapsed" Name="labelLoadingPage" Content="Loading page..." FontSize="10" Margin="0" Padding="0" />
+                
             </StatusBar>
             
         </Grid>

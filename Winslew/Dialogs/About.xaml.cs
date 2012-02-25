@@ -73,5 +73,10 @@ namespace Winslew
         {
             this.Close();
         }
+
+        private void buttonJsonNet_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start("http://json.codeplex.com/");
+        }
     }
 }

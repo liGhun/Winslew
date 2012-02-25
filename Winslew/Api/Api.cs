@@ -458,6 +458,47 @@ namespace Winslew.Api
             {
                 return ListOfNewItems;
             }
+
+            responseParserClass json;
+            try
+            {
+                json = Newtonsoft.Json.JsonConvert.DeserializeObject<responseParserClass>(data);
+                foreach (itemResponseClass parsedItem in json.list.Values)
+                {
+                    Item thisItem = new Item();
+                    thisItem.id = parsedItem.item_id;
+                    thisItem.read = parsedItem.isRead;
+                    thisItem.tags = parsedItem.tags;
+                    thisItem.timeAdded = parsedItem.time_added;
+                    thisItem.timeAddedHumanReadable = parsedItem.AddedHumanReadable;
+                    thisItem.timeUpdated = parsedItem.time_updated;
+                    thisItem.timeUpdatedHumanReadable = parsedItem.UpdatedHumanReadable;
+                    thisItem.title = parsedItem.title;
+                    thisItem.url = parsedItem.url;
+                    if (thisItem.tags == null)
+                    {
+                        thisItem.tags = "";
+                    }
+                    if (thisItem.title == null)
+                    {
+                        thisItem.title = "";
+                    }
+                    if (thisItem.url == null)
+                    {
+                        thisItem.url = "";
+                    }
+                    ListOfNewItems.Add(thisItem);
+                }
+            }
+
+            catch (Exception exp)
+            {
+                Console.WriteLine(exp.Message);
+            }
+
+     
+            return ListOfNewItems;
+    
             var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
             serializer.MaxJsonLength = data.Length;
             var obj = serializer.DeserializeObject(data) as Dictionary<string, object>;
@@ -550,6 +591,61 @@ namespace Winslew.Api
                 return null;
             }
 
+        }
+
+        private class responseParserClass
+        {
+            public string status { get; set; }
+            public Int64 since { get; set; }
+            //public System.Collections.ObjectModel.ObservableCollection<itemResponseClass> list { get; set; }
+            public Dictionary<int, itemResponseClass> list { get; set; }
+        }
+
+
+        private class itemResponseClass
+        {
+            public string url { get; set; }
+            public string title { get; set; }
+            public string item_id { get; set; }
+            public string tags { get; set; }
+            public long time_updated { get; set; }
+            public long time_added { get; set; }
+            public int state { get; set; }
+
+            public bool isRead
+            {
+                get
+                {
+                    if (state == 1)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            public string UpdatedHumanReadable
+            {
+                get
+                {
+                    DateTime myDateObject = new System.DateTime(1970, 1, 1, 0, 0, 0, 0);
+                    myDateObject = myDateObject.AddSeconds(time_updated);
+                    return string.Format("{0} {1}", myDateObject.ToShortDateString(), myDateObject.ToShortTimeString());
+                }
+            }
+
+            public string AddedHumanReadable
+            {
+                get
+                {
+                    DateTime myDateObject = new System.DateTime(1970, 1, 1, 0, 0, 0, 0);
+                    myDateObject = myDateObject.AddSeconds(time_added);
+                    return string.Format("{0} {1}", myDateObject.ToShortDateString(), myDateObject.ToShortTimeString());
+                }
+            }
         }
 
          private string getPassword()

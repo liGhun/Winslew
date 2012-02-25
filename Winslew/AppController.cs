@@ -314,32 +314,35 @@ namespace Winslew
                 StartCacheUpdate(listOfItems);
                 return;
             }
-            UpdatingCache myUpdateCacheWindow = new UpdatingCache();
-
-            myUpdateCacheWindow.label2.Content = "Winslew " + Formatter.prettyVersion.getNiceVersionString(System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
-            myUpdateCacheWindow.label1.Content = "Loading stored cache...";
-            myUpdateCacheWindow.Show();
-            myUpdateCacheWindow.progressBar1.Maximum = listOfItems.Count();
-            
-            UpdateProgressBarDelegate updatePbDelegate =
-                 new UpdateProgressBarDelegate(myUpdateCacheWindow.progressBar1.SetValue);
-
-            double i = 1;
-            foreach (Item item in listOfItems)
+            if (Properties.Settings.Default.CacheFull || Properties.Settings.Default.CacheMoreLess)
             {
-                myUpdateCacheWindow.label1.Content = "Loading cache " + i.ToString() + " of " + listOfItems.Count();
-                myUpdateCacheWindow.label_itemTitle.Content = item.title;
-                myUpdateCacheWindow.UpdateLayout();
-                Dispatcher.CurrentDispatcher.Invoke(updatePbDelegate,
-                System.Windows.Threading.DispatcherPriority.Background,
-                new object[] { ProgressBar.ValueProperty, i });
-                if (!updateWithNewerVersion)
-                item.contentCache = cacheStore.LoadStoredCache(item);
-             
-                i++;
-            }
+                UpdatingCache myUpdateCacheWindow = new UpdatingCache();
 
-            myUpdateCacheWindow.Close();
+                myUpdateCacheWindow.label2.Content = "Winslew " + Formatter.prettyVersion.getNiceVersionString(System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
+                myUpdateCacheWindow.label1.Content = "Loading stored cache...";
+                myUpdateCacheWindow.Show();
+                myUpdateCacheWindow.progressBar1.Maximum = listOfItems.Count();
+
+                UpdateProgressBarDelegate updatePbDelegate =
+                     new UpdateProgressBarDelegate(myUpdateCacheWindow.progressBar1.SetValue);
+
+                double i = 1;
+                foreach (Item item in listOfItems)
+                {
+                    myUpdateCacheWindow.label1.Content = "Loading cache " + i.ToString() + " of " + listOfItems.Count();
+                    myUpdateCacheWindow.label_itemTitle.Content = item.title;
+                    myUpdateCacheWindow.UpdateLayout();
+                    Dispatcher.CurrentDispatcher.Invoke(updatePbDelegate,
+                    System.Windows.Threading.DispatcherPriority.Background,
+                    new object[] { ProgressBar.ValueProperty, i });
+                    if (!updateWithNewerVersion)
+                        item.contentCache = cacheStore.LoadStoredCache(item);
+
+                    i++;
+                }
+
+                myUpdateCacheWindow.Close();
+            }
         }
 
         private void StartCacheUpdate(List<Item> ToBeUpdatedItems) {
@@ -410,26 +413,29 @@ namespace Winslew
 
 
             int done = 0;
-            foreach (Item currentItem in ToBeWorkedItems)
+            if (Properties.Settings.Default.CacheMoreLess)
             {
-                if (currentItem.contentCache.FullVersion == null)
+                foreach (Item currentItem in ToBeWorkedItems)
                 {
-                    initialFastFetch = true;
-                }
-                else
-                {
-                    initialFastFetch = false;
-                }
-                System.Threading.Thread.Sleep(10);                
-                currentItem.contentCache = cacheStore.addToCache(currentItem, false, false, initialFastFetch);
-                AppController.Current.sendSnarlNotification("Cache has been updated", "Cache of more and less versions has been updated", currentItem.title);
-                done++;
-                Return.Add(currentItem);
-                backgroundWorker1.ReportProgress(done, currentItem);
+                    if (currentItem.contentCache.FullVersion == null)
+                    {
+                        initialFastFetch = true;
+                    }
+                    else
+                    {
+                        initialFastFetch = false;
+                    }
 
+                    System.Threading.Thread.Sleep(10);
+                    currentItem.contentCache = cacheStore.addToCache(currentItem, false, false, initialFastFetch);
+                    AppController.Current.sendSnarlNotification("Cache has been updated", "Cache of more and less versions has been updated", currentItem.title);
+                    done++;
+                    Return.Add(currentItem);
+                    backgroundWorker1.ReportProgress(done, currentItem);
+                }
             }
 
-            if (initialFastFetch)
+            if (initialFastFetch && Properties.Settings.Default.CacheFull)
             {
                 Return = new List<Item>();
 
@@ -787,6 +793,34 @@ namespace Winslew
                 if (mainWindow.dispatcherTimer != null)
                 {
                     mainWindow.dispatcherTimer.Stop();
+                }
+            }
+        }
+
+        public void hideFullViewComboBox()
+        {
+            if (mainWindow != null)
+            {
+                if (mainWindow.comboBox_browserView != null)
+                {
+                    if (mainWindow.comboBox_browserView.Items.Contains("Full"))
+                    {
+                        mainWindow.comboBox_browserView.Items.Remove("Full");
+                    }
+                }
+            }
+        }
+
+        public void showFullViewComboBox()
+        {
+            if (mainWindow != null)
+            {
+                if (mainWindow.comboBox_browserView != null)
+                {
+                    if (!mainWindow.comboBox_browserView.Items.Contains("Full"))
+                    {
+                        mainWindow.comboBox_browserView.Items.Add("Full");
+                    }
                 }
             }
         }

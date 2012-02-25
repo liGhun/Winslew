@@ -1,3 +1,13 @@
+1.8
+Local caching can be disabled now
+Complete rewrite of the communication with Read It Later API - it's now based on Json.NET (http://json.codeplex.com/)
+ - faster
+ - fixes some rare crashes
+ - better code ;)
+Workaound: if your Windows username contains special characters the offline cached version can not be displayed (bug in WebKit) - the workaround gets them online now on every access
+If a crash occurs (and I hope it doesn't!) you get now a complete error message which you can send to me for fixing
+
+
 1.7
 Print button is back (one of the many things Webkit does better :))
 Navigation bar with back/forward/reload/stop and URL added

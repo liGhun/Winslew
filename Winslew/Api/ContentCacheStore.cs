@@ -201,17 +201,9 @@ namespace Winslew.Api
                 }
                 else
                 {
-                    Response cachedLessContent = AppController.Current.getCacheText(itemToBeCached.url, "less");
-                    if (cachedLessContent.Content != null && cachedLessContent.Content != "")
+                    fullText = generateLessContent(itemToBeCached.url);
+                    if (!string.IsNullOrEmpty(fullText))
                     {
-                        fullText = "<html>\n<head>\n<title>" + cachedLessContent.TextTitle + "</title>\n";
-                        fullText += "<meta http-equiv=\"Content-Type\" content=\"" + cachedLessContent.TextContentType + "\">\n";
-                        fullText += "<link rel=\"stylesheet\" type=\"text/css\" href=\"../actualStylesheet.css\" />\n</head>\n";
-                        fullText += "<body>\n";
-                        fullText += "<div id=\"WinslewTitle\"><h1>" + cachedLessContent.TextTitle + "</h1></div>\n";
-                        fullText += "<div id=\"WinslewBody\">" + cachedLessContent.Content + "</div>";
-                        fullText += "\n</body>\n</html>";
-
                         returnValue.LessVersion = cacheDir + "\\" + returnValue.Id.ToString() + "-less.html";
                         returnValue.LessUpdated = DateTime.Now;
 
@@ -240,16 +232,8 @@ namespace Winslew.Api
                 }
                 else
                 {
-                    Response cachedMoreContent = AppController.Current.getCacheText(itemToBeCached.url, "more");
-                    if (cachedMoreContent.Content != "" && cachedMoreContent.Content != null)
-                    {
-                        fullText = "<html>\n<head>\n<title>" + cachedMoreContent.TextTitle + "</title>\n";
-                        fullText += "<meta http-equiv=\"Content-Type\" content=\"" + cachedMoreContent.TextContentType + "\">\n";
-                        fullText += "<link rel=\"stylesheet\" type=\"text/css\" href=\"../actualStylesheet.css\" />\n</head>\n";
-                        fullText += "<body>\n";
-                        fullText += "<div id=\"WinslewTitle\"><h1>" + cachedMoreContent.TextTitle + "</h1></div>\n";
-                        fullText += "<div id=\"WinslewBody\">" + cachedMoreContent.Content + "</div>";
-                        fullText += "\n</body>\n</html>";
+                    fullText = generateMoreContent(itemToBeCached.url);
+                    if(!string.IsNullOrEmpty(fullText)) {
 
                         returnValue.MoreVersion = cacheDir + "\\" + returnValue.Id.ToString() + "-more.html";
                         returnValue.MoreUpdated = DateTime.Now;
@@ -282,6 +266,40 @@ namespace Winslew.Api
             returnValue.Updated = DateTime.Now;
 
             return returnValue;
+        }
+
+        public static string generateLessContent(string Url)
+        {
+            string fullText = "";
+            Response cachedLessContent = AppController.Current.getCacheText(Url, "less");
+            if (cachedLessContent.Content != null && cachedLessContent.Content != "")
+            {
+                fullText = "<html>\n<head>\n<title>" + cachedLessContent.TextTitle + "</title>\n";
+                fullText += "<meta http-equiv=\"Content-Type\" content=\"" + cachedLessContent.TextContentType + "\">\n";
+                fullText += "<link rel=\"stylesheet\" type=\"text/css\" href=\"../actualStylesheet.css\" />\n</head>\n";
+                fullText += "<body>\n";
+                fullText += "<div id=\"WinslewTitle\"><h1>" + cachedLessContent.TextTitle + "</h1></div>\n";
+                fullText += "<div id=\"WinslewBody\">" + cachedLessContent.Content + "</div>";
+                fullText += "\n</body>\n</html>";
+            }
+            return fullText;
+        }
+
+        public static string generateMoreContent(string Url)
+        {
+            string fullText = "";
+            Response cachedMoreContent = AppController.Current.getCacheText(Url, "more");
+            if (cachedMoreContent.Content != null && cachedMoreContent.Content != "")
+            {
+                fullText = "<html>\n<head>\n<title>" + cachedMoreContent.TextTitle + "</title>\n";
+                fullText += "<meta http-equiv=\"Content-Type\" content=\"" + cachedMoreContent.TextContentType + "\">\n";
+                fullText += "<link rel=\"stylesheet\" type=\"text/css\" href=\"../actualStylesheet.css\" />\n</head>\n";
+                fullText += "<body>\n";
+                fullText += "<div id=\"WinslewTitle\"><h1>" + cachedMoreContent.TextTitle + "</h1></div>\n";
+                fullText += "<div id=\"WinslewBody\">" + cachedMoreContent.Content + "</div>";
+                fullText += "\n</body>\n</html>";
+            }
+            return fullText;
         }
 
         public string CreateCacheVersionOfLocalImage(string cacheDir, ImgurData imgurData)

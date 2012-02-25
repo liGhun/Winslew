@@ -14,7 +14,19 @@ namespace Winslew
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            AppController.Start();
+            try
+            {
+                AppController.Start();
+            }
+            catch (Exception exp)
+            {
+                try
+                {
+                    System.Windows.Forms.Clipboard.SetText(exp.Message + "\n\n" + exp.StackTrace);
+                }
+                catch { }
+                MessageBox.Show(exp.StackTrace, exp.Message);
+            }
         }
     }
 }

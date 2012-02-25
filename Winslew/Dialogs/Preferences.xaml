@@ -11,7 +11,7 @@
     </Window.Resources>
     <Grid DataContext="{StaticResource settings}" >
         <TabControl Name="tabControlReadItLater" Margin="12,12,12,41">
-            <TabItem Header="Account" Name="tabItem1">
+            <TabItem Header="Account" Name="tabItemAccount">
                 <Grid>
                     <Label Margin="12,12,0,0" Name="label6" HorizontalAlignment="Left" Width="66" Height="28" VerticalAlignment="Top" HorizontalContentAlignment="Right">Username</Label>
                     <TextBox Height="23" 
@@ -45,6 +45,12 @@
                     <Label Content="minutes" Height="28" HorizontalAlignment="Left" Margin="172,23,0,0" Name="label1" VerticalAlignment="Top" />
                     <CheckBox IsChecked="{Binding Path=Default.WhiteBackgroundOnList,Mode=TwoWay}" Content="Light background on list view" Height="16" Margin="12,72,12,0" Name="checkBoxWhiteList" VerticalAlignment="Top" Checked="checkBoxWhiteList_Checked" Unchecked="checkBoxWhiteList_Checked"/>
                     <CheckBox IsChecked="{Binding Path=Default.ShowNavigationBar,Mode=TwoWay}" Content="Show browser navigation bar" Height="16" Margin="12,94,12,0" Name="checkBoxNavigationBar" VerticalAlignment="Top" IsEnabled="False" Visibility="Collapsed" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="Caching" Name="tabItemCaching">
+                <Grid>
+                    <CheckBox Content="Cache more and less version on disk" IsChecked="{Binding Path=Default.CacheMoreLess,Mode=TwoWay}" Height="16" Margin="12,6,12,0" Name="checkBox_cacheMoreLess" VerticalAlignment="Top" ToolTip="When enabled an offline version of the more and less version a stored on the local harddisk" />
+                    <CheckBox Content="Cache full version on disk" IsChecked="{Binding Path=Default.CacheFull,Mode=TwoWay}" Height="16" HorizontalAlignment="Left" Margin="12,28,0,0" Name="checkBox_cachFull" VerticalAlignment="Top" ToolTip="When enabled an offline version of the more and less version a stored on the local harddisk" Unchecked="checkBox_cachFull_Unchecked" Checked="checkBox_cachFull_Checked" />
                 </Grid>
             </TabItem>
         </TabControl>
