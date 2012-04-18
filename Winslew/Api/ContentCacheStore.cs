@@ -271,6 +271,10 @@ namespace Winslew.Api
         public static string generateLessContent(string Url)
         {
             string fullText = "";
+            if (string.IsNullOrEmpty(Url))
+            {
+                return "No valid url specified";
+            }
             Response cachedLessContent = AppController.Current.getCacheText(Url, "less");
             if (cachedLessContent.Content != null && cachedLessContent.Content != "")
             {
@@ -288,6 +292,10 @@ namespace Winslew.Api
         public static string generateMoreContent(string Url)
         {
             string fullText = "";
+            if (string.IsNullOrEmpty(Url))
+            {
+                return "No valid url specified";
+            }
             Response cachedMoreContent = AppController.Current.getCacheText(Url, "more");
             if (cachedMoreContent.Content != null && cachedMoreContent.Content != "")
             {
@@ -317,7 +325,7 @@ namespace Winslew.Api
                 returnValue += "<link rel=\"stylesheet\" type=\"text/css\" href=\"../actualStylesheet.css\" />\n</head>\n";
                 returnValue += "<div id=\"WinslewTitle\"><h1>" + Path.GetFileNameWithoutExtension(localFilePath) + "</h1></div>\n";
                 returnValue += "<div id=\"WinslewBody\"><img src=\"" + Path.Combine(cacheDir, Path.GetFileName(localFilePath)) + "\"</img></div>";
-                returnValue += "<div id=\"WinslewDeleteImgurImage\"><a href=\"" + imgurData.deletePage + "\">Delete this image from Imgur</a> (will not remove it from Winslew cache or Read It Later)</div>\n";
+                returnValue += "<div id=\"WinslewDeleteImgurImage\"><a href=\"" + imgurData.deletePage + "\">Delete this image from Imgur</a> (will not remove it from Winslew cache or Pocket)</div>\n";
                 returnValue += "\n</body>\n</html>";
             }
             return returnValue;

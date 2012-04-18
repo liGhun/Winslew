@@ -10,9 +10,9 @@
 
     <Grid>
         <Label Height="28" Margin="12,12,12,0" Name="label_Winslew_version" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Padding="0">Winslew 1.0.0.0</Label>
-        <TextBlock Margin="12,46,12,0" Name="textBlock1" Height="38" VerticalAlignment="Top" Text="Winslew is a client for the service &quot;Read It Later&quot; and is developed and copyright by Sven Walther 2010-2012" TextWrapping="Wrap" />
+        <TextBlock Margin="12,46,12,0" Name="textBlock1" Height="38" VerticalAlignment="Top" Text="Winslew is a client for the service &quot;Pocket&quot; and is developed and copyright by Sven Walther 2010-2012" TextWrapping="Wrap" />
         <Button Height="23" Margin="12,107,0,0" Name="button_visitHomepage" VerticalAlignment="Top" HorizontalAlignment="Left" Width="105" Click="button_visitHomepage_Click">Visit homepage</Button>
-        <Button Height="23" Margin="123,107,194,0" Name="button_visitRIL" VerticalAlignment="Top" Click="button_visitRIL_Click">Visit Read It Later</Button>
+        <Button Height="23" Margin="123,107,194,0" Name="button_visitRIL" VerticalAlignment="Top" Click="button_visitRIL_Click">Visit Pocket</Button>
         <TextBlock Height="39" Margin="12,160,12,0" Name="textBlock_credits" VerticalAlignment="Top" TextWrapping="Wrap" Text="Winslew uses icons of the Tango icons set as well as On Stage collection and the Snarl C# connection by Toke Noer" />
         <Label Margin="12,136,12,112" Name="label_credits" FontWeight="Bold" Padding="0">Credits</Label>
         <Button Height="23" HorizontalAlignment="Left" Margin="12,197,0,0" Name="button_humanIconTheme" VerticalAlignment="Top" Width="105" Click="button_humanIconTheme_Click">Tango Icon Set</Button>

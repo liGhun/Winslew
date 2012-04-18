@@ -330,7 +330,7 @@
                 </ToolBar>
 
                 <ToolBar Name="PageButtons" Width="340" HorizontalContentAlignment="Left" HorizontalAlignment="Stretch">
-                    <Button Height="23" Name="button_addCurrentViewedPage" VerticalAlignment="Top" Width="23" Click="button_addCurrentViewedPage_Click"  Visibility="Hidden" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" ToolTip="Add the currently shown webpage to Read It Later (F2)">
+                    <Button Height="23" Name="button_addCurrentViewedPage" VerticalAlignment="Top" Width="23" Click="button_addCurrentViewedPage_Click"  Visibility="Hidden" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" ToolTip="Add the currently shown webpage to Pocket (F2)">
                         <Image Name="Image_AddCurrentlyViewPage" Source="/Winslew;component/Images/add.png"   Visibility="Hidden"></Image>
                     </Button>
                     <Button Height="23" Name="button_openInBrowser" VerticalAlignment="Top" Width="23" Click="button_openInBrowser_Click" Background="Transparent" BorderBrush="Transparent" ToolTip="Open page in external browser (Ctrl-Return)">

@@ -43,7 +43,7 @@ namespace LicenseKeyGenerator
 
         private string emailText(string username, string firstname, string licenseKey)
         {
-            return string.Format("Hello {0},\n\nThanks for having purchased a full license of Winslew. With this mail I am sending you your individual license code which will be valid for an unlimited time and include all updates of Winslew in the future.\n\n  Your Read It Later account: {1}\n  Your license code: {2}\n\nYou can also use this license code on as many different PCs as you like at once as long they use the same user account.\n\nYou can either enter this code into the Winslew preferences manually or just (re)start Winslew and it will pick up the license automatically online from my database.\n\nHave fun with Winslew\n\nSven Walther", firstname, username, licenseKey);
+            return string.Format("Hello {0},\n\nThanks for having purchased a full license of Winslew. With this mail I am sending you your individual license code which will be valid for an unlimited time and include all updates of Winslew in the future.\n\n  Your Pocket username: {1}\n  Your license code: {2}\n\nYou can also use this license code on as many different PCs as you like at once as long they use the same user account.\n\nYou can either enter this code into the Winslew preferences manually or just (re)start Winslew and it will pick up the license automatically online from my database.\n\nHave fun with Winslew\n\nSven Walther", firstname, username, licenseKey);
         }
 
         private bool storeInDatabase()

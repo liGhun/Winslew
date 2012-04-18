@@ -33,7 +33,7 @@ namespace Winslew.Api
                 // bool success = (!string.IsNullOrEmpty(result) && result.ToLowerInvariant() == "200 ok");
                 if (!result.Success)
                 {
-                    System.Windows.Forms.MessageBox.Show("Error sending item to Read It Later", result.Error);
+                    System.Windows.Forms.MessageBox.Show("Error sending item to Pocket", result.Error);
                 }
                 return result;
             }
@@ -62,7 +62,7 @@ namespace Winslew.Api
                  // bool success = (!string.IsNullOrEmpty(result) && result.ToLowerInvariant() == "200 ok");
                  if (!result.Success)
                  {
-                     System.Windows.Forms.MessageBox.Show("Error sending item to Read It Later", result.Error);
+                     System.Windows.Forms.MessageBox.Show("Error sending item to Pocket", result.Error);
                  }
                  return result;
              }
@@ -110,14 +110,14 @@ namespace Winslew.Api
                 // bool success = (!string.IsNullOrEmpty(result) && result.ToLowerInvariant() == "200 ok");
                 if (!result.Success)
                 {
-                    System.Windows.Forms.MessageBox.Show(result.Error, "Login to Read It Later failed");
+                    System.Windows.Forms.MessageBox.Show(result.Error, "Login to Pocket failed");
                     return false;
                 }
                 return true;
             }
             else
             {
-                System.Windows.Forms.MessageBox.Show("Missing username or password", "Login to Read It Later failed");
+                System.Windows.Forms.MessageBox.Show("Missing username or password", "Login to Pocket failed");
                 return false;
             }
         }
@@ -166,7 +166,7 @@ namespace Winslew.Api
                 // bool success = (!string.IsNullOrEmpty(result) && result.ToLowerInvariant() == "200 ok");
                 if (!result.Success)
                 {
-                    System.Windows.Forms.MessageBox.Show(result.Error, "Login to Read It Later failed");
+                    System.Windows.Forms.MessageBox.Show(result.Error, "Login to Pocket failed");
                 }
                 return result.Success;
             }
@@ -197,7 +197,7 @@ namespace Winslew.Api
                 // bool success = (!string.IsNullOrEmpty(result) && result.ToLowerInvariant() == "200 ok");
                 if (!result.Success)
                 {
-                    System.Windows.Forms.MessageBox.Show(result.Error, "Login to Read It Later failed");
+                    System.Windows.Forms.MessageBox.Show(result.Error, "Login to Pocket failed");
                 }
                 return result.Success;
             }
@@ -225,7 +225,7 @@ namespace Winslew.Api
                 // bool success = (!string.IsNullOrEmpty(result) && result.ToLowerInvariant() == "200 ok");
                 if (!result.Success)
                 {
-                    System.Windows.Forms.MessageBox.Show(result.Error, "Login to Read It Later failed");
+                    System.Windows.Forms.MessageBox.Show(result.Error, "Login to Pocket failed");
                 }
                 return result.Success;
             }
@@ -253,7 +253,7 @@ namespace Winslew.Api
                 // bool success = (!string.IsNullOrEmpty(result) && result.ToLowerInvariant() == "200 ok");
                 if (!result.Success)
                 {
-                    System.Windows.Forms.MessageBox.Show(result.Error, "Login to Read It Later failed");
+                    System.Windows.Forms.MessageBox.Show(result.Error, "Login to Pocket failed");
                 }
                 return result.Success;
             }
@@ -281,7 +281,7 @@ namespace Winslew.Api
                 // bool success = (!string.IsNullOrEmpty(result) && result.ToLowerInvariant() == "200 ok");
                 if (!result.Success)
                 {
-                    System.Windows.Forms.MessageBox.Show(result.Error, "Login to Read It Later failed");
+                    System.Windows.Forms.MessageBox.Show(result.Error, "Login to Pocket failed");
                 }
                 return result.Success;
             }
@@ -309,7 +309,7 @@ namespace Winslew.Api
                 // bool success = (!string.IsNullOrEmpty(result) && result.ToLowerInvariant() == "200 ok");
                 if (!result.Success)
                 {
-                    System.Windows.Forms.MessageBox.Show(result.Error, "Login to Read It Later failed");
+                    System.Windows.Forms.MessageBox.Show(result.Error, "Login to Pocket failed");
                 }
                 return result.Success;
             }
@@ -436,7 +436,7 @@ namespace Winslew.Api
                 // bool success = (!string.IsNullOrEmpty(result));
                 if (!result.Success)
                 {
-                    System.Windows.Forms.MessageBox.Show(result.Error, "Login to Read It Later failed");
+                    System.Windows.Forms.MessageBox.Show(result.Error, "Login to Pocket failed");
                 }
 
                 return DeserializeItemsJson(result.Content);

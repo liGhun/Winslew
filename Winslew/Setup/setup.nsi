@@ -112,12 +112,12 @@ FunctionEnd
 ;--------------------------------
 ;Version Information
 
-  VIProductVersion "1.8.0.0"
+  VIProductVersion "1.8.1.0"
   VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "Winslew"
   VIAddVersionKey /LANG=${LANG_ENGLISH} "CompanyName" "lI Ghun"
   VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "© 2010-2012 lI Ghun"
-  VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "Client for Read it Later"
-  VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "1.8"
+  VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "Client for Pocket"
+  VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "1.8.1"
 
 
 Function un.UninstallDirs

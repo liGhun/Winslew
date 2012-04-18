@@ -179,9 +179,11 @@ namespace Winslew
 
         void webKitBrowser_Error(object sender, WebKit.WebKitBrowserErrorEventArgs e)
         {
-            var currentItem = listView_Items.SelectedItem as Item;
+            if (listView_Items == null) { return;  }
+            Item currentItem = listView_Items.SelectedItem as Item;
             if (currentItem != null)
             {
+                if (currentItem.contentCache == null) { return; }
                 if (Properties.Settings.Default.CurrentView.ToLower().EndsWith("more") && System.IO.File.Exists(currentItem.contentCache.MoreVersion))
                 {
                     progressBarLoadingPage.Visibility = Visibility.Visible;
@@ -197,14 +199,18 @@ namespace Winslew
                 else
                 {
                     progressBarLoadingPage.Visibility = Visibility.Visible;
+                    
                     labelLoadingPage.Visibility = Visibility.Visible;
-                    if (e.Description != null)
+                    if (e != null)
                     {
-                        webKitBrowser.DocumentText = "<h1>Sorry, I am unable to load this page</h1><p> + " + e.Description + "</p>";
-                    }
-                    else
-                    {
-                        webKitBrowser.DocumentText = "<h1>Sorry, I am unable to load this page</h1>";
+                        if (e.Description != null)
+                        {
+                            webKitBrowser.DocumentText = "<h1>Sorry, I am unable to load this page</h1><p> + " + e.Description + "</p>";
+                        }
+                        else
+                        {
+                            webKitBrowser.DocumentText = "<h1>Sorry, I am unable to load this page</h1>";
+                        }
                     }
                 }
             }
