@@ -1,3 +1,6 @@
+1.8.1
+Wording changed from RiL to Pocket
+
 1.8
 Local caching can be disabled now
 Complete rewrite of the communication with Read It Later API - it's now based on Json.NET (http://json.codeplex.com/)
