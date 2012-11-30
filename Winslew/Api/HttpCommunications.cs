@@ -45,6 +45,7 @@ namespace Winslew
                 }
 
                 Api.Response returnValue = GetResponse(request);
+                
                 returnValue.UpdateStatistics();
                 return returnValue;
             }

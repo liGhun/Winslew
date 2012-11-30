@@ -214,6 +214,11 @@ namespace Winslew.Api
             {
 
                 string request = createJson(data);
+
+                System.Windows.MessageBox.Show("Starting request to Pocket now");
+                DateTime start = DateTime.Now;
+
+
                 Response result = HttpCommunications.SendPostRequest(@"https://readitlaterlist.com/v2/send", new
                 {
                     username = Properties.Settings.Default.Username,
@@ -222,7 +227,10 @@ namespace Winslew.Api
                     update_tags = request
 
                 }, false);
-                // bool success = (!string.IsNullOrEmpty(result) && result.ToLowerInvariant() == "200 ok");
+
+                TimeSpan duration = DateTime.Now - start;
+                System.Windows.MessageBox.Show("Request completed in " + duration.TotalMilliseconds + " msec");
+
                 if (!result.Success)
                 {
                     System.Windows.Forms.MessageBox.Show(result.Error, "Login to Pocket failed");
@@ -241,6 +249,10 @@ namespace Winslew.Api
             if (Properties.Settings.Default.Username != "" && Properties.Settings.Default.Password != "")
             {
 
+                System.Windows.MessageBox.Show("Starting request to Pocket now");
+                DateTime start = DateTime.Now;
+
+
                 string request = createJson(data);
                 Response result = HttpCommunications.SendPostRequest(@"https://readitlaterlist.com/v2/send", new
                 {
@@ -250,7 +262,11 @@ namespace Winslew.Api
                     update_tags = request
 
                 }, false);
-                // bool success = (!string.IsNullOrEmpty(result) && result.ToLowerInvariant() == "200 ok");
+
+                TimeSpan duration = DateTime.Now - start;
+                System.Windows.MessageBox.Show("Request completed in " + duration.TotalMilliseconds + " msec");
+
+
                 if (!result.Success)
                 {
                     System.Windows.Forms.MessageBox.Show(result.Error, "Login to Pocket failed");
@@ -270,6 +286,11 @@ namespace Winslew.Api
             {
 
                 string request = createJson(data);
+
+
+                System.Windows.MessageBox.Show("Starting request to Pocket now");
+                DateTime start = DateTime.Now;
+
                 Response result = HttpCommunications.SendPostRequest(@"https://readitlaterlist.com/v2/send", new
                 {
                     username = Properties.Settings.Default.Username,
@@ -278,6 +299,10 @@ namespace Winslew.Api
                     update_title = request
 
                 }, false);
+
+                TimeSpan duration = DateTime.Now - start;
+                System.Windows.MessageBox.Show("Request completed in " + duration.TotalMilliseconds + " msec");
+
                 // bool success = (!string.IsNullOrEmpty(result) && result.ToLowerInvariant() == "200 ok");
                 if (!result.Success)
                 {
